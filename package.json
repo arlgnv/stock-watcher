@@ -10,7 +10,7 @@
     "dev": "next dev",
     "prettier:check": "prettier . --check --ignore-unknown",
     "prettier:fix": "prettier . --write --ignore-unknown",
-    "eslint:inspect-config": "npx @eslint/config-inspector@latest",
+    "eslint:inspect-config": "eslint --inspect-config",
     "eslint:check": "eslint .",
     "eslint:fix": "eslint . --fix",
     "typescript:check": "tsc --noEmit",
