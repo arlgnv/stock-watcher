@@ -1,5 +1,11 @@
+import { Button } from '@/components/ui/button';
+
 function Page() {
-  return <div className="flex h-screen items-center justify-center"></div>;
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <Button>Click me</Button>
+    </div>
+  );
 }
 
 export default Page;
