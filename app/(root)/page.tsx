@@ -1,5 +1,53 @@
+import TradingViewWidget from '@/components/TradingViewWidget';
+
+import {
+  HEATMAP_WIDGET_CONFIG,
+  MARKET_DATA_WIDGET_CONFIG,
+  MARKET_OVERVIEW_WIDGET_CONFIG,
+  TOP_STORIES_WIDGET_CONFIG,
+} from '../_shared/constants';
+
 function Page() {
-  return <div className="home-wrapper flex min-h-screen">Home</div>;
+  return (
+    <div className="flex min-h-screen home-wrapper">
+      <section className="grid home-section w-full gap-8">
+        <div className="md:col-span-1 xl:col-span-1">
+          <TradingViewWidget
+            className="custom-chart"
+            title="Market Overview"
+            scriptUrl="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js"
+            config={MARKET_OVERVIEW_WIDGET_CONFIG}
+            height={600}
+          />
+        </div>
+        <div className="md:col-span-1 xl:col-span-2">
+          <TradingViewWidget
+            title="Stock Heatmap"
+            scriptUrl="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js"
+            config={HEATMAP_WIDGET_CONFIG}
+            height={600}
+          />
+        </div>
+      </section>
+      <section className="grid home-section w-full gap-8">
+        <div className="h-full md:col-span-1 xl:col-span-1">
+          <TradingViewWidget
+            className="custom-chart"
+            scriptUrl="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js"
+            config={TOP_STORIES_WIDGET_CONFIG}
+            height={600}
+          />
+        </div>
+        <div className="h-full md:col-span-1 xl:col-span-2">
+          <TradingViewWidget
+            scriptUrl="https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js"
+            config={MARKET_DATA_WIDGET_CONFIG}
+            height={600}
+          />
+        </div>
+      </section>
+    </div>
+  );
 }
 
 export default Page;
