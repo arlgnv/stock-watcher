@@ -132,6 +132,22 @@
   --color-purple-500: #d13bff;
 }
 
+@utility home-wrapper {
+  @apply flex-col items-center gap-4 text-gray-400 sm:items-start md:gap-10;
+}
+
+@utility header-wrapper {
+  @apply flex items-center justify-between px-6 py-4 text-gray-500;
+}
+
+@utility header {
+  @apply z-50 h-[70px] w-full bg-gray-800;
+}
+
+@utility wrapper {
+  @apply mx-auto max-w-screen-2xl px-4 md:px-6 lg:px-8;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -142,9 +158,6 @@
 }
 
 @layer utilities {
-  .container {
-    @apply mx-auto max-w-screen-2xl px-4 md:px-6 lg:px-8;
-  }
   .yellow-btn {
     @apply h-12 cursor-pointer rounded-lg bg-gradient-to-b from-yellow-400 to-yellow-500 text-base font-medium text-gray-950 shadow-lg hover:from-yellow-500 hover:to-yellow-400 disabled:opacity-50;
   }
@@ -154,12 +167,7 @@
   .home-section {
     @apply w-full grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3;
   }
-  .header {
-    @apply z-50 h-[70px] w-full bg-gray-800;
-  }
-  .header-wrapper {
-    @apply flex items-center justify-between px-6 py-4 text-gray-500;
-  }
+
   .auth-layout {
     @apply relative flex h-screen flex-col justify-between overflow-hidden bg-gray-900 lg:flex-row;
   }
