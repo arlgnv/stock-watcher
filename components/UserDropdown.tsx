@@ -22,7 +22,7 @@ function UserDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          className="text-gray-4 flex items-center gap-3 hover:text-yellow-500"
+          className="flex items-center gap-3 text-gray-400 hover:text-yellow-500"
           variant="ghost"
         >
           <Avatar className="size-8">
