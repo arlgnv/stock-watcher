@@ -1,20 +1,23 @@
 import mongoose from 'mongoose';
 
 declare global {
-  var mongooseCache: {
-    conn: typeof mongoose | null;
-    promise: Promise<typeof mongoose> | null;
-  };
+  var mongooseCache:
+    | {
+        conn: typeof mongoose | null;
+        promise: Promise<typeof mongoose> | null;
+      }
+    | undefined;
 }
 
 let cached = global.mongooseCache;
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-if (!cached) {
-  cached = global.mongooseCache = { conn: null, promise: null };
-}
+cached ??= global.mongooseCache = { conn: null, promise: null };
 
 async function connectToDatabase() {
+  if (!cached) {
+    return;
+  }
+
   if (!process.env.MONGODB_URI) {
     throw new Error(
       'Please define the MONGODB_URI environment variable inside .env',
