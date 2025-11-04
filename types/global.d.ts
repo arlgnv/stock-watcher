@@ -14,12 +14,6 @@ declare global {
     preferredIndustry: string;
   }
 
-  interface FooterLinkProps {
-    text: string;
-    linkText: string;
-    href: string;
-  }
-
   interface SearchCommandProps {
     renderAs?: 'button' | 'text';
     label?: string;

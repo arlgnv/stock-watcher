@@ -1,6 +1,12 @@
 import Link from 'next/link';
 
-function FooterLink({ text, linkText, href }: FooterLinkProps) {
+interface Props {
+  text: string;
+  linkText: string;
+  href: string;
+}
+
+function FooterLink({ text, linkText, href }: Props) {
   return (
     <div className="pt-4 text-center">
       <p className="text-sm text-gray-500">
