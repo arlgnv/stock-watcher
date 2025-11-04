@@ -6,7 +6,7 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 import typescript from 'typescript-eslint';
 
 const config = defineConfig([
-  globalIgnores(['.next/', './components/ui']),
+  globalIgnores(['.next/']),
   {
     name: 'react',
     files: ['**/*.tsx'],
