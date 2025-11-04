@@ -19,7 +19,6 @@ interface Props<FieldValues extends ReactHookFormFieldValues> {
   error: FieldError | undefined;
   validation?: RegisterOptions<FieldValues>;
   disabled?: boolean;
-  value?: string;
 }
 
 function InputField<FieldValues extends ReactHookFormFieldValues>({
@@ -31,7 +30,6 @@ function InputField<FieldValues extends ReactHookFormFieldValues>({
   error,
   validation,
   disabled,
-  value,
 }: Props<FieldValues>) {
   return (
     <div className="space-y-2">
@@ -45,7 +43,6 @@ function InputField<FieldValues extends ReactHookFormFieldValues>({
         )}
         id={name}
         type={type}
-        value={value}
         placeholder={placeholder}
         disabled={disabled}
         {...register(name, validation)}
