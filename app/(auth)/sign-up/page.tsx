@@ -60,7 +60,10 @@ function Page() {
           error={errors.email}
           validation={{
             required: 'Email is required',
-            pattern: /^\w+@\w+\.\w+$/,
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: 'Please enter a valid email address',
+            },
           }}
         />
         <CountrySelectField
@@ -77,7 +80,13 @@ function Page() {
           placeholder="Enter your password"
           register={register}
           error={errors.password}
-          validation={{ required: 'Password is required', minLength: 8 }}
+          validation={{
+            required: 'Password is required',
+            minLength: {
+              value: 8,
+              message: 'Password must be at least 8 characters',
+            },
+          }}
         />
         <SelectField
           label="Investment Goals"
