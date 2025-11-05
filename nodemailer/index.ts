@@ -2,6 +2,12 @@ import nodemailer from 'nodemailer';
 
 import { WELCOME_EMAIL_TEMPLATE } from './templates';
 
+if (!process.env.NODEMAILER_EMAIL || !process.env.NODEMAILER_PASSWORD) {
+  throw new Error(
+    'NODEMAILER_EMAIL and NODEMAILER_PASSWORD environment variables must be set',
+  );
+}
+
 export const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -26,7 +32,7 @@ export async function sendWelcomeEmail({
     intro,
   );
   const mailOptions = {
-    from: '"Signalist" <info@signalist.io',
+    from: '"Signalist" <info@signalist.io>',
     to: email,
     subject: 'Welcome to Signalist - Your stock market toolkit is ready!',
     text: 'Thanks for joining Signalist',
