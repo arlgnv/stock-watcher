@@ -1,16 +1,19 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import FooterLink from '@/components/FooterLink';
 import InputField from '@/components/InputField';
 import { Button } from '@/components/ui/button';
+import { signInWithEmail } from '@/lib/actions/auth.actions';
 
 function Page() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
-
     formState: { errors, isSubmitting },
   } = useForm<SignInFormData>({
     mode: 'onBlur',
@@ -20,18 +23,28 @@ function Page() {
     },
   });
 
-  function onSubmit(data: SignInFormData) {
-    try {
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
+  function handleSignIn(event: React.FormEvent<HTMLFormElement>) {
+    void handleSubmit(async (data) => {
+      try {
+        const result = await signInWithEmail(data);
+
+        if (result.success) {
+          router.push('/');
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error('Sign in failed', {
+          description:
+            error instanceof Error ? error.message : 'Failed to sign in',
+        });
+      }
+    })(event);
   }
 
   return (
     <>
-      <h1 className="form-title">Log In Your Account</h1>
-      <form className="space-y-5" onSubmit={void handleSubmit(onSubmit)}>
+      <h1 className="form-title">Sign In Your Account</h1>
+      <form className="space-y-5" onSubmit={handleSignIn}>
         <InputField
           name="email"
           label="Email"
@@ -66,7 +79,7 @@ function Page() {
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Logging in' : 'Log In'}
+          {isSubmitting ? 'Signing in' : 'Sign In'}
         </Button>
         <FooterLink
           text="Don’t have an account?"

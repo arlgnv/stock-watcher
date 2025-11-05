@@ -20,12 +20,6 @@ declare global {
     initialStocks: StockWithWatchlistStatus[];
   }
 
-  interface WelcomeEmailData {
-    email: string;
-    name: string;
-    intro: string;
-  }
-
   interface User {
     id: string;
     name: string;
