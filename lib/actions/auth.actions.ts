@@ -35,40 +35,28 @@ export const signUpWithEmail = async ({
       },
     });
 
-    return {
-      success: true,
-      data: response,
-    };
+    return true;
   } catch (error) {
     console.error('Sign up failed', error);
 
-    return {
-      success: false,
-      message: 'Sign up failed',
-    };
+    return false;
   }
 };
 
 export const signInWithEmail = async ({ email, password }: SignInFormData) => {
   try {
-    const response = await auth.api.signInEmail({
+    await auth.api.signInEmail({
       body: {
         email,
         password,
       },
     });
 
-    return {
-      success: true,
-      data: response,
-    };
+    return true;
   } catch (error) {
     console.error('Sign in failed', error);
 
-    return {
-      success: false,
-      message: 'Sign in failed',
-    };
+    return false;
   }
 };
 

@@ -14,7 +14,7 @@ async function Layout({
   });
 
   if (!session?.user) {
-    redirect('sign-in');
+    redirect('/sign-in');
   }
 
   const user = {

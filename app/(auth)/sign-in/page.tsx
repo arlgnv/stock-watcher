@@ -25,18 +25,12 @@ function Page() {
 
   function handleSignIn(event: React.FormEvent<HTMLFormElement>) {
     void handleSubmit(async (data) => {
-      try {
-        const result = await signInWithEmail(data);
+      const isSuccess = await signInWithEmail(data);
 
-        if (result.success) {
-          router.push('/');
-        }
-      } catch (error) {
-        console.error(error);
-        toast.error('Sign in failed', {
-          description:
-            error instanceof Error ? error.message : 'Failed to sign in',
-        });
+      if (isSuccess) {
+        router.push('/');
+      } else {
+        toast.error('Sign in failed');
       }
     })(event);
   }

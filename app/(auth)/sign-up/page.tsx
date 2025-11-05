@@ -38,20 +38,12 @@ function Page() {
 
   function handleSignUp(event: React.FormEvent<HTMLFormElement>) {
     void handleSubmit(async (data) => {
-      try {
-        const result = await signUpWithEmail(data);
+      const isSuccess = await signUpWithEmail(data);
 
-        if (result.success) {
-          router.push('/');
-        }
-      } catch (error) {
-        console.error(error);
-        toast.error('Sign up failed', {
-          description:
-            error instanceof Error
-              ? error.message
-              : 'Failed to create an account',
-        });
+      if (isSuccess) {
+        router.push('/');
+      } else {
+        toast.error('Sign up failed');
       }
     })(event);
   }
