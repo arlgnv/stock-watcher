@@ -2,6 +2,7 @@
 
 import { LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -22,8 +23,13 @@ function UserDropdown({ user }: { user: User }) {
 
   function handleSignOut() {
     void (async () => {
-      await signOut();
-      router.push('/sign-in');
+      const isSuccess = await signOut();
+
+      if (isSuccess) {
+        router.push('/sign-in');
+      } else {
+        toast.error('Sign out failed');
+      }
     })();
   }
 

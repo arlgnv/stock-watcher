@@ -63,12 +63,11 @@ export const signInWithEmail = async ({ email, password }: SignInFormData) => {
 export const signOut = async () => {
   try {
     await auth.api.signOut({ headers: await headers() });
+
+    return true;
   } catch (error) {
     console.error('Sign out failed', error);
 
-    return {
-      success: false,
-      message: 'Sign out failed',
-    };
+    return false;
   }
 };
