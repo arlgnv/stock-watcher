@@ -29,7 +29,7 @@ async function connectToDatabase() {
   try {
     cached.conn = await cached.promise;
     console.log(
-      `Connected to database ${process.env.NODE_ENV} - ${process.env.MONGODB_URI}`,
+      `Connected to database successfully (environment: ${process.env.NODE_ENV})`,
     );
   } catch (error) {
     cached.promise = null;
