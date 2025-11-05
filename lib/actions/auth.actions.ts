@@ -15,7 +15,7 @@ export const signUpWithEmail = async ({
   preferredIndustry,
 }: SignUpFormData) => {
   try {
-    const response = await auth.api.signUpEmail({
+    await auth.api.signUpEmail({
       body: {
         email,
         password,
