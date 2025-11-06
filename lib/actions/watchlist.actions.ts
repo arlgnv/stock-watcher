@@ -14,13 +14,11 @@ export async function getWatchlistSymbolsByEmail(
     if (!db) throw new Error('MongoDB connection not found');
 
     // Better Auth stores users in the "user" collection
-    const user = await db
-      .collection<User>('user')
-      .findOne<{ _id?: unknown; id?: string; email?: string }>({ email });
+    const user = await db.collection<User>('user').findOne({ email });
 
     if (!user) return [];
 
-    const userId = user.id;
+    const userId = user.id || user._id.toString() || '';
     if (!userId) return [];
 
     const items = await Watchlist.find({ userId }, { symbol: 1 }).lean();
