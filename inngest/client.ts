@@ -13,6 +13,7 @@ type Events = {
       preferredIndustry: string;
     };
   };
+  'app/send.daily.news': object;
 };
 
 export const inngest = new Inngest({
