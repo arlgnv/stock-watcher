@@ -1,13 +1,31 @@
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+
+import auth from '@/auth';
 import Header from '@/components/Header';
 
-function Layout({
+async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
+    redirect('/sign-in');
+  }
+
+  const user = {
+    id: session.user.id,
+    name: session.user.name,
+    email: session.user.email,
+  };
+
   return (
     <main className="min-h-screen text-gray-400">
-      <Header />
+      <Header user={user} />
       <div className="wrapper py-10">{children}</div>
     </main>
   );

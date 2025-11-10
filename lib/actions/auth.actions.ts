@@ -1,0 +1,77 @@
+'use server';
+
+import { headers } from 'next/headers';
+
+import auth from '@/auth';
+import { inngest } from '@/inngest/client';
+
+export const signUpWithEmail = async ({
+  email,
+  password,
+  fullName,
+  country,
+  investmentGoals,
+  riskTolerance,
+  preferredIndustry,
+}: SignUpFormData) => {
+  try {
+    await auth.api.signUpEmail({
+      body: {
+        email,
+        password,
+        name: fullName,
+      },
+    });
+
+    try {
+      await inngest.send({
+        name: 'app/user.created',
+        data: {
+          email,
+          name: fullName,
+          country,
+          investmentGoals,
+          riskTolerance,
+          preferredIndustry,
+        },
+      });
+    } catch (error) {
+      console.error('Sending app/user.created inngest event failed', error);
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Sign up failed', error);
+
+    return false;
+  }
+};
+
+export const signInWithEmail = async ({ email, password }: SignInFormData) => {
+  try {
+    await auth.api.signInEmail({
+      body: {
+        email,
+        password,
+      },
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Sign in failed', error);
+
+    return false;
+  }
+};
+
+export const signOut = async () => {
+  try {
+    await auth.api.signOut({ headers: await headers() });
+
+    return true;
+  } catch (error) {
+    console.error('Sign out failed', error);
+
+    return false;
+  }
+};

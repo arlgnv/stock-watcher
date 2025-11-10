@@ -1,6 +1,8 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import {
   INVESTMENT_GOALS,
@@ -12,8 +14,10 @@ import FooterLink from '@/components/FooterLink';
 import InputField from '@/components/InputField';
 import SelectField from '@/components/SelectField';
 import { Button } from '@/components/ui/button';
+import { signUpWithEmail } from '@/lib/actions/auth.actions';
 
 function Page() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -32,18 +36,22 @@ function Page() {
     },
   });
 
-  function onSubmit(data: SignUpFormData) {
-    try {
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
+  function handleSignUp(event: React.FormEvent<HTMLFormElement>) {
+    void handleSubmit(async (data) => {
+      const isSuccess = await signUpWithEmail(data);
+
+      if (isSuccess) {
+        router.push('/');
+      } else {
+        toast.error('Sign up failed');
+      }
+    })(event);
   }
 
   return (
     <>
       <h1 className="form-title">Sign Up & Personalize</h1>
-      <form className="space-y-5" onSubmit={void handleSubmit(onSubmit)}>
+      <form className="space-y-5" onSubmit={handleSignUp}>
         <InputField
           name="fullName"
           label="Full Name"

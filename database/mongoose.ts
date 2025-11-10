@@ -11,18 +11,12 @@ declare global {
 
 let cached = global.mongooseCache;
 
-cached ??= global.mongooseCache = { conn: null, promise: null };
-
 async function connectToDatabase() {
-  if (!cached) {
-    return;
+  if (!process.env.MONGODB_URI) {
+    throw new Error('Please define the MONGODB_URI environment variable');
   }
 
-  if (!process.env.MONGODB_URI) {
-    throw new Error(
-      'Please define the MONGODB_URI environment variable inside .env',
-    );
-  }
+  cached ??= global.mongooseCache = { promise: null, conn: null };
 
   if (cached.conn) {
     return cached.conn;
@@ -34,15 +28,14 @@ async function connectToDatabase() {
 
   try {
     cached.conn = await cached.promise;
+    console.log(
+      `Connected to database successfully (environment: ${process.env.NODE_ENV})`,
+    );
   } catch (error) {
     cached.promise = null;
 
     throw error;
   }
-
-  console.log(
-    `Connected to database ${process.env.NODE_ENV} ${process.env.MONGODB_URI}`,
-  );
 
   return cached.conn;
 }

@@ -1,6 +1,8 @@
 'use client';
 
 import { LogOut } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -11,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { signOut } from '@/lib/actions/auth.actions';
 
 import NavItems from './NavItems';
 import { Button } from './ui/button';
@@ -36,7 +39,6 @@ function UserDropdown({
     })();
   }
 
-function UserDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -75,7 +77,10 @@ function UserDropdown() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-gray-600" />
-        <DropdownMenuItem className="text-md cursor-pointer font-medium text-gray-100 transition-colors focus:bg-transparent focus:text-yellow-500">
+        <DropdownMenuItem
+          className="text-md cursor-pointer font-medium text-gray-100 transition-colors focus:bg-transparent focus:text-yellow-500"
+          onClick={handleSignOut}
+        >
           <LogOut className="mr-2 hidden size-4 sm:block" />
           Logout
         </DropdownMenuItem>
