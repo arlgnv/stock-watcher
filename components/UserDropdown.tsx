@@ -15,7 +15,26 @@ import {
 import NavItems from './NavItems';
 import { Button } from './ui/button';
 
-const user = { name: 'Artem', email: 'email@email.com' };
+function UserDropdown({
+  user,
+  initialStocks,
+}: {
+  user: User;
+  initialStocks: StockWithWatchlistStatus[];
+}) {
+  const router = useRouter();
+
+  function handleSignOut() {
+    void (async () => {
+      const isSuccess = await signOut();
+
+      if (isSuccess) {
+        router.push('/sign-in');
+      } else {
+        toast.error('Sign out failed');
+      }
+    })();
+  }
 
 function UserDropdown() {
   return (
@@ -62,7 +81,7 @@ function UserDropdown() {
         </DropdownMenuItem>
         <DropdownMenuSeparator className="block bg-gray-600 sm:hidden" />
         <nav className="sm:hidden">
-          <NavItems />
+          <NavItems initialStocks={initialStocks} />
         </nav>
       </DropdownMenuContent>
     </DropdownMenu>
