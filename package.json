@@ -15,7 +15,8 @@
     "eslint:fix": "eslint . --fix",
     "typescript:check": "tsc --noEmit",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "prepare": "husky"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "1.1.10",
@@ -56,6 +57,8 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "9.38.0",
     "eslint-plugin-perfectionist": "4.15.1",
+    "husky": "9.1.7",
+    "lint-staged": "16.2.6",
     "prettier": "3.6.2",
     "prettier-plugin-tailwindcss": "0.7.1",
     "tailwindcss": "4.1.16",

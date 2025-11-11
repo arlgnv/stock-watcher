@@ -14,7 +14,7 @@ const config = defineConfig([
   },
   {
     name: 'js',
-    files: ['**/*.{mjs,ts,tsx}'],
+    files: ['**/*.{mjs,ts,mts,tsx}'],
     plugins: {
       js,
     },
@@ -27,7 +27,7 @@ const config = defineConfig([
   },
   {
     name: 'perfectionist',
-    files: ['**/*.{mjs,ts,tsx}'],
+    files: ['**/*.{mjs,ts,mts,tsx}'],
     plugins: {
       perfectionist,
     },
@@ -61,7 +61,7 @@ const config = defineConfig([
   },
   {
     name: 'typescript',
-    files: ['**/*.{ts,tsx}'],
+    files: ['**/*.{ts,mts,tsx}'],
     extends: [
       typescript.configs.strictTypeChecked,
       typescript.configs.stylisticTypeChecked,
