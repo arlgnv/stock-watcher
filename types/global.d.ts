@@ -57,7 +57,6 @@ declare global {
 
   interface WatchlistButtonProps {
     symbol: string;
-    company: string;
     isInWatchlist: boolean;
     showTrashIcon?: boolean;
     type?: 'button' | 'icon';

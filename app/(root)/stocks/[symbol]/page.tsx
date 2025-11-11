@@ -41,7 +41,6 @@ async function Page({ params }: StockDetailsPageProps) {
           <div className="flex items-center justify-between">
             <WatchlistButton
               symbol={symbol.toUpperCase()}
-              company={symbol.toUpperCase()}
               isInWatchlist={false}
             />
           </div>
