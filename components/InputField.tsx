@@ -1,9 +1,9 @@
-import {
-  type UseFormRegister,
-  type RegisterOptions,
-  type FieldError,
-  type FieldValues as ReactHookFormFieldValues,
-  type Path,
+import type {
+  UseFormRegister,
+  RegisterOptions,
+  FieldError,
+  FieldValues as ReactHookFormFieldValues,
+  Path,
 } from 'react-hook-form';
 import { twJoin } from 'tailwind-merge';
 

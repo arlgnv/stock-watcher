@@ -13,7 +13,6 @@
     "eslint:inspect-config": "eslint --inspect-config",
     "eslint:check": "eslint .",
     "eslint:fix": "eslint . --fix",
-    "typescript:check": "tsc --noEmit",
     "build": "next build",
     "start": "next start",
     "prepare": "husky"
