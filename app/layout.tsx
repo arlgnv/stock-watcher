@@ -17,9 +17,14 @@ const geistMono = Geist_Mono({
 });
 
 const metadata: Metadata = {
-  title: 'Signalist',
+  title: {
+    template: '%s · Signalist',
+    default: 'Signalist',
+  },
   description:
     'Track real-time stock prices, get personalized alerts, and explore detailed company insights.',
+  generator: 'Next.js',
+  applicationName: 'Signalist',
 };
 
 function Layout({ children }: LayoutProps<'/'>) {
