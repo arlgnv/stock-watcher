@@ -37,7 +37,7 @@ function Page() {
 
   return (
     <>
-      <h1 className="form-title">Sign In Your Account</h1>
+      <h1 className="form-title">Sign in to Signalist</h1>
       <form className="space-y-5" onSubmit={handleSignIn}>
         <InputField
           name="email"
@@ -77,7 +77,7 @@ function Page() {
         </Button>
         <FooterLink
           text="Don’t have an account?"
-          linkText="Sign Up"
+          linkText="Sign up"
           href="/sign-up"
         />
       </form>

@@ -50,7 +50,7 @@ function Page() {
 
   return (
     <>
-      <h1 className="form-title">Sign Up & Personalize</h1>
+      <h1 className="form-title">Sign up for Signalist</h1>
       <form className="space-y-5" onSubmit={handleSignUp}>
         <InputField
           name="fullName"
