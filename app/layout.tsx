@@ -1,20 +1,10 @@
+import { GeistSans } from 'geist/font/sans';
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
 import { twJoin } from 'tailwind-merge';
 
 import { Toaster } from '@/components/ui/sonner';
 
 import './globals.css';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
 
 const metadata: Metadata = {
   title: {
@@ -29,14 +19,11 @@ const metadata: Metadata = {
 
 function Layout({ children }: LayoutProps<'/'>) {
   return (
-    <html className="dark" lang="en">
-      <body
-        className={twJoin(
-          geistSans.variable,
-          geistMono.variable,
-          'antialiased',
-        )}
-      >
+    <html
+      className={twJoin(GeistSans.variable, 'dark font-geist antialiased')}
+      lang="en"
+    >
+      <body>
         {children}
         <Toaster />
       </body>
