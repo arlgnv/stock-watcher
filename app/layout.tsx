@@ -22,11 +22,7 @@ export const metadata: Metadata = {
     'Track real-time stock prices, get personalized alerts, and explore detailed company insights.',
 };
 
-function Layout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+function Layout({ children }: LayoutProps<'/'>) {
   return (
     <html className="dark" lang="en">
       <body
