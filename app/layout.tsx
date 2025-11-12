@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: 'Signalist',
   description:
     'Track real-time stock prices, get personalized alerts, and explore detailed company insights.',
@@ -39,4 +39,4 @@ function Layout({ children }: LayoutProps<'/'>) {
   );
 }
 
-export default Layout;
+export { Layout as default, metadata };
