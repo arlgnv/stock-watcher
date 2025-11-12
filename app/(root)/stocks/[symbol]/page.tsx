@@ -9,11 +9,7 @@ import {
 import TradingViewWidget from '@/components/TradingViewWidget';
 import WatchlistButton from '@/components/WatchlistButton';
 
-interface StockDetailsPageProps {
-  params: Promise<{ symbol: string }>;
-}
-
-async function Page({ params }: StockDetailsPageProps) {
+async function Page({ params }: PageProps<'/stocks/[symbol]'>) {
   const { symbol } = await params;
 
   return (
