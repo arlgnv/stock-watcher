@@ -15,11 +15,12 @@ async function getAuth() {
   const database = mongoose.connection.db;
 
   if (!database) {
-    throw new Error('Database connection is not established');
+    console.error('Database connection is not established');
+    // throw new Error('Database connection is not established');
   }
 
   const auth = betterAuth({
-    database: mongodbAdapter(database),
+    database: database ? mongodbAdapter(database) : undefined,
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: false,

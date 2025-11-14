@@ -1,3 +1,5 @@
+// @ts-check
+
 import react from '@eslint-react/eslint-plugin';
 import js from '@eslint/js';
 import next from '@next/eslint-plugin-next';
@@ -14,7 +16,7 @@ const config = defineConfig([
   },
   {
     name: 'js',
-    files: ['**/*.{mjs,ts,tsx}'],
+    files: ['**/*.{mjs,ts,mts,tsx}'],
     plugins: {
       js,
     },
@@ -27,7 +29,7 @@ const config = defineConfig([
   },
   {
     name: 'perfectionist',
-    files: ['**/*.{mjs,ts,tsx}'],
+    files: ['**/*.{mjs,ts,mts,tsx}'],
     plugins: {
       perfectionist,
     },
@@ -61,7 +63,7 @@ const config = defineConfig([
   },
   {
     name: 'typescript',
-    files: ['**/*.{ts,tsx}'],
+    files: ['**/*.{ts,mts,tsx}'],
     extends: [
       typescript.configs.strictTypeChecked,
       typescript.configs.stylisticTypeChecked,
@@ -70,6 +72,15 @@ const config = defineConfig([
       parserOptions: {
         projectService: true,
       },
+    },
+    rules: {
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        {
+          fixStyle: 'inline-type-imports',
+        },
+      ],
+      '@typescript-eslint/no-import-type-side-effects': 'error',
     },
   },
 ]);

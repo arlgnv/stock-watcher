@@ -5,11 +5,7 @@ import { redirect } from 'next/navigation';
 
 import auth from '@/auth';
 
-async function Layout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+async function Layout({ children }: LayoutProps<'/'>) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });

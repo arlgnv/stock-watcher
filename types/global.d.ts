@@ -49,12 +49,6 @@ declare global {
     result: FinnhubSearchResult[];
   }
 
-  interface StockDetailsPageProps {
-    params: Promise<{
-      symbol: string;
-    }>;
-  }
-
   interface WatchlistButtonProps {
     symbol: string;
     isInWatchlist: boolean;

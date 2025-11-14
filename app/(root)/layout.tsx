@@ -4,11 +4,7 @@ import { redirect } from 'next/navigation';
 import auth from '@/auth';
 import Header from '@/components/Header';
 
-async function Layout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+async function Layout({ children }: LayoutProps<'/'>) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });

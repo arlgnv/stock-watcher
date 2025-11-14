@@ -9,7 +9,7 @@ const FINNHUB_BASE_URL = 'https://finnhub.io/api/v1';
 const NEXT_PUBLIC_FINNHUB_API_KEY =
   process.env.NEXT_PUBLIC_FINNHUB_API_KEY ?? '';
 
-async function fetchJSON<T>(
+export async function fetchJSON<T>(
   url: string,
   revalidateSeconds?: number,
 ): Promise<T> {
@@ -25,8 +25,6 @@ async function fetchJSON<T>(
   }
   return (await res.json()) as T;
 }
-
-export { fetchJSON };
 
 export async function getNews(
   symbols?: string[],
