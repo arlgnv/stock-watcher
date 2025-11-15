@@ -30,8 +30,8 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# local env file
-.env.local
+# env file
+.env
 
 # vercel
 .vercel

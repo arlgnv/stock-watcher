@@ -1,22 +1,20 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import {
-  INVESTMENT_GOALS,
+  INVESTMENT_GOAL,
   PREFERRED_INDUSTRIES,
   RISK_TOLERANCE_OPTIONS,
 } from '@/app/_shared/constants';
+import authClient from '@/auth-client';
 import CountrySelectField from '@/components/CountrySelectField';
 import InputField from '@/components/InputField';
 import SelectField from '@/components/SelectField';
 import { Button } from '@/components/ui/button';
-import { signUpWithEmail } from '@/lib/actions/auth.actions';
 
 function Form() {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -29,22 +27,59 @@ function Form() {
       email: '',
       password: '',
       country: 'US',
-      investmentGoals: 'Growth',
+      investmentGoal: 'Growth',
       riskTolerance: 'Medium',
       preferredIndustry: 'Technology',
     },
   });
 
   function handleSignUp(event: React.FormEvent<HTMLFormElement>) {
-    void handleSubmit(async (data) => {
-      const isSuccess = await signUpWithEmail(data);
+    void handleSubmit(
+      async ({
+        fullName,
+        email,
+        password,
+        country,
+        investmentGoal,
+        riskTolerance,
+        preferredIndustry,
+      }) => {
+        const signUpResponse = await authClient.signUp.email({
+          name: fullName,
+          email,
+          password,
+          country,
+          investment_goal: investmentGoal,
+          risk_tolerance: riskTolerance,
+          preferred_industry: preferredIndustry,
+          callbackURL: '/',
+        });
 
-      if (isSuccess) {
-        router.push('/');
-      } else {
-        toast.error('Sign up failed');
-      }
-    })(event);
+        if (signUpResponse.data) {
+          toast.success('User has been created');
+
+          // try {
+          //       await inngest.send({
+          //         name: 'app/user.created',
+          //         data: {
+          //           email,
+          //           name: fullName,
+          //           country,
+          //           investmentGoal,
+          //           riskTolerance,
+          //           preferredIndustry,
+          //         },
+          //       });
+          //     } catch (error) {
+          //       console.error('Sending app/user.created inngest event failed', error);
+          //     }
+        }
+
+        if (signUpResponse.error) {
+          toast.error(signUpResponse.error.message ?? 'Sign up failed');
+        }
+      },
+    )(event);
   }
 
   return (
@@ -94,11 +129,11 @@ function Form() {
         }}
       />
       <SelectField
-        label="Investment Goals"
-        name="investmentGoals"
-        options={INVESTMENT_GOALS}
+        label="Investment Goal"
+        name="investmentGoal"
+        options={INVESTMENT_GOAL}
         control={control}
-        error={errors.investmentGoals}
+        error={errors.investmentGoal}
         required
       />
       <SelectField
