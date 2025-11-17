@@ -9,7 +9,7 @@ declare global {
     email: string;
     password: string;
     country: string;
-    investmentGoals: string;
+    investmentGoal: string;
     riskTolerance: string;
     preferredIndustry: string;
   }

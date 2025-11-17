@@ -5,7 +5,7 @@ export const NAVIGATION_LINKS = [
 ];
 
 // Sign-up form select options
-export const INVESTMENT_GOALS = [
+export const INVESTMENT_GOAL = [
   { value: 'Growth', label: 'Growth' },
   { value: 'Income', label: 'Income' },
   { value: 'Balanced', label: 'Balanced' },

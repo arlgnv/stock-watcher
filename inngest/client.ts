@@ -8,7 +8,7 @@ type Events = {
       email: string;
       name: string;
       country: string;
-      investmentGoals: string;
+      investmentGoal: string;
       riskTolerance: string;
       preferredIndustry: string;
     };

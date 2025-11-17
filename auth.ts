@@ -1,36 +1,77 @@
 import { betterAuth } from 'better-auth';
-import { mongodbAdapter } from 'better-auth/adapters/mongodb';
-import { nextCookies } from 'better-auth/next-js';
+import { Pool } from 'pg';
 
-import connectToDatabase from '@/database/mongoose';
-
-const authInstance: ReturnType<typeof betterAuth> | null = null;
-
-async function getAuth() {
-  if (authInstance) {
-    return authInstance;
-  }
-
-  const mongoose = await connectToDatabase();
-  const database = mongoose.connection.db;
-
-  if (!database) {
-    console.error('Database connection is not established');
-    // throw new Error('Database connection is not established');
-  }
-
-  const auth = betterAuth({
-    database: database ? mongodbAdapter(database) : undefined,
-    emailAndPassword: {
-      enabled: true,
-      requireEmailVerification: false,
-    },
-    plugins: [nextCookies()],
-  });
-
-  return auth;
+if (!process.env.SUPABASE_CONNECTION_STRING) {
+  throw new Error(
+    'SUPABASE_CONNECTION_STRING environment variable is not defined',
+  );
 }
 
-const auth = await getAuth();
+const auth = betterAuth({
+  appName: 'Signalist',
+  database: new Pool({
+    connectionString: process.env.SUPABASE_CONNECTION_STRING,
+  }),
+  user: {
+    modelName: 'users',
+    fields: {
+      name: 'full_name',
+      emailVerified: 'email_verified',
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
+    additionalFields: {
+      country: {
+        type: 'string',
+      },
+      investment_goal: {
+        type: 'string',
+      },
+      risk_tolerance: {
+        type: 'string',
+      },
+      preferred_industry: {
+        type: 'string',
+      },
+    },
+  },
+  session: {
+    modelName: 'sessions',
+    fields: {
+      userId: 'user_id',
+      expiresAt: 'expires_at',
+      ipAddress: 'ip_address',
+      userAgent: 'user_agent',
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
+  },
+  account: {
+    modelName: 'accounts',
+    fields: {
+      userId: 'user_id',
+      accountId: 'account_id',
+      providerId: 'provider_id',
+      accessToken: 'access_token',
+      refreshToken: 'refresh_token',
+      accessTokenExpiresAt: 'access_token_expires_at',
+      refreshTokenExpiresAt: 'refresh_token_expires_at',
+      idToken: 'id_token',
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
+  },
+  verification: {
+    modelName: 'verifications',
+    fields: {
+      expiresAt: 'expires_at',
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
+  },
+  emailAndPassword: {
+    enabled: true,
+  },
+});
 
 export default auth;
