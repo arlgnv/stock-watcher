@@ -101,7 +101,10 @@ function Form() {
         register={register}
         registerOptions={{
           required: 'Full name is required',
-          minLength: 2,
+          minLength: {
+            value: 2,
+            message: 'Full name must be at least 2 characters',
+          },
         }}
         error={errors.fullName}
       />
