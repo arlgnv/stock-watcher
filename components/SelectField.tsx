@@ -20,11 +20,11 @@ import { Label } from './ui/label';
 interface Props<FieldValues extends ReactHookFormFieldValues> {
   label: string;
   name: Path<FieldValues>;
+  control: Control<FieldValues>;
   options: {
     value: string;
     label: string;
   }[];
-  control: Control<FieldValues>;
   error: FieldError | undefined;
   required?: boolean;
 }
@@ -46,9 +46,7 @@ function SelectField<FieldValues extends ReactHookFormFieldValues>({
         name={name}
         control={control}
         rules={{
-          required: required
-            ? `Please select ${label.toLocaleLowerCase()}`
-            : false,
+          required: required ? `${label} is required` : false,
         }}
         render={({ field }) => (
           <Select value={field.value} onValueChange={field.onChange}>

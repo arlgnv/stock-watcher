@@ -1,19 +1,4 @@
 declare global {
-  interface SignInFormData {
-    email: string;
-    password: string;
-  }
-
-  interface SignUpFormData {
-    fullName: string;
-    email: string;
-    password: string;
-    country: string;
-    investmentGoal: string;
-    riskTolerance: string;
-    preferredIndustry: string;
-  }
-
   interface SearchCommandProps {
     renderAs?: 'button' | 'text';
     label?: string;

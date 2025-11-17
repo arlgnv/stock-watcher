@@ -13,15 +13,25 @@ import CountrySelectField from '@/components/CountrySelectField';
 import InputField from '@/components/InputField';
 import SelectField from '@/components/SelectField';
 import { Button } from '@/components/ui/button';
+import { EMAIL_REGULAR_EXPRESSION } from '@/constants';
+
+interface FieldValues {
+  fullName: string;
+  email: string;
+  password: string;
+  country: string;
+  investmentGoal: string;
+  riskTolerance: string;
+  preferredIndustry: string;
+}
 
 function Form() {
   const {
     register,
-    handleSubmit,
-    control,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpFormData>({
-    mode: 'onBlur',
+    control,
+    handleSubmit: rhfHandleSubmit,
+  } = useForm<FieldValues>({
     defaultValues: {
       fullName: '',
       email: '',
@@ -33,78 +43,81 @@ function Form() {
     },
   });
 
-  function handleSignUp(event: React.FormEvent<HTMLFormElement>) {
-    void handleSubmit(
-      async ({
-        fullName,
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSignUp({
+      fullName,
+      email,
+      password,
+      country,
+      investmentGoal,
+      riskTolerance,
+      preferredIndustry,
+    }: FieldValues) {
+      const signUpResponse = await authClient.signUp.email({
+        name: fullName,
         email,
         password,
         country,
-        investmentGoal,
-        riskTolerance,
-        preferredIndustry,
-      }) => {
-        const signUpResponse = await authClient.signUp.email({
-          name: fullName,
-          email,
-          password,
-          country,
-          investment_goal: investmentGoal,
-          risk_tolerance: riskTolerance,
-          preferred_industry: preferredIndustry,
-          callbackURL: '/',
-        });
+        investment_goal: investmentGoal,
+        risk_tolerance: riskTolerance,
+        preferred_industry: preferredIndustry,
+        callbackURL: '/',
+      });
 
-        if (signUpResponse.data) {
-          toast.success('User has been created');
+      if (signUpResponse.data) {
+        toast.success('User has been created');
 
-          // try {
-          //       await inngest.send({
-          //         name: 'app/user.created',
-          //         data: {
-          //           email,
-          //           name: fullName,
-          //           country,
-          //           investmentGoal,
-          //           riskTolerance,
-          //           preferredIndustry,
-          //         },
-          //       });
-          //     } catch (error) {
-          //       console.error('Sending app/user.created inngest event failed', error);
-          //     }
-        }
+        // try {
+        //       await inngest.send({
+        //         name: 'app/user.created',
+        //         data: {
+        //           email,
+        //           name: fullName,
+        //           country,
+        //           investmentGoal,
+        //           riskTolerance,
+        //           preferredIndustry,
+        //         },
+        //       });
+        //     } catch (error) {
+        //       console.error('Sending app/user.created inngest event failed', error);
+        //     }
+      }
 
-        if (signUpResponse.error) {
-          toast.error(signUpResponse.error.message ?? 'Sign up failed');
-        }
-      },
-    )(event);
+      if (signUpResponse.error) {
+        toast.error(signUpResponse.error.message ?? 'Sign up failed');
+      }
+    }
+
+    void rhfHandleSubmit(handleSignUp)(event);
   }
 
   return (
-    <form className="space-y-5" onSubmit={handleSignUp}>
+    <form className="space-y-5" onSubmit={handleSubmit}>
       <InputField
-        name="fullName"
-        label="Full Name"
+        label="Full name"
         placeholder="Elon Musk"
+        name="fullName"
         register={register}
+        registerOptions={{
+          required: 'Full name is required',
+          minLength: 2,
+        }}
         error={errors.fullName}
-        validation={{ required: 'Full name is required', minLength: 2 }}
       />
       <InputField
-        name="email"
         label="Email"
         placeholder="contact@emusk.dev"
+        name="email"
         register={register}
-        error={errors.email}
-        validation={{
+        registerOptions={{
           required: 'Email is required',
           pattern: {
-            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: 'Please enter a valid email address',
+            value: EMAIL_REGULAR_EXPRESSION,
+            message: 'Email is invalid',
           },
         }}
+        error={errors.email}
       />
       <CountrySelectField
         label="Country"
@@ -115,40 +128,40 @@ function Form() {
       />
       <InputField
         label="Password"
+        placeholder="*****"
         name="password"
         type="password"
-        placeholder="Enter your password"
         register={register}
-        error={errors.password}
-        validation={{
+        registerOptions={{
           required: 'Password is required',
           minLength: {
             value: 8,
             message: 'Password must be at least 8 characters',
           },
         }}
+        error={errors.password}
       />
       <SelectField
-        label="Investment Goal"
+        label="Investment goal"
         name="investmentGoal"
-        options={INVESTMENT_GOAL}
         control={control}
+        options={INVESTMENT_GOAL}
         error={errors.investmentGoal}
         required
       />
       <SelectField
-        label="Risk Tolerance"
+        label="Risk tolerance"
         name="riskTolerance"
-        options={RISK_TOLERANCE_OPTIONS}
         control={control}
+        options={RISK_TOLERANCE_OPTIONS}
         error={errors.riskTolerance}
         required
       />
       <SelectField
-        label="Preferred Industry"
+        label="Preferred industry"
         name="preferredIndustry"
-        options={PREFERRED_INDUSTRIES}
         control={control}
+        options={PREFERRED_INDUSTRIES}
         error={errors.preferredIndustry}
         required
       />
