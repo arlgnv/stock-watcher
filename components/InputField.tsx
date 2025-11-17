@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import type {
   UseFormRegister,
   RegisterOptions,
@@ -11,41 +12,41 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 
 interface Props<FieldValues extends ReactHookFormFieldValues> {
-  name: Path<FieldValues>;
   label: string;
   placeholder: string;
+  name: Path<FieldValues>;
   type?: string;
   register: UseFormRegister<FieldValues>;
+  registerOptions?: RegisterOptions<FieldValues>;
   error: FieldError | undefined;
-  validation?: RegisterOptions<FieldValues>;
-  disabled?: boolean;
 }
 
 function InputField<FieldValues extends ReactHookFormFieldValues>({
-  name,
   label,
   placeholder,
+  name,
   type = 'text',
   register,
+  registerOptions,
   error,
-  validation,
-  disabled,
 }: Props<FieldValues>) {
+  const id = useId();
+
   return (
     <div className="space-y-2">
-      <Label className="form-label" htmlFor={name}>
+      <Label className="form-label" htmlFor={id}>
         {label}
       </Label>
       <Input
         className={twJoin(
           'form-input',
-          disabled && 'cursor-not-allowed opacity-50',
+          registerOptions?.disabled && 'cursor-not-allowed opacity-50',
         )}
-        id={name}
+        id={id}
         type={type}
         placeholder={placeholder}
-        disabled={disabled}
-        {...register(name, validation)}
+        aria-invalid={error ? 'true' : 'false'}
+        {...register(name, registerOptions)}
       />
       {error && <p className="text-sm text-red-500">{error.message}</p>}
     </div>

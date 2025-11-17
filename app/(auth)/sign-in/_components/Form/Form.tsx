@@ -6,24 +6,29 @@ import { toast } from 'sonner';
 
 import InputField from '@/components/InputField';
 import { Button } from '@/components/ui/button';
+import { EMAIL_REGULAR_EXPRESSION } from '@/constants';
 import { signInWithEmail } from '@/lib/actions/auth.actions';
+
+interface FieldValues {
+  email: string;
+  password: string;
+}
 
 function Form() {
   const router = useRouter();
   const {
     register,
-    handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignInFormData>({
-    mode: 'onBlur',
+    handleSubmit: rhfHandleSubmit,
+  } = useForm<FieldValues>({
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  function handleSignIn(event: React.FormEvent<HTMLFormElement>) {
-    void handleSubmit(async (data) => {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSignIn(data: FieldValues) {
       const isSuccess = await signInWithEmail(data);
 
       if (isSuccess) {
@@ -31,39 +36,41 @@ function Form() {
       } else {
         toast.error('Sign in failed');
       }
-    })(event);
+    }
+
+    void rhfHandleSubmit(handleSignIn)(event);
   }
 
   return (
-    <form className="space-y-5" onSubmit={handleSignIn}>
+    <form className="space-y-5" onSubmit={handleSubmit}>
       <InputField
-        name="email"
         label="Email"
         placeholder="contact@emusk.dev"
+        name="email"
         register={register}
-        error={errors.email}
-        validation={{
+        registerOptions={{
           required: 'Email is required',
           pattern: {
-            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: 'Please enter a valid email address',
+            value: EMAIL_REGULAR_EXPRESSION,
+            message: 'Email is invalid',
           },
         }}
+        error={errors.email}
       />
       <InputField
         label="Password"
+        placeholder="*****"
         name="password"
         type="password"
-        placeholder="Enter your password"
         register={register}
-        error={errors.password}
-        validation={{
+        registerOptions={{
           required: 'Password is required',
           minLength: {
             value: 8,
             message: 'Password must be at least 8 characters',
           },
         }}
+        error={errors.password}
       />
       <Button
         className="mt-5 yellow-btn w-full"
