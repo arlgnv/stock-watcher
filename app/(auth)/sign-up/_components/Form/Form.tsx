@@ -14,6 +14,7 @@ import InputField from '@/components/InputField';
 import SelectField from '@/components/SelectField';
 import { Button } from '@/components/ui/button';
 import { EMAIL_REGULAR_EXPRESSION } from '@/constants';
+import inngest from '@/inngest/client';
 
 interface FieldValues {
   fullName: string;
@@ -58,30 +59,33 @@ function Form() {
         email,
         password,
         country,
-        investment_goal: investmentGoal,
-        risk_tolerance: riskTolerance,
-        preferred_industry: preferredIndustry,
+        investmentGoal,
+        riskTolerance,
+        preferredIndustry,
         callbackURL: '/',
       });
 
       if (signUpResponse.data) {
         toast.success('User has been created');
 
-        // try {
-        //       await inngest.send({
-        //         name: 'app/user.created',
-        //         data: {
-        //           email,
-        //           name: fullName,
-        //           country,
-        //           investmentGoal,
-        //           riskTolerance,
-        //           preferredIndustry,
-        //         },
-        //       });
-        //     } catch (error) {
-        //       console.error('Sending app/user.created inngest event failed', error);
-        //     }
+        try {
+          await inngest.send({
+            name: 'app/user.signed_up',
+            data: {
+              fullName,
+              email,
+              country,
+              investmentGoal,
+              riskTolerance,
+              preferredIndustry,
+            },
+          });
+        } catch (error) {
+          console.error(
+            'Sending app/user.signed_up inngest event failed',
+            error,
+          );
+        }
       }
 
       if (signUpResponse.error) {

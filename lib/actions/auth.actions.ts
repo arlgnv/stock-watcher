@@ -4,7 +4,13 @@ import { headers } from 'next/headers';
 
 import auth from '@/auth';
 
-export const signInWithEmail = async ({ email, password }: SignInFormData) => {
+export const signInWithEmail = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
   try {
     await auth.api.signInEmail({
       body: {

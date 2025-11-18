@@ -1,15 +1,15 @@
-export const PERSONALIZED_WELCOME_EMAIL_PROMPT = `Generate highly personalized HTML content that will be inserted into an email template at the {{intro}} placeholder.
+export const CREATE_INTRO_FOR_WELCOME_EMAIL = `Generate highly personalized HTML content that will be inserted into an email template at the {{intro}} placeholder.
 
-User profile data:
-{{userProfile}}
+User data:
+{{userData}}
 
 PERSONALIZATION REQUIREMENTS:
 You MUST create content that is obviously tailored to THIS specific user by:
 
 IMPORTANT: Do NOT start the personalized content with "Welcome" since the email header already says "Welcome aboard {{name}}". Use alternative openings like "Thanks for joining", "Great to have you", "You're all set", "Perfect timing", etc.
 
-1. **Direct Reference to User Details**: Extract and use specific information from their profile:
-   - Their exact investment goals or objectives
+1. **Direct Reference to User Details**: Extract and use specific information from their data:
+   - Their exact investment goal or objectives
    - Their stated risk tolerance level
    - Their preferred sectors/industries mentioned
    - Their experience level or background

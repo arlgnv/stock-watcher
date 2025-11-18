@@ -1,4 +1,4 @@
-export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
+export const WELCOME_EMAIL = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -165,7 +165,7 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
 </body>
 </html>`;
 
-export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
+export const NEWS_SUMMARY_EMAIL = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -304,7 +304,7 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
 </body>
 </html>`;
 
-export const STOCK_ALERT_UPPER_EMAIL_TEMPLATE = `<!DOCTYPE html>
+export const STOCK_ALERT_UPPER_EMAIL = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -513,7 +513,7 @@ export const STOCK_ALERT_UPPER_EMAIL_TEMPLATE = `<!DOCTYPE html>
 </body>
 </html>`;
 
-export const STOCK_ALERT_LOWER_EMAIL_TEMPLATE = `<!DOCTYPE html>
+export const STOCK_ALERT_LOWER_EMAIL = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -722,7 +722,7 @@ export const STOCK_ALERT_LOWER_EMAIL_TEMPLATE = `<!DOCTYPE html>
 </body>
 </html>`;
 
-export const VOLUME_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
+export const VOLUME_ALERT_EMAIL = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -942,7 +942,7 @@ export const VOLUME_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
 </body>
 </html>`;
 
-export const INACTIVE_USER_REMINDER_EMAIL_TEMPLATE = `<!DOCTYPE html>
+export const INACTIVE_USER_REMINDER_EMAIL = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
