@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "next dev",
+    "inngest:dev": "npx inngest-cli@latest dev",
     "prettier:check": "prettier . --check --ignore-unknown",
     "prettier:fix": "prettier . --write --ignore-unknown",
     "eslint:inspect-config": "eslint --inspect-config",
