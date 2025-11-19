@@ -66,30 +66,26 @@ function Form() {
       });
 
       if (signUpResponse.data) {
-        toast.success('User has been created');
-
         try {
           await inngest.send({
-            name: 'app/user.signed_up',
+            name: 'api/user.signed_up',
             data: {
               fullName,
               email,
-              country,
               investmentGoal,
               riskTolerance,
               preferredIndustry,
             },
           });
         } catch (error) {
-          console.error(
-            'Sending app/user.signed_up inngest event failed',
-            error,
-          );
+          console.error(error);
         }
       }
 
       if (signUpResponse.error) {
-        toast.error(signUpResponse.error.message ?? 'Sign up failed');
+        toast.error(
+          signUpResponse.error.message ?? 'Oops! Something went wrong',
+        );
       }
     }
 

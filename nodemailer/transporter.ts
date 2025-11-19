@@ -1,16 +1,18 @@
 import nodemailer from 'nodemailer';
 
-if (!process.env.NODEMAILER_EMAIL || !process.env.NODEMAILER_PASSWORD) {
-  throw new Error(
-    'NODEMAILER_EMAIL and NODEMAILER_PASSWORD environment variables must be set',
-  );
+if (!process.env.GOOGLE_EMAIL) {
+  throw new Error('GOOGLE_EMAIL environment variable is not defined');
+}
+
+if (!process.env.GOOGLE_APP_PASSWORD) {
+  throw new Error('GOOGLE_APP_PASSWORD environment variable is not defined');
 }
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.NODEMAILER_EMAIL,
-    pass: process.env.NODEMAILER_PASSWORD,
+    user: process.env.GOOGLE_EMAIL,
+    pass: process.env.GOOGLE_APP_PASSWORD,
   },
 });
 

@@ -1,4 +1,4 @@
-export const CREATE_INTRO_FOR_WELCOME_EMAIL = `Generate highly personalized HTML content that will be inserted into an email template at the {{intro}} placeholder.
+export const INTRO_FOR_WELCOME_EMAIL = `Generate highly personalized HTML content that will be inserted into an email template at the {{intro}} placeholder.
 
 User data:
 {{userData}}
@@ -25,7 +25,7 @@ IMPORTANT: Do NOT start the personalized content with "Welcome" since the email 
    - Aggressive approach → Reference opportunities and growth potential
 
 3. **Personal Touch**: Make it feel like it was written specifically for them:
-   - Use their goals in your messaging
+   - Use their goal in your messaging
    - Reference their interests directly
    - Connect features to their specific needs
    - Make them feel understood and seen
