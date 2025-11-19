@@ -37,6 +37,9 @@ const auth = betterAuth({
         type: 'string',
       },
     },
+    deleteUser: {
+      enabled: true,
+    },
   },
   session: {
     modelName: 'sessions',
