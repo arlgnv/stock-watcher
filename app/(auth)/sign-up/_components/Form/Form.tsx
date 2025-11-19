@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -27,6 +28,7 @@ interface FieldValues {
 }
 
 function Form() {
+  const router = useRouter();
   const {
     register,
     formState: { errors, isSubmitting },
@@ -62,7 +64,11 @@ function Form() {
         investmentGoal,
         riskTolerance,
         preferredIndustry,
-        callbackURL: '/',
+        fetchOptions: {
+          onSuccess: () => {
+            router.push('/');
+          },
+        },
       });
 
       if (signUpResponse.data) {

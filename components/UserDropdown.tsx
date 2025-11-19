@@ -4,6 +4,7 @@ import { LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
+import authClient from '@/auth-client';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -13,7 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { signOut } from '@/lib/actions/auth.actions';
 
 import NavItems from './NavItems';
 import { Button } from './ui/button';
@@ -27,16 +27,43 @@ function UserDropdown({
 }) {
   const router = useRouter();
 
-  function handleSignOut() {
-    void (async () => {
-      const isSuccess = await signOut();
+  function handleDeleteUserButtonClick() {
+    async function handleUserDelete() {
+      const deleteUserResponse = await authClient.deleteUser({
+        fetchOptions: {
+          onSuccess: () => {
+            router.push('/sign-in');
+          },
+        },
+      });
 
-      if (isSuccess) {
-        router.push('/sign-in');
-      } else {
-        toast.error('Sign out failed');
+      if (deleteUserResponse.error) {
+        toast.error(
+          deleteUserResponse.error.message ?? 'Oops! Something went wrong',
+        );
       }
-    })();
+    }
+
+    void handleUserDelete();
+  }
+  function handleSignOutButtonClick() {
+    async function handleSignOut() {
+      const signOutResponse = await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            router.push('/sign-in');
+          },
+        },
+      });
+
+      if (signOutResponse.error) {
+        toast.error(
+          signOutResponse.error.message ?? 'Oops! Something went wrong',
+        );
+      }
+    }
+
+    void handleSignOut();
   }
 
   return (
@@ -79,10 +106,16 @@ function UserDropdown({
         <DropdownMenuSeparator className="bg-gray-600" />
         <DropdownMenuItem
           className="text-md cursor-pointer font-medium text-gray-100 transition-colors focus:bg-transparent focus:text-yellow-500"
-          onClick={handleSignOut}
+          onClick={handleDeleteUserButtonClick}
+        >
+          Delete me
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="text-md cursor-pointer font-medium text-gray-100 transition-colors focus:bg-transparent focus:text-yellow-500"
+          onClick={handleSignOutButtonClick}
         >
           <LogOut className="mr-2 hidden size-4 sm:block" />
-          Logout
+          Sign out
         </DropdownMenuItem>
         <DropdownMenuSeparator className="block bg-gray-600 sm:hidden" />
         <nav className="sm:hidden">
