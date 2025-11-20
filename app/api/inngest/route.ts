@@ -1,9 +1,9 @@
 import { serve } from 'inngest/next';
 
 import client from '@/inngest/client';
-import { sendWelcomeEmail, sendDailyNewsSummary } from '@/inngest/functions';
+import { sendWelcomeEmail, sendDailyMarketNews } from '@/inngest/functions';
 
 export const { GET, POST, PUT } = serve({
   client,
-  functions: [sendWelcomeEmail, sendDailyNewsSummary],
+  functions: [sendWelcomeEmail, sendDailyMarketNews],
 });

@@ -1,2 +1,2 @@
-export { default as sendDailyNewsSummary } from './sendDailyNewsSummary';
+export { default as sendDailyMarketNews } from './sendDailyMarketNews';
 export { default as sendWelcomeEmail } from './sendWelcomeEmail';
