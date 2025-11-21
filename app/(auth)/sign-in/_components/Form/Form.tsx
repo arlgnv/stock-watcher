@@ -1,13 +1,12 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
+import authClient from '@/auth-client';
 import InputField from '@/components/InputField';
 import { Button } from '@/components/ui/button';
 import { EMAIL_REGULAR_EXPRESSION } from '@/constants';
-import { signInWithEmail } from '@/lib/actions/auth.actions';
 
 interface FieldValues {
   email: string;
@@ -15,7 +14,6 @@ interface FieldValues {
 }
 
 function Form() {
-  const router = useRouter();
   const {
     register,
     formState: { errors, isSubmitting },
@@ -28,13 +26,17 @@ function Form() {
   });
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    async function handleSignIn(data: FieldValues) {
-      const isSuccess = await signInWithEmail(data);
+    async function handleSignIn({ email, password }: FieldValues) {
+      const signInResponse = await authClient.signIn.email({
+        email,
+        password,
+        callbackURL: '/',
+      });
 
-      if (isSuccess) {
-        router.push('/');
-      } else {
-        toast.error('Sign in failed');
+      if (signInResponse.error) {
+        toast.error(
+          signInResponse.error.message ?? 'Oops! Something went wrong',
+        );
       }
     }
 
