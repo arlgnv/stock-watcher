@@ -11,7 +11,10 @@ function creator(marketNews: MarketNews[]) {
   ).replace(
     '{{news}}',
     marketNews
-      .map(({ headline, summary }) => `<p>${headline}</p><p>${summary}</p>`)
+      .map(
+        ({ headline, summary }) =>
+          `<li><p>${headline}</p><p>${summary}</p></li>`,
+      )
       .join(''),
   );
 }

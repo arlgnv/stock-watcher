@@ -102,7 +102,9 @@ const TEMPLATE = `<!DOCTYPE html>
                 <p class="mobile-text dark-text-muted" style="margin: 0 0 30px 0; font-size: 14px; line-height: 1.4; color: #6b7280;">
                   {{date}}
                 </p>
-                {{news}}
+                <ul>
+                  {{news}}
+                </ul>
                 <div style="text-align: center; margin: 40px 0 0 0;">
                   <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
                     You're receiving this because you subscribed to Signalist news updates.
