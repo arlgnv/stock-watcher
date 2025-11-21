@@ -27,24 +27,21 @@ function UserDropdown({
 }) {
   const router = useRouter();
 
-  function handleDeleteUserButtonClick() {
-    async function handleUserDelete() {
-      const deleteUserResponse = await authClient.deleteUser({
+  function handleUserDelete() {
+    async function deleteUser() {
+      await authClient.deleteUser({
         fetchOptions: {
-          onSuccess: () => {
+          onSuccess() {
             router.push('/sign-in');
+          },
+          onError(error) {
+            toast.error(error.error.message);
           },
         },
       });
-
-      if (deleteUserResponse.error) {
-        toast.error(
-          deleteUserResponse.error.message ?? 'Oops! Something went wrong',
-        );
-      }
     }
 
-    void handleUserDelete();
+    void deleteUser();
   }
   function handleSignOutButtonClick() {
     async function handleSignOut() {
@@ -106,7 +103,7 @@ function UserDropdown({
         <DropdownMenuSeparator className="bg-gray-600" />
         <DropdownMenuItem
           className="text-md cursor-pointer font-medium text-gray-100 transition-colors focus:bg-transparent focus:text-yellow-500"
-          onClick={handleDeleteUserButtonClick}
+          onClick={handleUserDelete}
         >
           Delete me
         </DropdownMenuItem>
