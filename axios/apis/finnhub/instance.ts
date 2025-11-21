@@ -8,7 +8,7 @@ if (!process.env.FINNHUB_API_KEY) {
 
 const instance = axios.create({
   baseURL: 'https://finnhub.io/api/v1',
-  timeout: convertSecondsToMilliseconds(1),
+  timeout: convertSecondsToMilliseconds(5),
   headers: {
     'X-Finnhub-Token': process.env.FINNHUB_API_KEY,
   },
