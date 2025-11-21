@@ -12,7 +12,6 @@ import {
   CommandInput,
   CommandList,
 } from '@/components/ui/command';
-import { searchStocks } from '@/lib/actions/finnhub.actions';
 
 function SearchCommand({
   renderAs = 'button',
@@ -41,7 +40,7 @@ function SearchCommand({
     };
   }, []);
 
-  const handleSearch = async () => {
+  const handleSearch = () => {
     if (!isSearchMode) {
       setStocks(initialStocks);
       return;
@@ -49,8 +48,7 @@ function SearchCommand({
 
     setLoading(true);
     try {
-      const results = await searchStocks(searchTerm.trim());
-      setStocks(results);
+      setStocks([]);
     } catch {
       setStocks([]);
     } finally {

@@ -4,7 +4,7 @@ import type { MarketNews } from '@/axios/apis/finnhub/types';
 
 import TEMPLATE from './template';
 
-function generator(marketNews: MarketNews[]) {
+function creator(marketNews: MarketNews[]) {
   return TEMPLATE.replace(
     '{{date}}',
     dayjs().format('dddd, MMMM D, YYYY'),
@@ -16,4 +16,4 @@ function generator(marketNews: MarketNews[]) {
   );
 }
 
-export default generator;
+export default creator;

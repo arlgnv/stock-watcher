@@ -1,4 +1,4 @@
-import { WELCOME_EMAIL } from '@/nodemailer/templates';
+import { createWelcomeEmail } from '@/nodemailer/emailCreators';
 import nodemailer from '@/nodemailer/transporter';
 
 import client from '../client';
@@ -21,10 +21,10 @@ const sendWelcomeEmail = client.createFunction(
                   text: INTRO_FOR_WELCOME_EMAIL.replace(
                     '{{userData}}',
                     `
-                    - Investment goal: ${event.data.investmentGoal}
-                    - Risk tolerance: ${event.data.riskTolerance}
-                    - Preferred industry: ${event.data.preferredIndustry}
-                  `,
+                      - Investment goal: ${event.data.investmentGoal}
+                      - Risk tolerance: ${event.data.riskTolerance}
+                      - Preferred industry: ${event.data.preferredIndustry}
+                    `,
                   ),
                 },
               ],
@@ -47,10 +47,7 @@ const sendWelcomeEmail = client.createFunction(
       void nodemailer.sendMail({
         to: event.data.email,
         subject: 'Welcome to Signalist 🚀',
-        html: WELCOME_EMAIL.replace('{{name}}', event.data.fullName).replace(
-          '{{intro}}',
-          personalizedIntro,
-        ),
+        html: createWelcomeEmail(event.data.fullName, personalizedIntro),
       });
     });
   },

@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 import { finnhub } from '@/axios/apis';
 import type { MarketNews } from '@/axios/apis/finnhub/types';
-import { generateDailyMarketNewsEmail } from '@/nodemailer/emailGenerators';
+import { createDailyMarketNewsEmail } from '@/nodemailer/emailCreators';
 import nodemailer from '@/nodemailer/transporter';
 import supabase from '@/supabase/client';
 
@@ -29,7 +29,7 @@ const sendDailyMarketNews = client.createFunction(
             void nodemailer.sendMail({
               to: email,
               subject: `Today's market news summary - ${dayjs().format('dddd, MMMM D, YYYY')}`,
-              html: generateDailyMarketNewsEmail(marketNews.data),
+              html: createDailyMarketNewsEmail(marketNews.data),
             });
           });
         });
