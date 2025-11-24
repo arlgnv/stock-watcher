@@ -2,10 +2,10 @@ import finnhub from '@/finnhub/axiosInstance';
 import type { MarketNews } from '@/finnhub/types';
 import supabase from '@/supabase/client';
 
-import client from '../client';
+import inngest from '../client';
 import type { DailyMarketNewsPreparedEvent } from '../types';
 
-const prepareDailyMarketNews = client.createFunction(
+const prepareDailyMarketNews = inngest.createFunction(
   { id: 'prepare-daily-market-news' },
   [{ cron: '0 12 * * *' }],
   async ({ step }) => {

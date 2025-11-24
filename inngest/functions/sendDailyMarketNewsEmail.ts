@@ -3,9 +3,9 @@ import dayjs from 'dayjs';
 import { createDailyMarketNewsEmail } from '@/nodemailer/emailCreators';
 import nodemailer from '@/nodemailer/transporter';
 
-import client from '../client';
+import inngest from '../client';
 
-const sendDailyMarketNewsEmail = client.createFunction(
+const sendDailyMarketNewsEmail = inngest.createFunction(
   { id: 'send-daily-market-news-email' },
   [{ event: 'daily_market_news.prepared' }],
   async ({ step, event }) => {
