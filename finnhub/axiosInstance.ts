@@ -6,7 +6,7 @@ if (!process.env.FINNHUB_API_KEY) {
   throw new Error('FINNHUB_API_KEY environment variable is not defined');
 }
 
-const instance = axios.create({
+const api = axios.create({
   baseURL: 'https://finnhub.io/api/v1',
   timeout: convertSecondsToMilliseconds(5),
   headers: {
@@ -14,4 +14,4 @@ const instance = axios.create({
   },
 });
 
-export default instance;
+export default api;

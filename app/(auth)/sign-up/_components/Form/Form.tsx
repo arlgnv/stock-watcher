@@ -74,7 +74,7 @@ function Form() {
       if (signUpResponse.data) {
         try {
           await inngest.send({
-            name: 'api/user.signed_up',
+            name: 'user.signed_up',
             data: {
               fullName,
               email,

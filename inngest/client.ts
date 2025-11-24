@@ -1,22 +1,10 @@
-import { Inngest, EventSchemas } from 'inngest';
+import { Inngest, EventSchemas as InngestEventSchemas } from 'inngest';
 
-// The type argument of the 'fromRecord' method should be a type alias, not an interface.
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type Events = {
-  'api/user.signed_up': {
-    data: {
-      fullName: string;
-      email: string;
-      investmentGoal: string;
-      riskTolerance: string;
-      preferredIndustry: string;
-    };
-  };
-};
+import type { EventSchemas } from './types';
 
 const client = new Inngest({
   id: 'signalist',
-  schemas: new EventSchemas().fromRecord<Events>(),
+  schemas: new InngestEventSchemas().fromRecord<EventSchemas>(),
 });
 
 export default client;

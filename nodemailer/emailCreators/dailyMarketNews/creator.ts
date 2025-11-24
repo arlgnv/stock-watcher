@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import type { MarketNews } from '@/axios/apis/finnhub/types';
+import type { MarketNews } from '@/finnhub/types';
 
 import TEMPLATE from './template';
 

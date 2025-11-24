@@ -6,7 +6,7 @@ import { INTRO_FOR_WELCOME_EMAIL } from '../prompts';
 
 const sendWelcomeEmail = client.createFunction(
   { id: 'send-welcome-email' },
-  { event: 'api/user.signed_up' },
+  { event: 'user.signed_up' },
   async ({ event, step }) => {
     const generatePersonalizedIntroResponse = await step.ai.infer(
       'generate-personalized-intro',
