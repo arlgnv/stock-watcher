@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -14,6 +15,7 @@ import InputField from '@/components/InputField';
 import SelectField from '@/components/SelectField';
 import { Button } from '@/components/ui/button';
 import { EMAIL_REGULAR_EXPRESSION } from '@/constants';
+import inngest from '@/inngest/client';
 
 interface FieldValues {
   fullName: string;
@@ -26,6 +28,7 @@ interface FieldValues {
 }
 
 function Form() {
+  const router = useRouter();
   const {
     register,
     formState: { errors, isSubmitting },
@@ -58,34 +61,37 @@ function Form() {
         email,
         password,
         country,
-        investment_goal: investmentGoal,
-        risk_tolerance: riskTolerance,
-        preferred_industry: preferredIndustry,
-        callbackURL: '/',
+        investmentGoal,
+        riskTolerance,
+        preferredIndustry,
+        fetchOptions: {
+          onSuccess: () => {
+            router.push('/');
+          },
+        },
       });
 
       if (signUpResponse.data) {
-        toast.success('User has been created');
-
-        // try {
-        //       await inngest.send({
-        //         name: 'app/user.created',
-        //         data: {
-        //           email,
-        //           name: fullName,
-        //           country,
-        //           investmentGoal,
-        //           riskTolerance,
-        //           preferredIndustry,
-        //         },
-        //       });
-        //     } catch (error) {
-        //       console.error('Sending app/user.created inngest event failed', error);
-        //     }
+        try {
+          await inngest.send({
+            name: 'user.signed_up',
+            data: {
+              fullName,
+              email,
+              investmentGoal,
+              riskTolerance,
+              preferredIndustry,
+            },
+          });
+        } catch (error) {
+          console.error(error);
+        }
       }
 
       if (signUpResponse.error) {
-        toast.error(signUpResponse.error.message ?? 'Sign up failed');
+        toast.error(
+          signUpResponse.error.message ?? 'Oops! Something went wrong',
+        );
       }
     }
 

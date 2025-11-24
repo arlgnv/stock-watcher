@@ -1,11 +1,17 @@
 import { serve } from 'inngest/next';
 
-import { inngest } from '@/inngest/client';
-import { sendSignUpEmail, sendDailyNewsSummary } from '@/inngest/functions';
+import inngest from '@/inngest/client';
+import {
+  sendWelcomeEmail,
+  prepareDailyMarketNews,
+  sendDailyMarketNewsEmail,
+} from '@/inngest/functions';
 
-const { GET, POST, PUT } = serve({
+export const { GET, POST, PUT } = serve({
   client: inngest,
-  functions: [sendSignUpEmail, sendDailyNewsSummary],
+  functions: [
+    sendWelcomeEmail,
+    prepareDailyMarketNews,
+    sendDailyMarketNewsEmail,
+  ],
 });
-
-export { GET, POST, PUT };
