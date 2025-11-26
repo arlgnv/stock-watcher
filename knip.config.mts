@@ -1,6 +1,7 @@
 import type { KnipConfig } from 'knip';
 
 const config: KnipConfig = {
+  ignore: 'supabase/types.ts',
   next: {
     config: 'next.config.mts',
   },

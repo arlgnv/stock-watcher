@@ -15,7 +15,7 @@
     "lint:check": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
-    "declutter": "knip",
+    "declutter": "knip --config knip.config.mts",
     "build": "next build",
     "start": "next start",
     "prepare": "husky"
