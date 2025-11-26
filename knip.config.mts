@@ -1,12 +1,12 @@
 import type { KnipConfig } from 'knip';
 
 const config: KnipConfig = {
-  $schema: 'https://unpkg.com/knip@5/schema.json',
-  ignoreExportsUsedInFile: {
-    interface: true,
-    type: true,
+  next: {
+    config: 'next.config.mts',
   },
-  tags: ['-lintignore'],
+  'lint-staged': {
+    config: 'lint-staged.config.mts',
+  },
 };
 
 export default config;
