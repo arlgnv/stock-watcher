@@ -1,4 +1,4 @@
-import finnhub from '@/finnhub/axiosInstance';
+import finnhub from '@/finnhub/api';
 import type { MarketNews } from '@/finnhub/types';
 import supabase from '@/supabase/client';
 
