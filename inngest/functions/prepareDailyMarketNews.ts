@@ -31,7 +31,7 @@ const prepareDailyMarketNews = inngest.createFunction(
           }));
 
         await step.sendEvent(
-          'send-prepare-daily-market-news-events',
+          'send-daily-market-news-prepared-events',
           dailyMarketNewsPreparedEvents,
         );
       }
