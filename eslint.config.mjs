@@ -1,21 +1,27 @@
 // @ts-check
 
 import react from '@eslint-react/eslint-plugin';
+import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
 import next from '@next/eslint-plugin-next';
 import perfectionist from 'eslint-plugin-perfectionist';
 import { defineConfig, globalIgnores } from 'eslint/config';
+import path from 'node:path';
 import typescript from 'typescript-eslint';
 
 const config = defineConfig([
-  globalIgnores(['.next/', 'supabase/types.ts']),
+  globalIgnores(['supabase/types.ts'], 'Global ignores'),
+  includeIgnoreFile(
+    path.resolve(import.meta.dirname, '.gitignore'),
+    '.gitignore patterns',
+  ),
   {
-    name: 'react',
+    name: 'React',
     files: ['**/*.tsx'],
     extends: [react.configs['strict-type-checked']],
   },
   {
-    name: 'js',
+    name: 'JavaScript',
     files: ['**/*.{mjs,ts,mts,tsx}'],
     plugins: {
       js,
@@ -23,12 +29,12 @@ const config = defineConfig([
     extends: ['js/recommended'],
   },
   {
-    name: 'next',
+    name: 'Next.js',
     files: ['**/*.tsx'],
     extends: [next.configs['core-web-vitals']],
   },
   {
-    name: 'perfectionist',
+    name: 'Sorting',
     files: ['**/*.{mjs,ts,mts,tsx}'],
     plugins: {
       perfectionist,
@@ -62,7 +68,7 @@ const config = defineConfig([
     },
   },
   {
-    name: 'typescript',
+    name: 'TypeScript',
     files: ['**/*.{ts,mts,tsx}'],
     extends: [
       typescript.configs.strictTypeChecked,
