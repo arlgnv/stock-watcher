@@ -9,9 +9,8 @@ const prepareDailyMarketNews = inngest.createFunction(
   { id: 'prepare-daily-market-news' },
   [{ cron: '0 12 * * *' }],
   async ({ step }) => {
-    const marketNews = await step.run(
-      'fetch-market-news',
-      async () => await finnhub<MarketNews[]>('/news?category=general'),
+    const marketNews = await step.run('fetch-market-news', () =>
+      finnhub<MarketNews[]>('/news?category=general'),
     );
 
     if (marketNews.data.length) {
