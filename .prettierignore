@@ -1,3 +1,7 @@
+# See https://prettier.io/docs/ignore for more about ignoring files.
+
+# dependencies
 package-lock.json
 
+# Supabase
 supabase/types.ts
