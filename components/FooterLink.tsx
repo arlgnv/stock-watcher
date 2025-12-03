@@ -1,9 +1,10 @@
+import type { Route } from 'next';
 import Link from 'next/link';
 
 interface Props {
   text: string;
   linkText: string;
-  href: string;
+  href: Route;
 }
 
 function FooterLink({ text, linkText, href }: Props) {
