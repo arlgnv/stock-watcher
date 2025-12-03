@@ -9,11 +9,15 @@ const prepareDailyMarketNews = inngest.createFunction(
   { id: 'prepare-daily-market-news' },
   [{ cron: '0 12 * * *' }],
   async ({ step }) => {
-    const marketNews = await step.run('fetch-market-news', () =>
-      finnhub<MarketNews[]>('/news?category=general'),
-    );
+    const marketNews = await step.run('fetch-market-news', async () => {
+      const fetchMarketNewsResponse = await finnhub<MarketNews[]>(
+        '/news?category=general',
+      );
 
-    if (marketNews.data.length) {
+      return fetchMarketNewsResponse.data.slice(0, 5);
+    });
+
+    if (marketNews.length) {
       const users = await step.run(
         'fetch-users',
         async () => await supabase.from('users').select('email'),
@@ -25,7 +29,7 @@ const prepareDailyMarketNews = inngest.createFunction(
             name: 'daily_market_news.prepared',
             data: {
               userEmail: email,
-              marketNews: marketNews.data,
+              marketNews,
             },
           }));
 
