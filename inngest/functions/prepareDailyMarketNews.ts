@@ -1,4 +1,4 @@
-import finnhub from '@/finnhub/axiosInstance';
+import finnhub from '@/finnhub/api';
 import type { MarketNews } from '@/finnhub/types';
 import supabase from '@/supabase/client';
 
@@ -9,29 +9,37 @@ const prepareDailyMarketNews = inngest.createFunction(
   { id: 'prepare-daily-market-news' },
   [{ cron: '0 12 * * *' }],
   async ({ step }) => {
-    const users = await step.run(
-      'fetch-users',
-      async () => await supabase.from('users').select('email'),
-    );
-
-    if (users.data?.length) {
-      const marketNews = await step.run(
-        'fetch-market-news',
-        async () => await finnhub<MarketNews[]>('/news?category=general'),
+    const marketNews = await step.run('fetch-market-news', async () => {
+      const fetchMarketNewsResponse = await finnhub<MarketNews[]>(
+        '/news?category=general',
       );
 
-      if (marketNews.data.length) {
-        const dailyMarketNewsPreparedEvents: DailyMarketNewsPreparedEvent[] =
-          users.data.map(({ email }) => ({
+      return fetchMarketNewsResponse.data.slice(0, 5);
+    });
+
+    if (marketNews.length) {
+      const users = await step.run('fetch-users', async () => {
+        const fetchUsersResponse = await supabase.from('users').select('email');
+
+        if (fetchUsersResponse.error) {
+          throw fetchUsersResponse.error;
+        }
+
+        return fetchUsersResponse.data;
+      });
+
+      if (users.length) {
+        const dailyMarketNewsPreparedEvents =
+          users.map<DailyMarketNewsPreparedEvent>(({ email }) => ({
             name: 'daily_market_news.prepared',
             data: {
               userEmail: email,
-              marketNews: marketNews.data,
+              marketNews,
             },
           }));
 
         await step.sendEvent(
-          'send-prepare-daily-market-news-events',
+          'send-daily-market-news-prepared-events',
           dailyMarketNewsPreparedEvents,
         );
       }
