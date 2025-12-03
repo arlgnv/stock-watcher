@@ -1,8 +1,7 @@
 export const NAVIGATION_LINKS = [
   { href: '/', text: 'Dashboard' },
   { href: '/search', text: 'Search' },
-  // { href: '/watchlist', label: 'Watchlist' },
-];
+] as const;
 
 // Sign-up form select options
 export const INVESTMENT_GOAL = [

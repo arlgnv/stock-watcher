@@ -1,7 +1,9 @@
 import type { Configuration } from 'lint-staged';
 
 const config: Configuration = {
-  '*': ['prettier --check --ignore-unknown', 'eslint'],
+  '*': 'prettier --check --ignore-unknown',
+  '*.{mjs,ts,mts,tsx}': 'eslint --cache',
+  '*.{ts,mts,tsx}': () => 'tsc --noEmit',
 };
 
 export default config;
