@@ -13,7 +13,7 @@
 # testing
 /coverage
 
-# next.js
+# Next.js
 /.next/
 /out/
 
@@ -30,7 +30,7 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env file
+# Environment variables
 .env
 
 # Vercel
@@ -43,5 +43,5 @@ next-env.d.ts
 # VS Code
 /.vscode
 
-ESLint
+# ESLint
 .eslintcache
