@@ -43,8 +43,8 @@ next-env.d.ts
 # VS Code
 /.vscode
 
-# ESLint
-.eslintcache
-
 # Prettier
 .prettiercache
+
+# ESLint
+.eslintcache
