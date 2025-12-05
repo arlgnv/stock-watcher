@@ -1,5 +1,3 @@
-// @ts-check
-
 import react from '@eslint-react/eslint-plugin';
 import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
