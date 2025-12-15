@@ -1,16 +1,12 @@
 import { betterAuth } from 'better-auth';
 import { Pool } from 'pg';
 
-if (!process.env.SUPABASE_CONNECTION_STRING) {
-  throw new Error(
-    'SUPABASE_CONNECTION_STRING environment variable is not defined',
-  );
-}
+import environment from './environment';
 
 const auth = betterAuth({
   appName: 'Signalist',
   database: new Pool({
-    connectionString: process.env.SUPABASE_CONNECTION_STRING,
+    connectionString: environment.SUPABASE_CONNECTION_STRING,
   }),
   user: {
     modelName: 'users',
