@@ -1,1 +1,1 @@
-npx commitlint --edit --config commitlint.config.ts
+npx commitlint --edit && npx cspell --no-progress --no-summary $1
