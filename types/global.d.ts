@@ -52,7 +52,7 @@ declare global {
     marketCapitalization?: number;
   }
 
-  interface FinancialsData {
+  interface FinancialData {
     metric?: Record<string, number>;
   }
 
