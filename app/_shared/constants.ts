@@ -49,7 +49,7 @@ export const MARKET_OVERVIEW_WIDGET_CONFIG = {
         { s: 'NYSE:JPM', d: 'JPMorgan Chase' },
         { s: 'NYSE:WFC', d: 'Wells Fargo Co New' },
         { s: 'NYSE:BAC', d: 'Bank Amer Corp' },
-        { s: 'NYSE:HSBC', d: 'Hsbc Hldgs Plc' },
+        { s: 'NYSE:HSBC', d: 'Hsbc Holdings Plc' },
         { s: 'NYSE:C', d: 'Citigroup Inc' },
         { s: 'NYSE:MA', d: 'Mastercard Incorporated' },
       ],
@@ -69,7 +69,7 @@ export const MARKET_OVERVIEW_WIDGET_CONFIG = {
       title: 'Services',
       symbols: [
         { s: 'NASDAQ:AMZN', d: 'Amazon' },
-        { s: 'NYSE:BABA', d: 'Alibaba Group Hldg Ltd' },
+        { s: 'NYSE:BABA', d: 'Alibaba Group Holding Ltd' },
         { s: 'NYSE:T', d: 'At&t Inc' },
         { s: 'NYSE:WMT', d: 'Walmart' },
         { s: 'NYSE:V', d: 'Visa' },
@@ -130,7 +130,7 @@ export const MARKET_DATA_WIDGET_CONFIG = {
         { name: 'NYSE:JPM', displayName: 'JPMorgan Chase' },
         { name: 'NYSE:WFC', displayName: 'Wells Fargo Co New' },
         { name: 'NYSE:BAC', displayName: 'Bank Amer Corp' },
-        { name: 'NYSE:HSBC', displayName: 'Hsbc Hldgs Plc' },
+        { name: 'NYSE:HSBC', displayName: 'Hsbc Holdings Plc' },
         { name: 'NYSE:C', displayName: 'Citigroup Inc' },
         { name: 'NYSE:MA', displayName: 'Mastercard Incorporated' },
       ],
@@ -150,7 +150,7 @@ export const MARKET_DATA_WIDGET_CONFIG = {
       name: 'Services',
       symbols: [
         { name: 'NASDAQ:AMZN', displayName: 'Amazon' },
-        { name: 'NYSE:BABA', displayName: 'Alibaba Group Hldg Ltd' },
+        { name: 'NYSE:BABA', displayName: 'Alibaba Group Holding Ltd' },
         { name: 'NYSE:T', displayName: 'At&t Inc' },
         { name: 'NYSE:WMT', displayName: 'Walmart' },
         { name: 'NYSE:V', displayName: 'Visa' },
@@ -187,7 +187,6 @@ export const CANDLE_CHART_WIDGET_CONFIG = (symbol: string) => ({
   backgroundColor: '#141414',
   gridColor: '#141414',
   watchlist: [],
-  withdateranges: false,
   compareSymbols: [],
   studies: [],
   width: '100%',
@@ -213,7 +212,6 @@ export const BASELINE_WIDGET_CONFIG = (symbol: string) => ({
   backgroundColor: '#141414',
   gridColor: '#141414',
   watchlist: [],
-  withdateranges: false,
   compareSymbols: [],
   studies: [],
   width: '100%',
@@ -240,7 +238,7 @@ export const COMPANY_PROFILE_WIDGET_CONFIG = (symbol: string) => ({
   height: 440,
 });
 
-export const COMPANY_FINANCIALS_WIDGET_CONFIG = (symbol: string) => ({
+export const COMPANY_FINANCIAL_WIDGET_CONFIG = (symbol: string) => ({
   symbol: symbol.toUpperCase(),
   colorTheme: 'dark',
   isTransparent: 'true',

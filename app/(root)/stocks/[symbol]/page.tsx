@@ -4,7 +4,7 @@ import {
   BASELINE_WIDGET_CONFIG,
   TECHNICAL_ANALYSIS_WIDGET_CONFIG,
   COMPANY_PROFILE_WIDGET_CONFIG,
-  COMPANY_FINANCIALS_WIDGET_CONFIG,
+  COMPANY_FINANCIAL_WIDGET_CONFIG,
 } from '@/app/_shared/constants';
 import TradingViewWidget from '@/components/TradingViewWidget';
 import WatchlistButton from '@/components/WatchlistButton';
@@ -61,7 +61,7 @@ async function Page({ params }: PageProps<'/stocks/[symbol]'>) {
             scriptUrl={
               'https://s3.tradingview.com/external-embedding/embed-widget-financials.js'
             }
-            config={COMPANY_FINANCIALS_WIDGET_CONFIG(symbol)}
+            config={COMPANY_FINANCIAL_WIDGET_CONFIG(symbol)}
             height={464}
           />
         </div>
