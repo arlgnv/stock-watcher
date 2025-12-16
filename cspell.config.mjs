@@ -18,6 +18,7 @@ const config = defineConfig({
     'cmdk',
     'cellspacing',
     'Segoe',
+    'weburl',
   ],
   ignorePaths: ['supabase/types.ts'],
 });

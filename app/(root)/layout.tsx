@@ -2,7 +2,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import auth from '@/auth';
-import Header from '@/components/Header';
+import Header from '@/components/Header/Header';
 
 async function Layout({ children }: LayoutProps<'/'>) {
   const session = await auth.api.getSession({
@@ -13,15 +13,9 @@ async function Layout({ children }: LayoutProps<'/'>) {
     redirect('/sign-in');
   }
 
-  const user = {
-    id: session.user.id,
-    name: session.user.name,
-    email: session.user.email,
-  };
-
   return (
     <main className="min-h-screen text-gray-400">
-      <Header user={user} />
+      <Header user={session.user} />
       <div className="wrapper py-10">{children}</div>
     </main>
   );

@@ -6,13 +6,10 @@ import { twJoin } from 'tailwind-merge';
 
 import { NAVIGATION_LINKS } from '@/app/_shared/constants';
 
-import SearchCommand from './SearchCommand';
+import SearchCommand from '../SearchCommand/SearchCommand';
+import type { Props } from './types';
 
-function NavItems({
-  initialStocks,
-}: {
-  initialStocks: StockWithWatchlistStatus[];
-}) {
+function NavItems({ popularStocks }: Props) {
   const pathname = usePathname();
 
   return (
@@ -24,7 +21,7 @@ function NavItems({
               <SearchCommand
                 renderAs="text"
                 label="Search"
-                initialStocks={initialStocks}
+                popularStocks={popularStocks}
               />
             </li>
           );

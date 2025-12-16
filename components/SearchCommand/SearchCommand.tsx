@@ -13,15 +13,17 @@ import {
   CommandList,
 } from '@/components/ui/command';
 
+import type { Props } from './types';
+
 function SearchCommand({
   renderAs = 'button',
   label = 'Add stock',
-  initialStocks,
-}: SearchCommandProps) {
+  popularStocks,
+}: Props) {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
-  const [stocks, setStocks] = useState(initialStocks);
+  const [stocks, setStocks] = useState(popularStocks);
 
   const isSearchMode = !!searchTerm.trim();
   const displayStocks = isSearchMode ? stocks : stocks.slice(0, 10);
@@ -42,7 +44,7 @@ function SearchCommand({
 
   const handleSearch = () => {
     if (!isSearchMode) {
-      setStocks(initialStocks);
+      setStocks(popularStocks);
       return;
     }
 
@@ -65,7 +67,7 @@ function SearchCommand({
   const handleSelectStock = () => {
     setOpen(false);
     setSearchTerm('');
-    setStocks(initialStocks);
+    setStocks(popularStocks);
   };
 
   return (
@@ -119,17 +121,18 @@ function SearchCommand({
                 {` `}({displayStocks.length || 0})
               </div>
               {displayStocks.map((stock) => (
-                <li className="search-item" key={stock.symbol}>
+                <li className="search-item" key={stock.ticker}>
                   <Link
                     className="search-item-link"
-                    href={`/stocks/${stock.symbol}`}
+                    href={`/stocks/${stock.ticker}`}
                     onClick={handleSelectStock}
                   >
                     <TrendingUp className="h-4 w-4 text-gray-500" />
                     <div className="flex-1">
                       <div className="search-item-name">{stock.name}</div>
                       <div className="text-sm text-gray-500">
-                        {stock.symbol} | {stock.exchange} | {stock.type}
+                        {stock.ticker} | {stock.exchange} |{' '}
+                        {stock.finnhubIndustry}
                       </div>
                     </div>
                   </Link>
