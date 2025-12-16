@@ -27,6 +27,11 @@ interface FieldValues {
   preferredIndustry: string;
 }
 
+/**
+ * Renders the sign-up form and handles user registration, emitting an analytics event and navigating to the home page on successful sign-up.
+ *
+ * @returns The JSX element for the sign-up form component.
+ */
 function Form() {
   const router = useRouter();
   const {

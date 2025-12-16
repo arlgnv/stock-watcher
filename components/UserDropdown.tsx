@@ -18,6 +18,13 @@ import {
 import NavItems from './NavItems';
 import { Button } from './ui/button';
 
+/**
+ * Render a user dropdown menu with avatar, account actions, and responsive navigation.
+ *
+ * @param user - The current user object; used to display the user's name and email.
+ * @param initialStocks - Stock items (with watchlist status) passed to the responsive NavItems section shown on small screens.
+ * @returns A React element containing an avatar-triggered dropdown with account details, "Delete me" and "Sign out" actions, and a mobile-only navigation list.
+ */
 function UserDropdown({
   user,
   initialStocks,

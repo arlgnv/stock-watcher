@@ -14,6 +14,13 @@ interface FieldValues {
   password: string;
 }
 
+/**
+ * Renders a sign-in form that validates credentials, attempts authentication, redirects on success, and shows an error toast on failure.
+ *
+ * The form validates email and password fields, submits credentials to the authentication client, navigates to the root route on successful sign-in, and displays the authentication error message if sign-in fails.
+ *
+ * @returns The sign-in form JSX element.
+ */
 function Form() {
   const router = useRouter();
   const {

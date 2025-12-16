@@ -5,6 +5,16 @@ import { redirect } from 'next/navigation';
 
 import auth from '@/auth';
 
+/**
+ * Renders the authentication page layout and redirects authenticated users to the site root.
+ *
+ * When a session exists, performs a redirect to "/". Otherwise, renders a two-column layout:
+ * left column contains a logo and the provided `children`; right column contains a testimonial,
+ * star rating, and a dashboard preview image.
+ *
+ * @param children - Content to display in the left column of the auth layout
+ * @returns The JSX element for the authentication layout
+ */
 async function Layout({ children }: LayoutProps<'/'>) {
   const session = await auth.api.getSession({
     headers: await headers(),
