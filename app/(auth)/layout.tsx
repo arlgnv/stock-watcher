@@ -10,7 +10,7 @@ async function Layout({ children }: LayoutProps<'/'>) {
     headers: await headers(),
   });
 
-  if (session?.user) {
+  if (session) {
     redirect('/');
   }
 
