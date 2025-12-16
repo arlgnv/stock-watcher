@@ -56,43 +56,40 @@ function Form() {
       riskTolerance,
       preferredIndustry,
     }: FieldValues) {
-      const signUpResponse = await authClient.signUp.email({
-        name: fullName,
-        email,
-        password,
-        country,
-        investmentGoal,
-        riskTolerance,
-        preferredIndustry,
-        fetchOptions: {
-          onSuccess: () => {
-            router.push('/');
+      await authClient.signUp.email(
+        {
+          name: fullName,
+          email,
+          password,
+          country,
+          investmentGoal,
+          riskTolerance,
+          preferredIndustry,
+        },
+        {
+          async onSuccess() {
+            try {
+              await inngest.send({
+                name: 'user.signed_up',
+                data: {
+                  fullName,
+                  email,
+                  investmentGoal,
+                  riskTolerance,
+                  preferredIndustry,
+                },
+              });
+            } catch (error) {
+              console.error(error);
+            } finally {
+              router.push('/');
+            }
+          },
+          onError({ error: { message } }) {
+            toast.error(message);
           },
         },
-      });
-
-      if (signUpResponse.data) {
-        try {
-          await inngest.send({
-            name: 'user.signed_up',
-            data: {
-              fullName,
-              email,
-              investmentGoal,
-              riskTolerance,
-              preferredIndustry,
-            },
-          });
-        } catch (error) {
-          console.error(error);
-        }
-      }
-
-      if (signUpResponse.error) {
-        toast.error(
-          signUpResponse.error.message ?? 'Oops! Something went wrong',
-        );
-      }
+      );
     }
 
     void rhfHandleSubmit(handleSignUp)(event);

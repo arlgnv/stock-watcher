@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -14,6 +15,7 @@ interface FieldValues {
 }
 
 function Form() {
+  const router = useRouter();
   const {
     register,
     formState: { errors, isSubmitting },
@@ -27,17 +29,20 @@ function Form() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     async function handleSignIn({ email, password }: FieldValues) {
-      const signInResponse = await authClient.signIn.email({
-        email,
-        password,
-        callbackURL: '/',
-      });
-
-      if (signInResponse.error) {
-        toast.error(
-          signInResponse.error.message ?? 'Oops! Something went wrong',
-        );
-      }
+      await authClient.signIn.email(
+        {
+          email,
+          password,
+        },
+        {
+          onSuccess() {
+            router.push('/');
+          },
+          onError({ error: { message } }) {
+            toast.error(message);
+          },
+        },
+      );
     }
 
     void rhfHandleSubmit(handleSignIn)(event);
