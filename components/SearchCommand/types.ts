@@ -1,4 +1,4 @@
-import type { CompanyProfile } from '@/finnhub/types';
+import type { CompanyProfile } from '@/types';
 
 interface Props {
   popularStocks: CompanyProfile[];

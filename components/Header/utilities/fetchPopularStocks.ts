@@ -1,26 +1,51 @@
-import type { AxiosResponse } from 'axios';
+import { FINNHUB_STOCK_PROFILE_API_URL } from '@/constants';
+import environment from '@/environment';
+import type { CompanyProfile } from '@/types';
+import { convertDaysToSeconds } from '@/utilities';
 
-import finnhub from '@/finnhub/api';
-import type { CompanyProfile } from '@/finnhub/types';
+const POPULAR_STOCKS_SYMBOLS = [
+  'AAPL',
+  'MSFT',
+  'GOOGL',
+  'AMZN',
+  'TSLA',
+  'META',
+  'NVDA',
+  'NFLX',
+  'ORCL',
+  'CRM',
+];
 
 async function fetchPopularStocks() {
-  const promiseSettledResults = await Promise.allSettled([
-    finnhub<CompanyProfile>('/stock/profile2?symbol=AAPL'),
-    finnhub<CompanyProfile>('/stock/profile2?symbol=MSFT'),
-    finnhub<CompanyProfile>('/stock/profile2?symbol=GOOGL'),
-    finnhub<CompanyProfile>('/stock/profile2?symbol=AMZN'),
-    finnhub<CompanyProfile>('/stock/profile2?symbol=TSLA'),
-    finnhub<CompanyProfile>('/stock/profile2?symbol=META'),
-    finnhub<CompanyProfile>('/stock/profile2?symbol=NVDA'),
-    finnhub<CompanyProfile>('/stock/profile2?symbol=NFLX'),
-    finnhub<CompanyProfile>('/stock/profile2?symbol=ORCL'),
-    finnhub<CompanyProfile>('/stock/profile2?symbol=CRM'),
-  ]);
-  const promiseFulfilledResults = promiseSettledResults.filter(
-    (result): result is PromiseFulfilledResult<AxiosResponse<CompanyProfile>> =>
-      result.status === 'fulfilled',
-  );
-  const popularStocks = promiseFulfilledResults.map(({ value }) => value.data);
+  const responses = (
+    await Promise.allSettled(
+      POPULAR_STOCKS_SYMBOLS.map((symbol) =>
+        fetch(`${FINNHUB_STOCK_PROFILE_API_URL}?symbol=${symbol}`, {
+          headers: {
+            'X-Finnhub-Token': environment.FINNHUB_API_KEY,
+          },
+          next: {
+            revalidate: convertDaysToSeconds(1),
+          },
+        }),
+      ),
+    )
+  )
+    .filter((settledResult) => settledResult.status === 'fulfilled')
+    .map((fulfilledResult) => fulfilledResult.value);
+  const popularStocks = (
+    await Promise.allSettled(
+      responses
+        .filter(
+          (response) =>
+            response.ok &&
+            response.headers.get('Content-Type')?.includes('application/json'),
+        )
+        .map<Promise<CompanyProfile>>((response) => response.json()),
+    )
+  )
+    .filter((settledResult) => settledResult.status === 'fulfilled')
+    .map((fulfilledResult) => fulfilledResult.value);
 
   return popularStocks;
 }
