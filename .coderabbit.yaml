@@ -4,4 +4,4 @@ reviews:
     - '!supabase/types.ts'
   pre_merge_checks:
     docstrings:
-      - mode: 'off'
+      mode: 'off'
