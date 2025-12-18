@@ -15,16 +15,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import NavItems from './NavItems';
-import { Button } from './ui/button';
+import NavItems from '../NavItems/NavItems';
+import { Button } from '../ui/button';
+import type { Props } from './types';
 
-function UserDropdown({
-  user,
-  initialStocks,
-}: {
-  user: User;
-  initialStocks: StockWithWatchlistStatus[];
-}) {
+function UserDropdown({ user, popularStocks }: Props) {
   const router = useRouter();
 
   function handleDeleteMeButtonClick() {
@@ -87,6 +82,10 @@ function UserDropdown({
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-gray-600" />
+        <nav className="sm:hidden">
+          <NavItems popularStocks={popularStocks} />
+        </nav>
+        <DropdownMenuSeparator className="block bg-gray-600 sm:hidden" />
         <DropdownMenuItem
           className="text-md cursor-pointer font-medium text-gray-100 transition-colors focus:bg-transparent focus:text-yellow-500"
           onClick={handleDeleteMeButtonClick}
@@ -100,10 +99,6 @@ function UserDropdown({
           <LogOut className="mr-2 hidden size-4 sm:block" />
           Sign out
         </DropdownMenuItem>
-        <DropdownMenuSeparator className="block bg-gray-600 sm:hidden" />
-        <nav className="sm:hidden">
-          <NavItems initialStocks={initialStocks} />
-        </nav>
       </DropdownMenuContent>
     </DropdownMenu>
   );

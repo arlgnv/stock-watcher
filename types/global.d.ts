@@ -1,26 +1,10 @@
 declare global {
-  interface SearchCommandProps {
-    renderAs?: 'button' | 'text';
-    label?: string;
-    initialStocks: StockWithWatchlistStatus[];
-  }
-
-  interface User {
-    id: string;
-    name: string;
-    email: string;
-  }
-
   interface Stock {
     symbol: string;
     name: string;
     exchange: string;
     type: string;
   }
-
-  type StockWithWatchlistStatus = Stock & {
-    isInWatchlist: boolean;
-  };
 
   interface FinnhubSearchResult {
     symbol: string;
