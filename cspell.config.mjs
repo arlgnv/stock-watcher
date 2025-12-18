@@ -19,6 +19,7 @@ const config = defineConfig({
     'cellspacing',
     'Segoe',
     'weburl',
+    'docstrings',
   ],
   ignorePaths: ['supabase/types.ts'],
 });
