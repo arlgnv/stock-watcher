@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { useDebounce } from '@/app/_shared/hooks';
-import { Button } from '@/components/ui/button';
 import {
   CommandDialog,
   CommandEmpty,
@@ -13,20 +12,22 @@ import {
   CommandList,
 } from '@/components/ui/command';
 
+import { fetchSymbolLookup } from './actions';
 import type { Props } from './types';
+import {
+  convertCompanyProfileToStock,
+  convertSymbolLookupResultItemToStock,
+} from './utilities';
 
-function SearchCommand({
-  renderAs = 'button',
-  label = 'Add stock',
-  popularStocks,
-}: Props) {
+function SearchCommand({ label, popularCompanyProfiles }: Props) {
   const [open, setOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const popularStocks = popularCompanyProfiles.map(
+    convertCompanyProfileToStock,
+  );
   const [stocks, setStocks] = useState(popularStocks);
-
-  const isSearchMode = !!searchTerm.trim();
-  const displayStocks = isSearchMode ? stocks : stocks.slice(0, 10);
+  const isSearchMode = !!query.trim();
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -42,15 +43,18 @@ function SearchCommand({
     };
   }, []);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (!isSearchMode) {
       setStocks(popularStocks);
       return;
     }
 
     setLoading(true);
+
     try {
-      setStocks([]);
+      const symbolLookup = await fetchSymbolLookup(query);
+
+      setStocks(symbolLookup.result.map(convertSymbolLookupResultItemToStock));
     } catch {
       setStocks([]);
     } finally {
@@ -62,35 +66,24 @@ function SearchCommand({
 
   useEffect(() => {
     debouncedSearch();
-  }, [searchTerm]);
+  }, [query]);
 
   const handleSelectStock = () => {
     setOpen(false);
-    setSearchTerm('');
+    setQuery('');
     setStocks(popularStocks);
   };
 
   return (
     <>
-      {renderAs === 'text' ? (
-        <span
-          className="search-text"
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          {label}
-        </span>
-      ) : (
-        <Button
-          className="search-btn"
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          {label}
-        </Button>
-      )}
+      <span
+        className="search-text"
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        {label}
+      </span>
       <CommandDialog
         className="search-dialog"
         open={open}
@@ -99,9 +92,9 @@ function SearchCommand({
         <div className="search-field">
           <CommandInput
             className="search-input"
-            value={searchTerm}
+            value={query}
             placeholder="Search stocks..."
-            onValueChange={setSearchTerm}
+            onValueChange={setQuery}
           />
           {loading && <Loader2 className="search-loader" />}
         </div>
@@ -110,7 +103,7 @@ function SearchCommand({
             <CommandEmpty className="search-list-empty">
               Loading stocks...
             </CommandEmpty>
-          ) : displayStocks.length === 0 ? (
+          ) : stocks.length === 0 ? (
             <div className="search-list-indicator">
               {isSearchMode ? 'No results found' : 'No stocks available'}
             </div>
@@ -118,21 +111,20 @@ function SearchCommand({
             <ul>
               <div className="search-count">
                 {isSearchMode ? 'Search results' : 'Popular stocks'}
-                {` `}({displayStocks.length || 0})
+                {` `}({stocks.length})
               </div>
-              {displayStocks.map((stock) => (
-                <li className="search-item" key={stock.ticker}>
+              {stocks.map(({ ticker, company, exchange, industry }) => (
+                <li className="search-item" key={ticker}>
                   <Link
                     className="search-item-link"
-                    href={`/stocks/${stock.ticker}`}
+                    href={`/stocks/${ticker}`}
                     onClick={handleSelectStock}
                   >
                     <TrendingUp className="h-4 w-4 text-gray-500" />
                     <div className="flex-1">
-                      <div className="search-item-name">{stock.name}</div>
+                      <div className="search-item-name">{company}</div>
                       <div className="text-sm text-gray-500">
-                        {stock.ticker} | {stock.exchange} |{' '}
-                        {stock.finnhubIndustry}
+                        {`${ticker}${exchange ? ` • ${exchange}` : ''}${industry ? ` • ${industry}` : ''}`}
                       </div>
                     </div>
                   </Link>

@@ -1,1 +1,1 @@
-export { default as fetchPopularStocks } from './fetchPopularStocks';
+export { default as fetchPopularCompanyProfiles } from './fetchPopularCompanyProfiles';

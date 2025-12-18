@@ -1,7 +1,5 @@
 import type { CompanyProfile } from '@/types';
 
-interface Props {
-  popularStocks: CompanyProfile[];
+export interface Props {
+  popularCompanyProfiles: CompanyProfile[];
 }
-
-export type { Props };

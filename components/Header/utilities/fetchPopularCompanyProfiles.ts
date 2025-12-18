@@ -1,4 +1,4 @@
-import { FINNHUB_STOCK_PROFILE_API_URL } from '@/constants';
+import { FINNHUB_API_URL } from '@/constants';
 import environment from '@/environment';
 import type { CompanyProfile } from '@/types';
 import { convertDaysToSeconds } from '@/utilities';
@@ -16,11 +16,11 @@ const POPULAR_STOCKS_SYMBOLS = [
   'CRM',
 ];
 
-async function fetchPopularStocks() {
+async function fetchPopularCompanyProfiles() {
   const responses = (
     await Promise.allSettled(
       POPULAR_STOCKS_SYMBOLS.map((symbol) =>
-        fetch(`${FINNHUB_STOCK_PROFILE_API_URL}?symbol=${symbol}`, {
+        fetch(`${FINNHUB_API_URL}/stock/profile2?symbol=${symbol}`, {
           headers: {
             'X-Finnhub-Token': environment.FINNHUB_API_KEY,
           },
@@ -33,7 +33,7 @@ async function fetchPopularStocks() {
   )
     .filter((settledResult) => settledResult.status === 'fulfilled')
     .map((fulfilledResult) => fulfilledResult.value);
-  const popularStocks = (
+  const popularCompaniesProfiles = (
     await Promise.allSettled(
       responses
         .filter(
@@ -47,7 +47,7 @@ async function fetchPopularStocks() {
     .filter((settledResult) => settledResult.status === 'fulfilled')
     .map((fulfilledResult) => fulfilledResult.value);
 
-  return popularStocks;
+  return popularCompaniesProfiles;
 }
 
-export default fetchPopularStocks;
+export default fetchPopularCompanyProfiles;

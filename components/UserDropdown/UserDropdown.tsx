@@ -19,7 +19,7 @@ import NavItems from '../NavItems/NavItems';
 import { Button } from '../ui/button';
 import type { Props } from './types';
 
-function UserDropdown({ user, popularStocks }: Props) {
+function UserDropdown({ user, popularCompanyProfiles }: Props) {
   const router = useRouter();
 
   function handleDeleteMeButtonClick() {
@@ -83,7 +83,7 @@ function UserDropdown({ user, popularStocks }: Props) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-gray-600" />
         <nav className="sm:hidden">
-          <NavItems popularStocks={popularStocks} />
+          <NavItems popularCompanyProfiles={popularCompanyProfiles} />
         </nav>
         <DropdownMenuSeparator className="block bg-gray-600 sm:hidden" />
         <DropdownMenuItem

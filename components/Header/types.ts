@@ -1,7 +1,5 @@
 import type { User } from '@/types';
 
-interface Props {
+export interface Props {
   user: User;
 }
-
-export type { Props };

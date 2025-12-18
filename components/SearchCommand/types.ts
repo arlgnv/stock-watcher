@@ -1,9 +1,23 @@
 import type { CompanyProfile } from '@/types';
 
-interface Props {
-  popularStocks: CompanyProfile[];
-  renderAs?: 'button' | 'text';
-  label?: string;
+export interface Props {
+  label: string;
+  popularCompanyProfiles: CompanyProfile[];
 }
 
-export type { Props };
+export interface SymbolLookup {
+  count: number;
+  result: {
+    description: string;
+    displaySymbol: string;
+    symbol: string;
+    type: string;
+  }[];
+}
+
+export interface Stock {
+  company: string;
+  ticker: string;
+  exchange?: string;
+  industry?: string;
+}

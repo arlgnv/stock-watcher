@@ -4,10 +4,10 @@ import Link from 'next/link';
 import NavItems from '../NavItems/NavItems';
 import UserDropdown from '../UserDropdown/UserDropdown';
 import type { Props } from './types';
-import { fetchPopularStocks } from './utilities';
+import { fetchPopularCompanyProfiles } from './utilities';
 
 async function Header({ user }: Props) {
-  const popularStocks = await fetchPopularStocks();
+  const popularCompanyProfiles = await fetchPopularCompanyProfiles();
 
   return (
     <header className="sticky top-0 header">
@@ -22,9 +22,12 @@ async function Header({ user }: Props) {
           />
         </Link>
         <nav className="hidden sm:block">
-          <NavItems popularStocks={popularStocks} />
+          <NavItems popularCompanyProfiles={popularCompanyProfiles} />
         </nav>
-        <UserDropdown user={user} popularStocks={popularStocks} />
+        <UserDropdown
+          user={user}
+          popularCompanyProfiles={popularCompanyProfiles}
+        />
       </div>
     </header>
   );
