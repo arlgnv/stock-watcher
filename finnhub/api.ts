@@ -1,15 +1,12 @@
 import axios from 'axios';
 
-import { FINNHUB_API_URL } from '@/constants';
-import environment from '@/environment';
 import { convertSecondsToMilliseconds } from '@/utilities';
 
+import { API_URL } from './constants';
+
 const api = axios.create({
-  baseURL: FINNHUB_API_URL,
+  baseURL: API_URL,
   timeout: convertSecondsToMilliseconds(5),
-  headers: {
-    'X-Finnhub-Token': environment.FINNHUB_API_KEY,
-  },
 });
 
 export default api;

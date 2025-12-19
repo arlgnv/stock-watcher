@@ -1,19 +1,22 @@
 'use client';
 
+import { useDebouncedState } from '@tanstack/react-pacer/debouncer';
+import { useQuery } from '@tanstack/react-query';
 import { Loader2, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { useDebounce } from '@/app/_shared/hooks';
 import {
   CommandDialog,
   CommandEmpty,
   CommandInput,
   CommandList,
 } from '@/components/ui/command';
+import environment from '@/environment';
+import finnhub from '@/finnhub/api';
+import { convertSecondsToMilliseconds } from '@/utilities';
 
-import { fetchSymbolLookup } from './actions';
-import type { Props } from './types';
+import type { Props, SymbolLookup } from './types';
 import {
   convertCompanyProfileToStock,
   convertSymbolLookupResultItemToStock,
@@ -21,21 +24,44 @@ import {
 
 function SearchCommand({ popularCompanyProfiles }: Props) {
   const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [instantQuery, setInstantQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useDebouncedState(instantQuery, {
+    wait: convertSecondsToMilliseconds(1),
+  });
+  const debouncedQueryIsValid = /\S/.test(debouncedQuery);
+  const {
+    data: fetchedStocks,
+    isFetching: symbolLookupIsBeingFetched,
+    isFetched,
+    isSuccess,
+  } = useQuery({
+    queryKey: ['finnhub', 'search', debouncedQuery],
+    queryFn: async () => {
+      const response = await finnhub<SymbolLookup>(
+        `/search?q=${encodeURIComponent(debouncedQuery)}&token=${environment.NEXT_PUBLIC_FINNHUB_API_KEY}`,
+      );
+
+      return response.data;
+    },
+    enabled: debouncedQueryIsValid,
+    select(symbolLookup) {
+      return symbolLookup.result.map(convertSymbolLookupResultItemToStock);
+    },
+  });
   const popularStocks = popularCompanyProfiles.map(
     convertCompanyProfileToStock,
   );
-  const [stocks, setStocks] = useState(popularStocks);
-  const isSearchMode = !!query.trim();
+  const stocks = debouncedQueryIsValid ? fetchedStocks : popularStocks;
 
   useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        setOpen((v) => !v);
+    function onKeyDown(event: KeyboardEvent) {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+
+        setOpen(!open);
       }
-    };
+    }
+
     window.addEventListener('keydown', onKeyDown);
 
     return () => {
@@ -43,36 +69,16 @@ function SearchCommand({ popularCompanyProfiles }: Props) {
     };
   }, []);
 
-  const handleSearch = async () => {
-    if (!isSearchMode) {
-      setStocks(popularStocks);
-      return;
-    }
+  function handleInputChange(value: string) {
+    setInstantQuery(value);
+    setDebouncedQuery(value);
+  }
 
-    setLoading(true);
-
-    try {
-      const symbolLookup = await fetchSymbolLookup(query);
-
-      setStocks(symbolLookup.result.map(convertSymbolLookupResultItemToStock));
-    } catch {
-      setStocks([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const debouncedSearch = useDebounce(handleSearch, 300);
-
-  useEffect(() => {
-    debouncedSearch();
-  }, [query]);
-
-  const handleSelectStock = () => {
+  function handleSelectStock() {
     setOpen(false);
-    setQuery('');
-    setStocks(popularStocks);
-  };
+    setInstantQuery('');
+    setDebouncedQuery('');
+  }
 
   return (
     <>
@@ -93,28 +99,29 @@ function SearchCommand({ popularCompanyProfiles }: Props) {
         <div className="search-field">
           <CommandInput
             className="search-input"
-            value={query}
+            value={instantQuery}
             placeholder="Search stocks..."
-            onValueChange={setQuery}
+            onValueChange={handleInputChange}
           />
-          {loading && <Loader2 className="search-loader" />}
+          {symbolLookupIsBeingFetched && <Loader2 className="search-loader" />}
         </div>
         <CommandList className="search-list">
-          {loading ? (
+          {/* {stocks?.length } */}
+          {symbolLookupIsBeingFetched ? (
             <CommandEmpty className="search-list-empty">
-              Loading stocks...
+              Stocks are being fetched...
             </CommandEmpty>
-          ) : stocks.length === 0 ? (
+          ) : isFetched ? (
             <div className="search-list-indicator">
-              {isSearchMode ? 'No results found' : 'No stocks available'}
+              {/* {isSearchMode ? 'No results found' : 'No stocks available'} */}
             </div>
           ) : (
             <ul>
               <div className="search-count">
-                {isSearchMode ? 'Search results' : 'Popular stocks'}
-                {` `}({stocks.length})
+                {isSuccess ? 'Search results' : 'Popular stocks'}
+                {/* {` `}({stocks.length}) */}
               </div>
-              {stocks.map(({ ticker, company, exchange, industry }) => (
+              {stocks?.map(({ ticker, company, exchange, industry }) => (
                 <li className="search-item" key={ticker}>
                   <Link
                     className="search-item-link"

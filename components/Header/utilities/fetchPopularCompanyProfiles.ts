@@ -1,5 +1,5 @@
-import { FINNHUB_API_URL } from '@/constants';
 import environment from '@/environment';
+import { API_URL as FINNHUB_API_URL } from '@/finnhub/constants';
 import type { CompanyProfile } from '@/types';
 import { convertDaysToSeconds } from '@/utilities';
 

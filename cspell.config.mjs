@@ -20,6 +20,7 @@ const config = defineConfig({
     'Segoe',
     'weburl',
     'docstrings',
+    'debouncer',
   ],
   ignorePaths: ['supabase/types.ts'],
 });

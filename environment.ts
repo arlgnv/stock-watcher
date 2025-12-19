@@ -17,7 +17,12 @@ const environment = createEnv({
 
     FINNHUB_API_KEY: z.string().min(1),
   },
-  experimental__runtimeEnv: {},
+  client: {
+    NEXT_PUBLIC_FINNHUB_API_KEY: z.string().min(1),
+  },
+  experimental__runtimeEnv: {
+    NEXT_PUBLIC_FINNHUB_API_KEY: process.env.NEXT_PUBLIC_FINNHUB_API_KEY,
+  },
 });
 
 export default environment;
