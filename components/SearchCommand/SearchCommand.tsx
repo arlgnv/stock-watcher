@@ -22,18 +22,17 @@ import {
   convertSymbolLookupResultItemToStock,
 } from './utilities';
 
-function SearchCommand({ popularCompanyProfiles }: Props) {
+function SearchCommand({ fetchPopularCompanyProfilesResponse }: Props) {
   const [open, setOpen] = useState(false);
   const [instantQuery, setInstantQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useDebouncedState(instantQuery, {
     wait: convertSecondsToMilliseconds(1),
   });
-  const debouncedQueryIsValid = /\S/.test(debouncedQuery);
+  const mode = debouncedQuery ? 'search' : 'popular';
   const {
     data: fetchedStocks,
     isFetching: symbolLookupIsBeingFetched,
-    isFetched,
-    isSuccess,
+    isError,
   } = useQuery({
     queryKey: ['finnhub', 'search', debouncedQuery],
     queryFn: async () => {
@@ -43,29 +42,33 @@ function SearchCommand({ popularCompanyProfiles }: Props) {
 
       return response.data;
     },
-    enabled: debouncedQueryIsValid,
+    enabled: mode === 'search',
     select(symbolLookup) {
       return symbolLookup.result.map(convertSymbolLookupResultItemToStock);
     },
   });
-  const popularStocks = popularCompanyProfiles.map(
-    convertCompanyProfileToStock,
-  );
-  const stocks = debouncedQueryIsValid ? fetchedStocks : popularStocks;
+  const popularStocks =
+    fetchPopularCompanyProfilesResponse.status === 'success'
+      ? fetchPopularCompanyProfilesResponse.data.map(
+          convertCompanyProfileToStock,
+        )
+      : undefined;
+  const modeIsPopular = mode === 'popular';
+  const stocks = modeIsPopular ? popularStocks : fetchedStocks;
 
   useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
+    function handleWindowKeyDown(event: KeyboardEvent) {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault();
 
-        setOpen(!open);
+        setOpen((o) => !o);
       }
     }
 
-    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keydown', handleWindowKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keydown', handleWindowKeyDown);
     };
   }, []);
 
@@ -103,42 +106,53 @@ function SearchCommand({ popularCompanyProfiles }: Props) {
             placeholder="Search stocks..."
             onValueChange={handleInputChange}
           />
-          {symbolLookupIsBeingFetched && <Loader2 className="search-loader" />}
         </div>
         <CommandList className="search-list">
-          {/* {stocks?.length } */}
-          {symbolLookupIsBeingFetched ? (
-            <CommandEmpty className="search-list-empty">
-              Stocks are being fetched...
-            </CommandEmpty>
-          ) : isFetched ? (
-            <div className="search-list-indicator">
-              {/* {isSearchMode ? 'No results found' : 'No stocks available'} */}
-            </div>
-          ) : (
-            <ul>
-              <div className="search-count">
-                {isSuccess ? 'Search results' : 'Popular stocks'}
-                {/* {` `}({stocks.length}) */}
-              </div>
-              {stocks?.map(({ ticker, company, exchange, industry }) => (
-                <li className="search-item" key={ticker}>
-                  <Link
-                    className="search-item-link"
-                    href={`/stocks/${ticker}`}
-                    onClick={handleSelectStock}
-                  >
-                    <TrendingUp className="h-4 w-4 text-gray-500" />
-                    <div className="flex-1">
-                      <div className="search-item-name">{company}</div>
-                      <div className="text-sm text-gray-500">
-                        {`${ticker}${exchange ? ` • ${exchange}` : ''}${industry ? ` • ${industry}` : ''}`}
+          {stocks &&
+            (stocks.length ? (
+              <ul>
+                <div className="search-count">
+                  {modeIsPopular ? 'Popular stocks' : 'Search results'}
+                  {` `}({stocks.length})
+                </div>
+                {stocks.map(({ ticker, company, exchange, industry }) => (
+                  <li className="search-item" key={ticker}>
+                    <Link
+                      className="search-item-link"
+                      href={`/stocks/${ticker}`}
+                      onClick={handleSelectStock}
+                    >
+                      <TrendingUp className="h-4 w-4 text-gray-500" />
+                      <div className="flex-1">
+                        <div className="search-item-name">{company}</div>
+                        <div className="text-sm text-gray-500">
+                          {`${ticker}${exchange ? ` • ${exchange}` : ''}${industry ? ` • ${industry}` : ''}`}
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <CommandEmpty className="px-3 py-2 text-center text-gray-500">
+                {modeIsPopular ? 'No popular stocks' : 'No stocks found'}
+              </CommandEmpty>
+            ))}
+          {!modeIsPopular && symbolLookupIsBeingFetched && (
+            <div className="px-3 py-2">
+              <Loader2 className="mx-auto animate-spin text-gray-500" />
+            </div>
+          )}
+          {modeIsPopular &&
+            fetchPopularCompanyProfilesResponse.status === 'error' && (
+              <p className="px-3 py-2 text-destructive">
+                An error occurred while fetching popular stocks
+              </p>
+            )}
+          {!modeIsPopular && isError && (
+            <p className="px-3 py-2 text-destructive">
+              An error occurred while searching stocks
+            </p>
           )}
         </CommandList>
       </CommandDialog>

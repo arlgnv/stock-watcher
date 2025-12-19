@@ -228,14 +228,8 @@
 @utility search-list-indicator {
   @apply px-5 py-2;
 }
-@utility search-list-empty {
-  @apply !bg-transparent py-6 text-center text-gray-500;
-}
 @utility search-input {
   @apply h-14 border-0 !bg-gray-800 pr-10 text-base text-gray-400 placeholder:text-gray-500 focus:ring-0;
-}
-@utility search-loader {
-  @apply absolute top-1/2 right-12 h-4 w-4 -translate-y-1/2 animate-spin text-gray-500;
 }
 @utility search-count {
   @apply border-b border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-gray-400;

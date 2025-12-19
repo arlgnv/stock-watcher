@@ -7,7 +7,8 @@ import type { Props } from './types';
 import { fetchPopularCompanyProfiles } from './utilities';
 
 async function Header({ user }: Props) {
-  const popularCompanyProfiles = await fetchPopularCompanyProfiles();
+  const fetchPopularCompanyProfilesResponse =
+    await fetchPopularCompanyProfiles();
 
   return (
     <header className="sticky top-0 header">
@@ -22,11 +23,17 @@ async function Header({ user }: Props) {
           />
         </Link>
         <nav className="hidden sm:block">
-          <NavItems popularCompanyProfiles={popularCompanyProfiles} />
+          <NavItems
+            fetchPopularCompanyProfilesResponse={
+              fetchPopularCompanyProfilesResponse
+            }
+          />
         </nav>
         <UserDropdown
           user={user}
-          popularCompanyProfiles={popularCompanyProfiles}
+          fetchPopularCompanyProfilesResponse={
+            fetchPopularCompanyProfilesResponse
+          }
         />
       </div>
     </header>

@@ -16,7 +16,20 @@ const POPULAR_STOCKS_SYMBOLS = [
   'CRM',
 ];
 
-async function fetchPopularCompanyProfiles() {
+interface FetchPopularCompanyProfilesSuccess {
+  status: 'success';
+  data: CompanyProfile[];
+}
+
+interface FetchPopularCompanyProfilesFailure {
+  status: 'error';
+}
+
+export type FetchPopularCompanyProfilesResponse =
+  | FetchPopularCompanyProfilesSuccess
+  | FetchPopularCompanyProfilesFailure;
+
+async function fetchPopularCompanyProfiles(): Promise<FetchPopularCompanyProfilesResponse> {
   const responses = (
     await Promise.allSettled(
       POPULAR_STOCKS_SYMBOLS.map((symbol) =>
@@ -31,8 +44,8 @@ async function fetchPopularCompanyProfiles() {
       ),
     )
   )
-    .filter((settledResult) => settledResult.status === 'fulfilled')
-    .map((fulfilledResult) => fulfilledResult.value);
+    .filter((result) => result.status === 'fulfilled')
+    .map((result) => result.value);
   const popularCompaniesProfiles = (
     await Promise.allSettled(
       responses
@@ -44,10 +57,12 @@ async function fetchPopularCompanyProfiles() {
         .map<Promise<CompanyProfile>>((response) => response.json()),
     )
   )
-    .filter((settledResult) => settledResult.status === 'fulfilled')
-    .map((fulfilledResult) => fulfilledResult.value);
+    .filter((result) => result.status === 'fulfilled')
+    .map((result) => result.value);
 
-  return popularCompaniesProfiles;
+  return popularCompaniesProfiles.length
+    ? { status: 'success', data: popularCompaniesProfiles }
+    : { status: 'error' };
 }
 
 export default fetchPopularCompanyProfiles;

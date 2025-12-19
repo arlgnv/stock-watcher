@@ -1,7 +1,7 @@
-import type { CompanyProfile } from '@/types';
+import type { FetchPopularCompanyProfilesResponse } from '../Header/utilities/fetchPopularCompanyProfiles';
 
 export interface Props {
-  popularCompanyProfiles: CompanyProfile[];
+  fetchPopularCompanyProfilesResponse: FetchPopularCompanyProfilesResponse;
 }
 
 export interface SymbolLookup {
