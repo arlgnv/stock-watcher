@@ -1,7 +1,6 @@
 import type { CompanyProfile } from '@/types';
 
 export interface Props {
-  label: string;
   popularCompanyProfiles: CompanyProfile[];
 }
 

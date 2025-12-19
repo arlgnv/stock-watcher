@@ -19,7 +19,7 @@ import {
   convertSymbolLookupResultItemToStock,
 } from './utilities';
 
-function SearchCommand({ label, popularCompanyProfiles }: Props) {
+function SearchCommand({ popularCompanyProfiles }: Props) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
@@ -76,14 +76,15 @@ function SearchCommand({ label, popularCompanyProfiles }: Props) {
 
   return (
     <>
-      <span
-        className="search-text"
+      <button
+        className="hover:text-yellow-500"
+        type="button"
         onClick={() => {
           setOpen(true);
         }}
       >
-        {label}
-      </span>
+        Search
+      </button>
       <CommandDialog
         className="search-dialog"
         open={open}

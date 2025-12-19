@@ -18,10 +18,7 @@ function NavItems({ popularCompanyProfiles }: Props) {
         if (text === 'Search') {
           return (
             <li key="search-trigger">
-              <SearchCommand
-                label="Search"
-                popularCompanyProfiles={popularCompanyProfiles}
-              />
+              <SearchCommand popularCompanyProfiles={popularCompanyProfiles} />
             </li>
           );
         }
