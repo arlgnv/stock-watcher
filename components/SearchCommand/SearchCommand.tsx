@@ -122,29 +122,31 @@ function SearchCommand({ fetchPopularCompanyProfilesResponse }: Props) {
             <>
               {stocks &&
                 (stocks.length ? (
-                  <ul>
+                  <>
                     <div className="search-count">
                       {modeIsPopular ? 'Popular stocks' : 'Search results'}
                       {` `}({stocks.length})
                     </div>
-                    {stocks.map(({ ticker, company, exchange, industry }) => (
-                      <li className="search-item" key={ticker}>
-                        <Link
-                          className="search-item-link"
-                          href={`/stocks/${ticker}`}
-                          onClick={handleSelectStock}
-                        >
-                          <TrendingUp className="h-4 w-4 text-gray-500" />
-                          <div className="flex-1">
-                            <div className="search-item-name">{company}</div>
-                            <div className="text-sm text-gray-500">
-                              {`${ticker}${exchange ? ` • ${exchange}` : ''}${industry ? ` • ${industry}` : ''}`}
+                    <ul>
+                      {stocks.map(({ ticker, company, exchange, industry }) => (
+                        <li className="search-item" key={ticker}>
+                          <Link
+                            className="search-item-link"
+                            href={`/stocks/${ticker}`}
+                            onClick={handleSelectStock}
+                          >
+                            <TrendingUp className="h-4 w-4 text-gray-500" />
+                            <div className="flex-1">
+                              <div className="search-item-name">{company}</div>
+                              <div className="text-sm text-gray-500">
+                                {`${ticker}${exchange ? ` • ${exchange}` : ''}${industry ? ` • ${industry}` : ''}`}
+                              </div>
                             </div>
-                          </div>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
                 ) : (
                   <CommandEmpty className="px-3 py-2 text-center text-gray-500">
                     {modeIsPopular ? 'No popular stocks' : 'No stocks found'}
