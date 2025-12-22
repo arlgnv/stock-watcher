@@ -2,6 +2,7 @@
 
 import { useDebouncedState } from '@tanstack/react-pacer/debouncer';
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { Loader2, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -12,8 +13,6 @@ import {
   CommandInput,
   CommandList,
 } from '@/components/ui/command';
-import environment from '@/environment';
-import finnhub from '@/finnhub/api';
 import { convertSecondsToMilliseconds } from '@/utilities';
 
 import type { Props, SymbolLookup } from './types';
@@ -35,10 +34,10 @@ function SearchCommand({ fetchPopularCompanyProfilesResponse }: Props) {
     isFetching: symbolLookupIsBeingFetched,
     isError: fetchSymbolLookupFailed,
   } = useQuery({
-    queryKey: ['finnhub', 'search', debouncedQuery],
+    queryKey: ['api', 'finnhub', 'search', debouncedQuery],
     queryFn: async () => {
-      const response = await finnhub<SymbolLookup>(
-        `/search?q=${encodeURIComponent(debouncedQuery)}&token=${environment.NEXT_PUBLIC_FINNHUB_API_KEY}`,
+      const response = await axios<SymbolLookup>(
+        `/api/finnhub/search?q=${encodeURIComponent(debouncedQuery)}`,
       );
 
       return response.data;

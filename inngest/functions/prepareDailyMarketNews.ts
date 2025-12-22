@@ -1,6 +1,7 @@
-import finnhub from '@/finnhub/api';
-import type { MarketNews } from '@/finnhub/types';
+import { FINNHUB_API_URL } from '@/constants';
+import environment from '@/environment';
 import supabase from '@/supabase/client';
+import type { MarketNews } from '@/types';
 
 import inngest from '../client';
 import type { DailyMarketNewsPreparedEvent } from '../types';
@@ -9,12 +10,31 @@ const prepareDailyMarketNews = inngest.createFunction(
   { id: 'prepare-daily-market-news' },
   [{ cron: '0 12 * * *' }],
   async ({ step }) => {
-    const marketNews = await step.run('fetch-market-news', async () => {
-      const fetchMarketNewsResponse = await finnhub<MarketNews[]>(
-        '/news?category=general',
-      );
+    const fetchMarketNewsResponse = await step.fetch(
+      `${FINNHUB_API_URL}/news?category=general`,
+      {
+        headers: {
+          'X-Finnhub-Token': environment.FINNHUB_API_KEY,
+        },
+      },
+    );
 
-      return fetchMarketNewsResponse.data.slice(0, 5);
+    const marketNews = await step.run('extract-market-news', async () => {
+      if (!fetchMarketNewsResponse.ok) {
+        throw new Error('Failed to fetch market news from Finnhub');
+      }
+
+      if (
+        !fetchMarketNewsResponse.headers
+          .get('Content-Type')
+          ?.includes('application/json')
+      ) {
+        throw new Error('Invalid response format from Finnhub');
+      }
+
+      const marketNews = (await fetchMarketNewsResponse.json()) as MarketNews[];
+
+      return marketNews.slice(0, 5);
     });
 
     if (marketNews.length) {
@@ -34,7 +54,7 @@ const prepareDailyMarketNews = inngest.createFunction(
             name: 'daily_market_news.prepared',
             data: {
               userEmail: email,
-              marketNews,
+              marketNews: marketNews.slice(0, 5),
             },
           }));
 

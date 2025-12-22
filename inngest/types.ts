@@ -1,6 +1,6 @@
 import type { GetEvents } from 'inngest';
 
-import type { MarketNews } from '@/finnhub/types';
+import type { MarketNews } from '@/types';
 
 import type inngest from './client';
 
