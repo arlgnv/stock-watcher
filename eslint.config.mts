@@ -41,19 +41,14 @@ const config = defineConfig([
       'perfectionist/sort-imports': [
         'error',
         {
-          type: 'alphabetical',
-          tsconfigRootDir: import.meta.dirname,
+          tsconfig: {
+            rootDir: import.meta.dirname,
+          },
           groups: [
-            ['builtin-type', 'builtin', 'external-type', 'external'],
-            ['internal-type', 'internal'],
-            [
-              'parent-type',
-              'parent',
-              'sibling-type',
-              'sibling',
-              'index-type',
-              'index',
-            ],
+            ['builtin', 'external'],
+            ['internal'],
+            ['parent', 'sibling', 'index'],
+            ['unknown'],
           ],
         },
       ],
