@@ -29,10 +29,11 @@ function SearchCommand({ fetchPopularCompanyProfilesResponse }: Props) {
     wait: convertSecondsToMilliseconds(1),
   });
   const mode = debouncedQuery ? 'search' : 'popular';
+  const modeIsPopular = mode === 'popular';
   const {
     data: fetchedStocks,
     isFetching: symbolLookupIsBeingFetched,
-    isError,
+    isError: fetchSymbolLookupFailed,
   } = useQuery({
     queryKey: ['finnhub', 'search', debouncedQuery],
     queryFn: async () => {
@@ -42,19 +43,24 @@ function SearchCommand({ fetchPopularCompanyProfilesResponse }: Props) {
 
       return response.data;
     },
-    enabled: mode === 'search',
+    enabled: !modeIsPopular,
     select(symbolLookup) {
       return symbolLookup.result.map(convertSymbolLookupResultItemToStock);
     },
   });
-  const popularStocks =
-    fetchPopularCompanyProfilesResponse.status === 'success'
+  const stocksAreBeingFetched = modeIsPopular
+    ? false
+    : symbolLookupIsBeingFetched;
+  const stocks = modeIsPopular
+    ? fetchPopularCompanyProfilesResponse.status === 'success'
       ? fetchPopularCompanyProfilesResponse.data.map(
           convertCompanyProfileToStock,
         )
-      : undefined;
-  const modeIsPopular = mode === 'popular';
-  const stocks = modeIsPopular ? popularStocks : fetchedStocks;
+      : undefined
+    : fetchedStocks;
+  const fetchStocksFailed = modeIsPopular
+    ? fetchPopularCompanyProfilesResponse.status === 'error'
+    : fetchSymbolLookupFailed;
 
   useEffect(() => {
     function handleWindowKeyDown(event: KeyboardEvent) {
@@ -108,51 +114,50 @@ function SearchCommand({ fetchPopularCompanyProfilesResponse }: Props) {
           />
         </div>
         <CommandList className="search-list">
-          {stocks &&
-            (stocks.length ? (
-              <ul>
-                <div className="search-count">
-                  {modeIsPopular ? 'Popular stocks' : 'Search results'}
-                  {` `}({stocks.length})
-                </div>
-                {stocks.map(({ ticker, company, exchange, industry }) => (
-                  <li className="search-item" key={ticker}>
-                    <Link
-                      className="search-item-link"
-                      href={`/stocks/${ticker}`}
-                      onClick={handleSelectStock}
-                    >
-                      <TrendingUp className="h-4 w-4 text-gray-500" />
-                      <div className="flex-1">
-                        <div className="search-item-name">{company}</div>
-                        <div className="text-sm text-gray-500">
-                          {`${ticker}${exchange ? ` • ${exchange}` : ''}${industry ? ` • ${industry}` : ''}`}
-                        </div>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <CommandEmpty className="px-3 py-2 text-center text-gray-500">
-                {modeIsPopular ? 'No popular stocks' : 'No stocks found'}
-              </CommandEmpty>
-            ))}
-          {!modeIsPopular && symbolLookupIsBeingFetched && (
+          {stocksAreBeingFetched ? (
             <div className="px-3 py-2">
               <Loader2 className="mx-auto animate-spin text-gray-500" />
             </div>
-          )}
-          {modeIsPopular &&
-            fetchPopularCompanyProfilesResponse.status === 'error' && (
-              <p className="px-3 py-2 text-destructive">
-                An error occurred while fetching popular stocks
-              </p>
-            )}
-          {!modeIsPopular && isError && (
-            <p className="px-3 py-2 text-destructive">
-              An error occurred while searching stocks
-            </p>
+          ) : (
+            <>
+              {stocks &&
+                (stocks.length ? (
+                  <ul>
+                    <div className="search-count">
+                      {modeIsPopular ? 'Popular stocks' : 'Search results'}
+                      {` `}({stocks.length})
+                    </div>
+                    {stocks.map(({ ticker, company, exchange, industry }) => (
+                      <li className="search-item" key={ticker}>
+                        <Link
+                          className="search-item-link"
+                          href={`/stocks/${ticker}`}
+                          onClick={handleSelectStock}
+                        >
+                          <TrendingUp className="h-4 w-4 text-gray-500" />
+                          <div className="flex-1">
+                            <div className="search-item-name">{company}</div>
+                            <div className="text-sm text-gray-500">
+                              {`${ticker}${exchange ? ` • ${exchange}` : ''}${industry ? ` • ${industry}` : ''}`}
+                            </div>
+                          </div>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <CommandEmpty className="px-3 py-2 text-center text-gray-500">
+                    {modeIsPopular ? 'No popular stocks' : 'No stocks found'}
+                  </CommandEmpty>
+                ))}
+              {fetchStocksFailed && (
+                <p className="px-3 py-2 text-destructive">
+                  {modeIsPopular
+                    ? 'An error occurred while fetching popular stocks'
+                    : 'An error occurred while searching for stocks'}
+                </p>
+              )}
+            </>
           )}
         </CommandList>
       </CommandDialog>
