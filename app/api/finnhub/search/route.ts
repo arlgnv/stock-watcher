@@ -22,6 +22,13 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  if (q.length > 100) {
+    return NextResponse.json(
+      { error: 'Query parameter "q" is too long' },
+      { status: 400 },
+    );
+  }
+
   try {
     const response = await fetch(
       `${FINNHUB_API_URL}/search?q=${encodeURIComponent(q)}`,
