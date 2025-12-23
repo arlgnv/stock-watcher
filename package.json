@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "inngest:dev": "npx inngest-cli@latest dev",
+    "inngest:dev": "npx --ignore-scripts=false inngest-cli@latest dev",
     "format:check": "prettier . --check --ignore-unknown --cache --cache-location=node_modules/.cache/prettier --cache-strategy metadata",
     "format:fix": "prettier . --write --ignore-unknown --cache --cache-location=node_modules/.cache/prettier --cache-strategy metadata",
     "lint:inspect-config": "eslint --inspect-config",

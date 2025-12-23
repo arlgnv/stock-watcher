@@ -21,6 +21,7 @@ const config = defineConfig({
     'weburl',
     'docstrings',
     'debouncer',
+    'cli',
   ],
   ignorePaths: ['supabase/types.ts'],
 });
