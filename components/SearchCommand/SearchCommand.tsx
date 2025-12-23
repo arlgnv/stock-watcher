@@ -13,9 +13,10 @@ import {
   CommandInput,
   CommandList,
 } from '@/components/ui/command';
+import type { SymbolLookup } from '@/types';
 import { convertSecondsToMilliseconds } from '@/utilities';
 
-import type { Props, SymbolLookup } from './types';
+import type { Props } from './types';
 import {
   convertCompanyProfileToStock,
   convertSymbolLookupResultItemToStock,

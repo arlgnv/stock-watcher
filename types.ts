@@ -28,3 +28,13 @@ export interface MarketNews {
   summary: string;
   url: string;
 }
+
+export interface SymbolLookup {
+  count: number;
+  result: {
+    description: string;
+    displaySymbol: string;
+    symbol: string;
+    type: string;
+  }[];
+}

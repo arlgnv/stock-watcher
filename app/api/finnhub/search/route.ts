@@ -7,35 +7,43 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const q = searchParams.get('q');
 
-  if (!q) {
+  if (q === null) {
     return NextResponse.json(
       { error: 'Query parameter "q" is required' },
       { status: 400 },
     );
   }
 
-  const response = await fetch(
-    `${FINNHUB_API_URL}/search?q=${encodeURIComponent(q)}`,
-    {
-      headers: {
-        'X-Finnhub-Token': environment.FINNHUB_API_KEY,
+  if (!q) {
+    return NextResponse.json(
+      { error: 'Query parameter "q" cannot be empty' },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const response = await fetch(
+      `${FINNHUB_API_URL}/search?q=${encodeURIComponent(q)}`,
+      {
+        headers: {
+          'X-Finnhub-Token': environment.FINNHUB_API_KEY,
+        },
       },
-    },
-  );
-
-  if (!response.ok) {
-    return NextResponse.json(
-      { error: 'Failed to fetch data from Finnhub' },
-      { status: response.status },
     );
-  }
 
-  if (!response.headers.get('Content-Type')?.includes('application/json')) {
-    return NextResponse.json(
-      { error: 'Invalid response format from Finnhub' },
-      { status: 502 },
-    );
-  }
+    if (!response.ok) {
+      return new NextResponse(null, { status: response.status });
+    }
 
-  return NextResponse.json(await response.json());
+    if (!response.headers.get('Content-Type')?.includes('application/json')) {
+      return NextResponse.json(
+        { error: 'Invalid response format from Finnhub' },
+        { status: 502 },
+      );
+    }
+
+    return NextResponse.json(await response.json());
+  } catch {
+    return new NextResponse(null, { status: 504 });
+  }
 }

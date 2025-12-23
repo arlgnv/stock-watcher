@@ -20,18 +20,6 @@ const prepareDailyMarketNews = inngest.createFunction(
     );
 
     const marketNews = await step.run('extract-market-news', async () => {
-      if (!fetchMarketNewsResponse.ok) {
-        throw new Error('Failed to fetch market news from Finnhub');
-      }
-
-      if (
-        !fetchMarketNewsResponse.headers
-          .get('Content-Type')
-          ?.includes('application/json')
-      ) {
-        throw new Error('Invalid response format from Finnhub');
-      }
-
       const marketNews = (await fetchMarketNewsResponse.json()) as MarketNews[];
 
       return marketNews.slice(0, 5);

@@ -1,4 +1,6 @@
-import type { SymbolLookup, Stock } from '../types';
+import type { SymbolLookup } from '@/types';
+
+import type { Stock } from '../types';
 
 function convertSymbolLookupResultItemToStock(
   symbolLookupResultItem: SymbolLookup['result'][number],
