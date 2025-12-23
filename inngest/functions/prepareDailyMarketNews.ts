@@ -42,7 +42,7 @@ const prepareDailyMarketNews = inngest.createFunction(
             name: 'daily_market_news.prepared',
             data: {
               userEmail: email,
-              marketNews: marketNews.slice(0, 5),
+              marketNews,
             },
           }));
 
