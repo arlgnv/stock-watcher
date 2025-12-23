@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 import { FINNHUB_API_URL } from '@/constants';
 import environment from '@/environment';
+import { convertSecondsToMilliseconds } from '@/utilities';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -28,6 +29,7 @@ export async function GET(request: NextRequest) {
         headers: {
           'X-Finnhub-Token': environment.FINNHUB_API_KEY,
         },
+        signal: AbortSignal.timeout(convertSecondsToMilliseconds(10)),
       },
     );
 
