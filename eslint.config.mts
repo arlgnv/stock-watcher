@@ -2,6 +2,7 @@ import react from '@eslint-react/eslint-plugin';
 import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
 import next from '@next/eslint-plugin-next';
+import query from '@tanstack/eslint-plugin-query';
 import perfectionist from 'eslint-plugin-perfectionist';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import path from 'node:path';
@@ -14,22 +15,12 @@ const config = defineConfig([
     '.gitignore patterns',
   ),
   {
-    name: 'React',
-    files: ['**/*.tsx'],
-    extends: [react.configs['strict-type-checked']],
-  },
-  {
     name: 'JavaScript',
     files: ['**/*.{mjs,ts,mts,tsx}'],
     plugins: {
       js,
     },
     extends: ['js/recommended'],
-  },
-  {
-    name: 'Next.js',
-    files: ['**/*.tsx'],
-    extends: [next.configs['core-web-vitals']],
   },
   {
     name: 'Sorting',
@@ -81,6 +72,25 @@ const config = defineConfig([
       ],
       '@typescript-eslint/no-import-type-side-effects': 'error',
     },
+  },
+  {
+    name: 'React',
+    files: ['**/*.tsx'],
+    extends: [react.configs['strict-type-checked']],
+  },
+  {
+    name: 'TanStack Query',
+    files: ['**/*.tsx'],
+    plugins: {
+      // @ts-expect-error: Plugin type is incompatible with ESLint's expected plugin type
+      '@tanstack/query': query,
+    },
+    rules: query.configs['flat/recommended'].at(0)?.rules,
+  },
+  {
+    name: 'Next.js',
+    files: ['**/*.tsx'],
+    extends: [next.configs['core-web-vitals']],
   },
 ]);
 
