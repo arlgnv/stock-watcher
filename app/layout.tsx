@@ -5,6 +5,7 @@ import { twJoin } from 'tailwind-merge';
 import { Toaster } from '@/components/ui/sonner';
 
 import './globals.css';
+import Providers from './Providers';
 
 const metadata: Metadata = {
   title: {
@@ -24,7 +25,7 @@ function Layout({ children }: LayoutProps<'/'>) {
       lang="en"
     >
       <body>
-        {children}
+        <Providers>{children}</Providers>
         <Toaster />
       </body>
     </html>

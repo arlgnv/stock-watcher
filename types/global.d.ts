@@ -1,11 +1,4 @@
 declare global {
-  interface Stock {
-    symbol: string;
-    name: string;
-    exchange: string;
-    type: string;
-  }
-
   interface FinnhubSearchResult {
     symbol: string;
     description: string;

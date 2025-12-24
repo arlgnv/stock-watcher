@@ -9,7 +9,7 @@ import { NAVIGATION_LINKS } from '@/app/_shared/constants';
 import SearchCommand from '../SearchCommand/SearchCommand';
 import type { Props } from './types';
 
-function NavItems({ popularStocks }: Props) {
+function NavItems({ fetchPopularCompanyProfilesResponse }: Props) {
   const pathname = usePathname();
 
   return (
@@ -19,9 +19,9 @@ function NavItems({ popularStocks }: Props) {
           return (
             <li key="search-trigger">
               <SearchCommand
-                renderAs="text"
-                label="Search"
-                popularStocks={popularStocks}
+                fetchPopularCompanyProfilesResponse={
+                  fetchPopularCompanyProfilesResponse
+                }
               />
             </li>
           );

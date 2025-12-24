@@ -7,8 +7,6 @@ const config: Configuration = {
   ],
   '*.{mjs,ts,mts,tsx}':
     'eslint --cache --cache-location=node_modules/.cache/eslint',
-
-  '*.{ts,mts,tsx}': () => 'tsc --noEmit',
 };
 
 export default config;

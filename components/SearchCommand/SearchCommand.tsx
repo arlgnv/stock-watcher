@@ -1,96 +1,105 @@
 'use client';
 
+import { useDebouncedState } from '@tanstack/react-pacer/debouncer';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { Loader2, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { useDebounce } from '@/app/_shared/hooks';
-import { Button } from '@/components/ui/button';
 import {
   CommandDialog,
   CommandEmpty,
   CommandInput,
   CommandList,
 } from '@/components/ui/command';
+import type { SymbolLookup } from '@/types';
+import { convertSecondsToMilliseconds } from '@/utilities';
 
 import type { Props } from './types';
+import {
+  convertCompanyProfileToStock,
+  convertSymbolLookupResultItemToStock,
+} from './utilities';
 
-function SearchCommand({
-  renderAs = 'button',
-  label = 'Add stock',
-  popularStocks,
-}: Props) {
+function SearchCommand({ fetchPopularCompanyProfilesResponse }: Props) {
   const [open, setOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [stocks, setStocks] = useState(popularStocks);
+  const [instantQuery, setInstantQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useDebouncedState(instantQuery, {
+    wait: convertSecondsToMilliseconds(1),
+  });
+  const mode = debouncedQuery ? 'search' : 'popular';
+  const modeIsPopular = mode === 'popular';
+  const {
+    data: fetchedStocks,
+    isFetching: symbolLookupIsBeingFetched,
+    isError: fetchSymbolLookupFailed,
+  } = useQuery({
+    queryKey: ['api', 'finnhub', 'search', debouncedQuery],
+    queryFn: async () => {
+      const response = await axios<SymbolLookup>(
+        `/api/finnhub/search?q=${encodeURIComponent(debouncedQuery)}`,
+      );
 
-  const isSearchMode = !!searchTerm.trim();
-  const displayStocks = isSearchMode ? stocks : stocks.slice(0, 10);
+      return response.data;
+    },
+    enabled: !modeIsPopular,
+    select(symbolLookup) {
+      return symbolLookup.result.map(convertSymbolLookupResultItemToStock);
+    },
+  });
+  const stocksAreBeingFetched = modeIsPopular
+    ? false
+    : symbolLookupIsBeingFetched;
+  const stocks = modeIsPopular
+    ? fetchPopularCompanyProfilesResponse.status === 'success'
+      ? fetchPopularCompanyProfilesResponse.data.map(
+          convertCompanyProfileToStock,
+        )
+      : undefined
+    : fetchedStocks;
+  const fetchStocksFailed = modeIsPopular
+    ? fetchPopularCompanyProfilesResponse.status === 'error'
+    : fetchSymbolLookupFailed;
 
   useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        setOpen((v) => !v);
+    function handleWindowKeyDown(event: KeyboardEvent) {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+
+        setOpen((o) => !o);
       }
-    };
-    window.addEventListener('keydown', onKeyDown);
+    }
+
+    window.addEventListener('keydown', handleWindowKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keydown', handleWindowKeyDown);
     };
   }, []);
 
-  const handleSearch = () => {
-    if (!isSearchMode) {
-      setStocks(popularStocks);
-      return;
-    }
+  function handleInputChange(value: string) {
+    setInstantQuery(value);
+    setDebouncedQuery(value);
+  }
 
-    setLoading(true);
-    try {
-      setStocks([]);
-    } catch {
-      setStocks([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const debouncedSearch = useDebounce(handleSearch, 300);
-
-  useEffect(() => {
-    debouncedSearch();
-  }, [searchTerm]);
-
-  const handleSelectStock = () => {
+  function handleSelectStock() {
     setOpen(false);
-    setSearchTerm('');
-    setStocks(popularStocks);
-  };
+    setInstantQuery('');
+    setDebouncedQuery('');
+  }
 
   return (
     <>
-      {renderAs === 'text' ? (
-        <span
-          className="search-text"
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          {label}
-        </span>
-      ) : (
-        <Button
-          className="search-btn"
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          {label}
-        </Button>
-      )}
+      <button
+        className="hover:text-yellow-500"
+        type="button"
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        Search
+      </button>
       <CommandDialog
         className="search-dialog"
         open={open}
@@ -99,46 +108,58 @@ function SearchCommand({
         <div className="search-field">
           <CommandInput
             className="search-input"
-            value={searchTerm}
+            value={instantQuery}
             placeholder="Search stocks..."
-            onValueChange={setSearchTerm}
+            onValueChange={handleInputChange}
           />
-          {loading && <Loader2 className="search-loader" />}
         </div>
         <CommandList className="search-list">
-          {loading ? (
-            <CommandEmpty className="search-list-empty">
-              Loading stocks...
-            </CommandEmpty>
-          ) : displayStocks.length === 0 ? (
-            <div className="search-list-indicator">
-              {isSearchMode ? 'No results found' : 'No stocks available'}
+          {stocksAreBeingFetched ? (
+            <div className="px-3 py-2">
+              <Loader2 className="mx-auto animate-spin text-gray-500" />
             </div>
           ) : (
-            <ul>
-              <div className="search-count">
-                {isSearchMode ? 'Search results' : 'Popular stocks'}
-                {` `}({displayStocks.length || 0})
-              </div>
-              {displayStocks.map((stock) => (
-                <li className="search-item" key={stock.ticker}>
-                  <Link
-                    className="search-item-link"
-                    href={`/stocks/${stock.ticker}`}
-                    onClick={handleSelectStock}
-                  >
-                    <TrendingUp className="h-4 w-4 text-gray-500" />
-                    <div className="flex-1">
-                      <div className="search-item-name">{stock.name}</div>
-                      <div className="text-sm text-gray-500">
-                        {stock.ticker} | {stock.exchange} |{' '}
-                        {stock.finnhubIndustry}
-                      </div>
+            <>
+              {stocks &&
+                (stocks.length ? (
+                  <>
+                    <div className="search-count">
+                      {modeIsPopular ? 'Popular stocks' : 'Search results'}
+                      {` `}({stocks.length})
                     </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+                    <ul>
+                      {stocks.map(({ ticker, company, exchange, industry }) => (
+                        <li className="search-item" key={ticker}>
+                          <Link
+                            className="search-item-link"
+                            href={`/stocks/${ticker}`}
+                            onClick={handleSelectStock}
+                          >
+                            <TrendingUp className="h-4 w-4 text-gray-500" />
+                            <div className="flex-1">
+                              <div className="search-item-name">{company}</div>
+                              <div className="text-sm text-gray-500">
+                                {`${ticker}${exchange ? ` • ${exchange}` : ''}${industry ? ` • ${industry}` : ''}`}
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : (
+                  <CommandEmpty className="px-3 py-2 text-center text-gray-500">
+                    {modeIsPopular ? 'No popular stocks' : 'No stocks found'}
+                  </CommandEmpty>
+                ))}
+              {fetchStocksFailed && (
+                <p className="px-3 py-2 text-destructive">
+                  {modeIsPopular
+                    ? 'An error occurred while fetching popular stocks'
+                    : 'An error occurred while searching for stocks'}
+                </p>
+              )}
+            </>
           )}
         </CommandList>
       </CommandDialog>

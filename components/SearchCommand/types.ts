@@ -1,9 +1,12 @@
-import type { CompanyProfile } from '@/types';
+import type { FetchPopularCompanyProfilesResponse } from '../Header/utilities/fetchPopularCompanyProfiles';
 
-interface Props {
-  popularStocks: CompanyProfile[];
-  renderAs?: 'button' | 'text';
-  label?: string;
+export interface Props {
+  fetchPopularCompanyProfilesResponse: FetchPopularCompanyProfilesResponse;
 }
 
-export type { Props };
+export interface Stock {
+  company: string;
+  ticker: string;
+  exchange?: string;
+  industry?: string;
+}

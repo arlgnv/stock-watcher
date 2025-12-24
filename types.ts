@@ -16,3 +16,25 @@ export interface CompanyProfile {
   logo: string;
   finnhubIndustry: string;
 }
+
+export interface MarketNews {
+  category: string;
+  datetime: number;
+  headline: string;
+  id: number;
+  image: string;
+  related: string;
+  source: string;
+  summary: string;
+  url: string;
+}
+
+export interface SymbolLookup {
+  count: number;
+  result: {
+    description: string;
+    displaySymbol: string;
+    symbol: string;
+    type: string;
+  }[];
+}
