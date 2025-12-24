@@ -1,7 +1,10 @@
 import { FINNHUB_API_URL } from '@/constants';
 import environment from '@/environment';
 import type { CompanyProfile } from '@/types';
-import { convertDaysToSeconds } from '@/utilities';
+import {
+  convertDaysToSeconds,
+  convertSecondsToMilliseconds,
+} from '@/utilities';
 
 const POPULAR_STOCKS_SYMBOLS = [
   'AAPL',
@@ -40,6 +43,7 @@ async function fetchPopularCompanyProfiles(): Promise<FetchPopularCompanyProfile
           next: {
             revalidate: convertDaysToSeconds(1),
           },
+          signal: AbortSignal.timeout(convertSecondsToMilliseconds(10)),
         }),
       ),
     )
