@@ -15,17 +15,9 @@ import InputField from '@/components/InputField';
 import SelectField from '@/components/SelectField';
 import { Button } from '@/components/ui/button';
 import { EMAIL_REGULAR_EXPRESSION } from '@/constants';
-import inngest from '@/inngest/client';
 
-interface FieldValues {
-  fullName: string;
-  email: string;
-  password: string;
-  country: string;
-  investmentGoal: string;
-  riskTolerance: string;
-  preferredIndustry: string;
-}
+import { sendUserSignedUpEvent } from './actions';
+import type { FieldValues } from './types';
 
 function Form() {
   const router = useRouter();
@@ -69,15 +61,12 @@ function Form() {
         {
           async onSuccess() {
             try {
-              await inngest.send({
-                name: 'user.signed_up',
-                data: {
-                  fullName,
-                  email,
-                  investmentGoal,
-                  riskTolerance,
-                  preferredIndustry,
-                },
+              await sendUserSignedUpEvent({
+                fullName,
+                email,
+                investmentGoal,
+                riskTolerance,
+                preferredIndustry,
               });
             } catch (error) {
               console.error(error);
