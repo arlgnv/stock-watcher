@@ -1,5 +1,6 @@
 'use client';
 
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -16,7 +17,6 @@ import SelectField from '@/components/SelectField';
 import { Button } from '@/components/ui/button';
 import { EMAIL_REGULAR_EXPRESSION } from '@/constants';
 
-import { sendUserSignedUpEvent } from './actions';
 import type { FieldValues } from './types';
 
 function Form() {
@@ -61,7 +61,7 @@ function Form() {
         {
           async onSuccess() {
             try {
-              await sendUserSignedUpEvent({
+              await axios.post('/api/inngest/events/user/signed-up', {
                 fullName,
                 email,
                 investmentGoal,
