@@ -56,7 +56,6 @@ function Form() {
       riskTolerance,
       preferredIndustry,
     }: FieldValues) {
-      console.log(process.env);
       await authClient.signUp.email(
         {
           name: fullName,
