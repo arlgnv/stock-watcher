@@ -1,6 +1,6 @@
 import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
-console.log(process.env);
+
 const environment = createEnv({
   server: {
     SUPABASE_CONNECTION_STRING: z.url(),
@@ -19,6 +19,5 @@ const environment = createEnv({
   },
   experimental__runtimeEnv: {},
 });
-console.log(process.env);
 
 export default environment;
