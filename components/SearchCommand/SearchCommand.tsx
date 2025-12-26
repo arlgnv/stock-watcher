@@ -39,6 +39,9 @@ function SearchCommand({ fetchPopularCompanyProfilesResponse }: Props) {
     queryFn: async () => {
       const response = await axios<SymbolLookup>(
         `/api/finnhub/search?q=${encodeURIComponent(debouncedQuery)}`,
+        {
+          timeout: convertSecondsToMilliseconds(10),
+        },
       );
 
       return response.data;

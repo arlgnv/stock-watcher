@@ -1,37 +1,32 @@
 import { NextResponse, type NextRequest } from 'next/server';
+import { z } from 'zod';
 
 import { FINNHUB_API_URL } from '@/constants';
 import environment from '@/environment';
 import { convertSecondsToMilliseconds } from '@/utilities';
 
+const schema = z.object({
+  q: z.string().min(1).max(100),
+});
+
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const q = searchParams.get('q');
+  const safeParseResult = schema.safeParse(
+    Object.fromEntries(request.nextUrl.searchParams),
+  );
 
-  if (q === null) {
+  if (!safeParseResult.success) {
     return NextResponse.json(
-      { error: 'Query parameter "q" is required' },
-      { status: 400 },
-    );
-  }
-
-  if (!q) {
-    return NextResponse.json(
-      { error: 'Query parameter "q" cannot be empty' },
-      { status: 400 },
-    );
-  }
-
-  if (q.length > 100) {
-    return NextResponse.json(
-      { error: 'Query parameter "q" is too long' },
+      {
+        error_code: 'INVALID_QUERY_PARAMETER',
+        details: z.prettifyError(safeParseResult.error),
+      },
       { status: 400 },
     );
   }
 
   try {
     const response = await fetch(
-      `${FINNHUB_API_URL}/search?q=${encodeURIComponent(q)}`,
+      `${FINNHUB_API_URL}/search?q=${encodeURIComponent(safeParseResult.data.q)}`,
       {
         headers: {
           'X-Finnhub-Token': environment.FINNHUB_API_KEY,

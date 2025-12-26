@@ -1,5 +1,6 @@
 'use client';
 
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -15,8 +16,8 @@ import InputField from '@/components/InputField';
 import SelectField from '@/components/SelectField';
 import { Button } from '@/components/ui/button';
 import { EMAIL_REGULAR_EXPRESSION } from '@/constants';
+import { convertSecondsToMilliseconds } from '@/utilities';
 
-import { sendUserSignedUpEvent } from './actions';
 import type { FieldValues } from './types';
 
 function Form() {
@@ -61,15 +62,23 @@ function Form() {
         {
           async onSuccess() {
             try {
-              await sendUserSignedUpEvent({
-                fullName,
-                email,
-                investmentGoal,
-                riskTolerance,
-                preferredIndustry,
-              });
-            } catch (error) {
-              console.error(error);
+              await axios.post(
+                '/api/events/user-signed-up',
+                {
+                  fullName,
+                  email,
+                  investmentGoal,
+                  riskTolerance,
+                  preferredIndustry,
+                },
+                {
+                  timeout: convertSecondsToMilliseconds(10),
+                },
+              );
+            } catch {
+              toast.info(
+                'Account created successfully but welcome email is not delivered',
+              );
             } finally {
               router.push('/');
             }
@@ -96,6 +105,10 @@ function Form() {
           minLength: {
             value: 2,
             message: 'Full name must be at least 2 characters',
+          },
+          maxLength: {
+            value: 100,
+            message: 'Full name must be at most 100 characters',
           },
         }}
         error={errors.fullName}

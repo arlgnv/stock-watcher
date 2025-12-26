@@ -22,6 +22,7 @@ const config = defineConfig({
     'docstrings',
     'debouncer',
     'cli',
+    'zod',
   ],
   ignorePaths: ['supabase/types.ts'],
 });
