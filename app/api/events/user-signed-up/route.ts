@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Failed to send Inngest "user.signed_up" event', error);
 
-    return new NextResponse(null, { status: 500 });
+    return new NextResponse(null, { status: 502 });
   }
 
   return new NextResponse(null, { status: 204 });
