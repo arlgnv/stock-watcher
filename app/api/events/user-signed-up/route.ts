@@ -31,7 +31,9 @@ export async function POST(request: NextRequest) {
   });
 
   if (!session) {
-    return new NextResponse(null, { status: 401 });
+    return new NextResponse(null, {
+      status: 401,
+    });
   }
 
   let requestBody: unknown;
@@ -40,8 +42,12 @@ export async function POST(request: NextRequest) {
     requestBody = await request.json();
   } catch {
     return NextResponse.json(
-      { error_code: 'INVALID_REQUEST_BODY_FORMAT' },
-      { status: 400 },
+      {
+        error_code: 'INVALID_REQUEST_BODY_FORMAT',
+      },
+      {
+        status: 400,
+      },
     );
   }
 
@@ -53,8 +59,16 @@ export async function POST(request: NextRequest) {
         error_code: 'INVALID_DATA',
         details: z.prettifyError(safeParseResult.error),
       },
-      { status: 400 },
+      {
+        status: 400,
+      },
     );
+  }
+
+  if (session.user.email !== safeParseResult.data.email) {
+    return NextResponse.json(null, {
+      status: 403,
+    });
   }
 
   try {
@@ -65,8 +79,12 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Failed to send Inngest "user.signed_up" event', error);
 
-    return new NextResponse(null, { status: 502 });
+    return new NextResponse(null, {
+      status: 502,
+    });
   }
 
-  return new NextResponse(null, { status: 204 });
+  return new NextResponse(null, {
+    status: 204,
+  });
 }
