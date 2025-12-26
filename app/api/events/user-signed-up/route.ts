@@ -8,15 +8,15 @@ import inngest from '@/inngest/client';
 const schema = z.object({
   fullName: z.string().min(2).max(100),
   email: z.email(),
-  investmentGoal: z.literal([
+  investmentGoal: z.enum([
     'Growth',
     'Income',
     'Balanced',
     'Aggressive',
     'Conservative',
   ]),
-  riskTolerance: z.literal(['Low', 'Medium', 'High']),
-  preferredIndustry: z.literal([
+  riskTolerance: z.enum(['Low', 'Medium', 'High']),
+  preferredIndustry: z.enum([
     'Technology',
     'Healthcare',
     'Finance',
@@ -62,7 +62,9 @@ export async function POST(request: NextRequest) {
       name: 'user.signed_up',
       data: safeParseResult.data,
     });
-  } catch {
+  } catch (error) {
+    console.error('Failed to send Inngest "user.signed_up" event', error);
+
     return new NextResponse(null, { status: 500 });
   }
 
