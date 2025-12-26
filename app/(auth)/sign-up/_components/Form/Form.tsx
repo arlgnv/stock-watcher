@@ -107,8 +107,8 @@ function Form() {
             message: 'Full name must be at least 2 characters',
           },
           maxLength: {
-            value: 150,
-            message: 'Full name must be at most 150 characters',
+            value: 100,
+            message: 'Full name must be at most 100 characters',
           },
         }}
         error={errors.fullName}

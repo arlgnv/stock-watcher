@@ -6,7 +6,7 @@ import auth from '@/auth';
 import inngest from '@/inngest/client';
 
 const schema = z.object({
-  fullName: z.string().min(2).max(150),
+  fullName: z.string().min(2).max(100),
   email: z.email(),
   investmentGoal: z.literal([
     'Growth',
