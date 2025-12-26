@@ -61,7 +61,7 @@ function Form() {
         {
           async onSuccess() {
             try {
-              await axios.post('/api/inngest/events/user/signed-up', {
+              await axios.post('/api/events/user-signed-up', {
                 fullName,
                 email,
                 investmentGoal,
@@ -96,6 +96,10 @@ function Form() {
           minLength: {
             value: 2,
             message: 'Full name must be at least 2 characters',
+          },
+          maxLength: {
+            value: 150,
+            message: 'Full name must be at most 150 characters',
           },
         }}
         error={errors.fullName}
