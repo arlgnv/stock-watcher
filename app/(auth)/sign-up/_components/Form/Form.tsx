@@ -16,6 +16,7 @@ import InputField from '@/components/InputField';
 import SelectField from '@/components/SelectField';
 import { Button } from '@/components/ui/button';
 import { EMAIL_REGULAR_EXPRESSION } from '@/constants';
+import { convertSecondsToMilliseconds } from '@/utilities';
 
 import type { FieldValues } from './types';
 
@@ -61,15 +62,23 @@ function Form() {
         {
           async onSuccess() {
             try {
-              await axios.post('/api/events/user-signed-up', {
-                fullName,
-                email,
-                investmentGoal,
-                riskTolerance,
-                preferredIndustry,
-              });
-            } catch (error) {
-              console.error(error);
+              await axios.post(
+                '/api/events/user-signed-up',
+                {
+                  fullName,
+                  email,
+                  investmentGoal,
+                  riskTolerance,
+                  preferredIndustry,
+                },
+                {
+                  timeout: convertSecondsToMilliseconds(10),
+                },
+              );
+            } catch {
+              toast.info(
+                'Account created successfully but welcome email is not delivered',
+              );
             } finally {
               router.push('/');
             }
