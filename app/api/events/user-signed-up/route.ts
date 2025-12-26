@@ -76,8 +76,8 @@ export async function POST(request: NextRequest) {
       name: 'user.signed_up',
       data: safeParseResult.data,
     });
-  } catch (error) {
-    console.error('Failed to send Inngest "user.signed_up" event', error);
+  } catch {
+    console.error('Failed to send inngest\'s "user.signed_up" event');
 
     return new NextResponse(null, {
       status: 502,
