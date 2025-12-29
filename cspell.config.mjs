@@ -27,6 +27,7 @@ const config = defineConfig({
     'watchlists',
     'forex',
     'knip',
+    'typegen',
   ],
   ignorePaths: ['supabase/types.ts'],
 });

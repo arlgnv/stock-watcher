@@ -15,9 +15,11 @@ jobs:
           node-version-file: '.node-version'
       - name: Install dependencies
         run: npm ci
-      - name: Format check
+      - name: Generate TypeScript definitions for Next.js
+        run: npx next typegen
+      - name: Check formatting
         run: npm run format:check
-      - name: Lint check
+      - name: Check linting
         run: npm run lint:check
-      - name: Spell check
+      - name: Check spelling
         run: npm run spell:check
