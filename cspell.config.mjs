@@ -28,6 +28,7 @@ const config = defineConfig({
     'forex',
     'knip',
     'typegen',
+    'env',
   ],
   ignorePaths: ['supabase/types.ts'],
 });
