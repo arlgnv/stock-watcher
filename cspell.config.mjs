@@ -26,6 +26,10 @@ const config = defineConfig({
     'arlgnv',
     'watchlists',
     'forex',
+    'knip',
+    'typegen',
+    'env',
+    'coderabbit',
   ],
   ignorePaths: ['supabase/types.ts'],
 });

@@ -74,7 +74,7 @@ Create a new file named `.env` in the root of your project and populate it with 
 
 ```bash
 npm run dev
-npx inngest-cli@latest dev
+npm run inngest:dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.
