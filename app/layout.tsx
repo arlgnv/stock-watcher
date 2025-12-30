@@ -19,6 +19,7 @@ const metadata: Metadata = {
 };
 
 function Layout({ children }: LayoutProps<'/'>) {
+  console.log('test');
   return (
     <html
       className={twJoin(GeistSans.variable, 'dark font-geist antialiased')}
