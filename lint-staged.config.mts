@@ -2,7 +2,7 @@ import type { Configuration } from 'lint-staged';
 
 const config: Configuration = {
   '*': [
-    'prettier --check --ignore-unknown --cache --cache-strategy metadata --cache-location=node_modules/.cache/prettier',
+    'prettier --ignore-unknown --list-different --cache --cache-strategy metadata --cache-location=node_modules/.cache/prettier',
     'cspell --no-progress --no-summary --cache --cache-strategy metadata --cache-location=node_modules/.cache/cspell',
   ],
   '*.{mjs,ts,mts,tsx}':

@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: npm clean-install
       - name: Check formatting
-        run: npm run format:check
+        run: npx prettier . --ignore-unknown --list-different
       - name: Check linting
         # "env" is required for the step since "npx next typegen" command line program loads Next.js's configuration file where the check for the correct environment variables happens
         # "npx next typegen" command line program must be run before linting to generate types required for linting
