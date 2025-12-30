@@ -37,4 +37,6 @@ jobs:
           npx next typegen
           npm run lint:check
       - name: Check spelling
-        run: npm run spell:check
+        uses: streetsidesoftware/cspell-action@v8.1.1
+        with:
+          incremental_files_only: false
