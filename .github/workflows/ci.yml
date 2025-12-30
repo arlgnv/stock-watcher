@@ -1,4 +1,4 @@
-name: Code quality
+name: CI
 on:
   pull_request:
     branches:
@@ -6,19 +6,23 @@ on:
 permissions:
   contents: read
 jobs:
-  checks:
+  code-quality:
     runs-on: windows-latest
     steps:
-      - name: Checkout
+      - name: Check out repository
         uses: actions/checkout@v6.0.1
       - name: Setup Node.js environment
         uses: actions/setup-node@v6.1.0
         with:
           node-version-file: .node-version
       - name: Install dependencies
-        run: npm ci
-      - name: Generate TypeScript definitions for Next.js
-        # Required for the step. Dummy values are enough
+        run: npm clean-install
+      - name: Check formatting
+        run: npm run format:check
+      - name: Check linting
+        # "env" is required for the step since "npx next typegen" command line program loads Next.js's configuration file where the check for the correct environment variables happens
+        # "npx next typegen" command line program must be run before linting to generate types required for linting
+        # Dummy values are enough since the purpose is just to check linting
         env:
           SUPABASE_CONNECTION_STRING: https://supabase.com
           SUPABASE_URL: https://supabase.com
@@ -29,10 +33,8 @@ jobs:
           GOOGLE_EMAIL: test@test.com
           GOOGLE_APP_PASSWORD: test
           FINNHUB_API_KEY: test
-        run: npx next typegen
-      - name: Check formatting
-        run: npm run format:check
-      - name: Check linting
-        run: npm run lint:check
+        run: |
+          npx next typegen
+          npm run lint:check
       - name: Check spelling
         run: npm run spell:check
