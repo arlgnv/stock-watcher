@@ -24,11 +24,11 @@ jobs:
         # "npx next typegen" command line program must be run before linting to generate types required for linting
         # Dummy values are enough since the purpose is just to check linting
         env:
-          SUPABASE_CONNECTION_STRING: test.com
-          SUPABASE_URL: test.com
+          SUPABASE_CONNECTION_STRING: https://test.com
+          SUPABASE_URL: https://test.com
           SUPABASE_PUBLISHABLE_KEY: test
           BETTER_AUTH_SECRET: test
-          BETTER_AUTH_URL: test.com
+          BETTER_AUTH_URL: https://test.com
           GEMINI_API_KEY: test
           GOOGLE_EMAIL: test@test.com
           GOOGLE_APP_PASSWORD: test
