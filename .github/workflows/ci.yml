@@ -36,7 +36,7 @@ jobs:
         run: |
           npx next typegen
           npm run lint:check
-      - name: Check spelling
+      - name: Check changed files spelling
         uses: streetsidesoftware/cspell-action@v8.1.1
-        with:
-          incremental_files_only: false
+      - name: Lint PR commit messages
+        run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}
