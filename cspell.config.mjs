@@ -29,6 +29,7 @@ const config = defineConfig({
     'knip',
     'typegen',
     'env',
+    'coderabbit',
   ],
   ignorePaths: ['supabase/types.ts'],
 });
