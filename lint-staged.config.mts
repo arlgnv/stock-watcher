@@ -2,8 +2,8 @@ import type { Configuration } from 'lint-staged';
 
 const config: Configuration = {
   '*': [
-    'prettier --ignore-unknown --list-different',
     'cspell --no-progress --no-summary',
+    'prettier --ignore-unknown --list-different',
   ],
   '*.{mjs,ts,mts,tsx}': 'eslint',
 };
