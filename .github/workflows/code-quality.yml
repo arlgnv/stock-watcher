@@ -1,10 +1,10 @@
-name: CI
+name: Code quality
 on:
   pull_request:
     branches:
       - main
 jobs:
-  code-quality:
+  check:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -12,14 +12,19 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6.0.1
+        with:
+          fetch-depth: 0
       - name: Setup Node.js environment
         uses: actions/setup-node@v6.1.0
         with:
           node-version-file: .node-version
       - name: Install dependencies
         run: npm clean-install
+      - name: Get changed files
+        uses: tj-actions/changed-files@v47.0.1
+        id: changed-files
       - name: Check formatting
-        run: npx prettier . --ignore-unknown --list-different
+        run: npx prettier --ignore-unknown --list-different ${{ steps.changed-files.outputs.all_changed_files }}
       - name: Check linting
         # "env" is required for the step since "npx next typegen" command line program loads Next.js's configuration file where the check for the correct environment variables happens
         # "npx next typegen" command line program must be run before linting to generate types required for linting
@@ -38,6 +43,6 @@ jobs:
           npx next typegen
           npm run lint:check
       - name: Check changed files spelling
-        uses: streetsidesoftware/cspell-action@v8.1.1
+        uses: streetsidesoftware/cspell-action@v8.1.2
       - name: Lint PR commit messages
         run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}
