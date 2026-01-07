@@ -20,23 +20,23 @@ jobs:
           node-version-file: .node-version
       - name: Install dependencies
         run: npm clean-install
-      - name: Check changed files spelling
+      - name: Spell check changed files
         uses: streetsidesoftware/cspell-action@v8.1.2
       - name: Get files to check formatting
         id: get-files-to-check-formatting
         uses: tj-actions/changed-files@v47.0.1
       - name: Check changed files formatting
         run: npx prettier --ignore-unknown --list-different ${{ steps.get-files-to-check-formatting.outputs.all_changed_files }}
-      - name: Get files to check linting
-        id: get-files-to-check-linting
+      - name: Get files to lint
+        id: get-files-to-lint
         uses: tj-actions/changed-files@v47.0.1
         with:
           files: '*.{mjs,ts,mts,tsx}'
-      - name: Check changed files linting
-        if: steps.get-files-to-check-linting.outputs.any_changed == 'true'
+      - name: Lint changed files
+        if: steps.get-files-to-lint.outputs.any_changed == 'true'
         # `env` is required for the step since `npx next typegen` command line program loads Next.js's configuration file where the check for the correct environment variables happens
         # `npx next typegen` command line program must be run before linting to generate types required for linting
-        # Dummy values are enough since the purpose is just to check linting
+        # Dummy values are enough since the purpose of the step is just to lint
         env:
           SUPABASE_CONNECTION_STRING: https://test.com
           SUPABASE_URL: https://test.com
@@ -49,6 +49,6 @@ jobs:
           FINNHUB_API_KEY: test
         run: |
           npx next typegen
-          npx eslint ${{ steps.get-files-to-check-linting.outputs.all_changed_files }}
+          npx eslint ${{ steps.get-files-to-lint.outputs.all_changed_files }}
       - name: Lint PR commit messages
         run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}
