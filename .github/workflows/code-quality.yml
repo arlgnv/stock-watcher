@@ -23,9 +23,9 @@ jobs:
       - name: Get changed files
         uses: tj-actions/changed-files@v47.0.1
         id: changed-files
-      - name: Check formatting
+      - name: Check changed files formatting
         run: npx prettier --ignore-unknown --list-different ${{ steps.changed-files.outputs.all_changed_files }}
-      - name: Check linting
+      - name: Check changed files linting
         # "env" is required for the step since "npx next typegen" command line program loads Next.js's configuration file where the check for the correct environment variables happens
         # "npx next typegen" command line program must be run before linting to generate types required for linting
         # Dummy values are enough since the purpose is just to check linting
@@ -41,7 +41,7 @@ jobs:
           FINNHUB_API_KEY: test
         run: |
           npx next typegen
-          npm run lint:check
+          npx eslint ${{ steps.changed-files.outputs.all_changed_files }}
       - name: Check changed files spelling
         uses: streetsidesoftware/cspell-action@v8.1.2
       - name: Lint PR commit messages
