@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6.0.1
-        with:
-          fetch-depth: 0
       - name: Setup Node.js environment
         uses: actions/setup-node@v6.1.0
         with:
@@ -32,6 +30,7 @@ jobs:
         id: get-files-to-check-formatting
         uses: tj-actions/changed-files@v47.0.1
       - name: Check files formatting
+        if: steps.get-files-to-check-formatting.outputs.any_changed == 'true'
         run: npx prettier --ignore-unknown --list-different ${{ steps.get-files-to-check-formatting.outputs.all_changed_files }}
       - name: Get files to lint
         id: get-files-to-lint
