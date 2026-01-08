@@ -2,13 +2,13 @@ import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 
 const environment = createEnv({
+  skipValidation: process.env.SKIP_ENVS_VALIDATION === 'true',
   server: {
     SUPABASE_CONNECTION_STRING: z.url(),
     SUPABASE_URL: z.url(),
     SUPABASE_PUBLISHABLE_KEY: z.string().min(1),
 
     BETTER_AUTH_SECRET: z.string().min(1),
-    BETTER_AUTH_URL: z.url(),
 
     GEMINI_API_KEY: z.string().min(1),
 
