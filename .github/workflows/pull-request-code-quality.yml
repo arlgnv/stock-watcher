@@ -38,7 +38,7 @@ jobs:
         id: get-files-to-lint
         uses: tj-actions/changed-files@v47.0.1
         with:
-          files: '*.{mjs,ts,mts,tsx}'
+          files: '**/*.{mjs,ts,mts,tsx}'
       - name: Lint files
         if: steps.get-files-to-lint.outputs.any_changed == 'true'
         # `env` is required for the step since `npx next typegen` command line program loads Next.js's configuration file where the check for the correct environment variables happens
