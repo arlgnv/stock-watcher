@@ -52,3 +52,7 @@ jobs:
           npx eslint ${{ steps.get-files-to-lint.outputs.all_changed_files }}
       - name: Lint PR commit messages
         run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}
+      - name: Spell check PR commit messages
+        run: |
+          git log ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} --pretty=format:%s%n%b%n%n > pr-commit-messages.txt
+          npx cspell pr-commit-messages.txt --no-progress --no-summary

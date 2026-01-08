@@ -1,1 +1,1 @@
-npx commitlint --edit && npx cspell --no-progress --no-summary --language-id commit-msg $1
+npx commitlint --edit && npx cspell $1 --no-progress --no-summary --language-id commit-msg
