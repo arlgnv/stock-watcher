@@ -5,15 +5,7 @@ import environment from './environment';
 
 const auth = betterAuth({
   appName: 'Signalist',
-  baseURL:
-    process.env.BETTER_AUTH_URL ??
-    (process.env.VERCEL === '1'
-      ? process.env.VERCEL_ENV === 'preview'
-        ? // VERCEL_BRANCH_URL will be available here since we previously confirmed that the app is running in a vercel preview environment
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          `https://${process.env.VERCEL_BRANCH_URL!}`
-        : undefined
-      : undefined),
+  baseURL: environment.BETTER_AUTH_URL,
   database: new Pool({
     connectionString: environment.SUPABASE_CONNECTION_STRING,
   }),
