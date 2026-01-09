@@ -12,7 +12,7 @@ const environment = createEnv({
 
     GEMINI_API_KEY: z.string().min(1),
 
-    GOOGLE_EMAIL: z.email(),
+    GMAIL_ADDRESS: z.email(),
     GOOGLE_APP_PASSWORD: z.string().min(1),
 
     FINNHUB_API_KEY: z.string().min(1),
