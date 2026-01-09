@@ -20,7 +20,7 @@
     "declutter:check": "knip",
     "declutter:check-cached": "npm run declutter:check -- --cache",
     "spell:check": "cspell .",
-    "spell:check-cached": "npm run spell:check -- --cache --cache-strategy metadata --cache-location=node_modules/.cache/cspell",
+    "spell:check-cached": "npx cspell --cache --cache-strategy metadata --cache-location=node_modules/.cache/cspell .",
     "build": "next build",
     "start": "next start",
     "prepare": "husky"

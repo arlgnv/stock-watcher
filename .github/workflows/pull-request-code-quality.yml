@@ -25,7 +25,7 @@ jobs:
       - name: Spell check commit messages
         run: |
           git log ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} --pretty=format:%s%n%b%n%n > commit-messages.txt
-          npx cspell commit-messages.txt --no-progress --no-summary
+          npx cspell --no-progress --no-summary file://commit-messages.txt
           rm commit-messages.txt
       - name: Spell check files
         uses: streetsidesoftware/cspell-action@v8.1.2
