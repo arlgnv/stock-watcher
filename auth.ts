@@ -5,6 +5,7 @@ import environment from './environment';
 
 const auth = betterAuth({
   appName: 'Signalist',
+  baseURL: environment.BETTER_AUTH_URL,
   database: new Pool({
     connectionString: environment.SUPABASE_CONNECTION_STRING,
   }),

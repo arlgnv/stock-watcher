@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { z } from 'zod';
+import * as z from 'zod';
 
 import { FINNHUB_API_URL } from '@/constants';
 import environment from '@/environment';

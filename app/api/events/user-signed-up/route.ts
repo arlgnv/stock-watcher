@@ -1,6 +1,6 @@
 import { headers } from 'next/headers';
 import { NextResponse, type NextRequest } from 'next/server';
-import { z } from 'zod';
+import * as z from 'zod';
 
 import auth from '@/auth';
 import inngest from '@/inngest/client';

@@ -2,11 +2,10 @@ import type { Configuration } from 'lint-staged';
 
 const config: Configuration = {
   '*': [
-    'prettier --ignore-unknown --list-different --cache --cache-strategy metadata --cache-location=node_modules/.cache/prettier',
-    'cspell --no-progress --no-summary --cache --cache-strategy metadata --cache-location=node_modules/.cache/cspell',
+    'cspell --no-progress --no-summary',
+    'prettier --ignore-unknown --list-different',
   ],
-  '*.{mjs,ts,mts,tsx}':
-    'eslint --cache --cache-location=node_modules/.cache/eslint',
+  '*.{mjs,ts,mts,tsx}': 'eslint',
 };
 
 export default config;
