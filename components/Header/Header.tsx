@@ -29,12 +29,21 @@ async function Header({ user }: Props) {
             }
           />
         </nav>
-        <UserDropdown
-          user={user}
-          fetchPopularCompanyProfilesResponse={
-            fetchPopularCompanyProfilesResponse
-          }
-        />
+        {user ? (
+          <UserDropdown
+            user={user}
+            fetchPopularCompanyProfilesResponse={
+              fetchPopularCompanyProfilesResponse
+            }
+          />
+        ) : (
+          <Link
+            className="rounded-md bg-linear-to-b from-yellow-400 to-yellow-500 px-3 py-1 text-sm font-medium text-gray-950 hover:from-yellow-500 hover:to-yellow-400"
+            href="/sign-in"
+          >
+            Sign In
+          </Link>
+        )}
       </div>
     </header>
   );
