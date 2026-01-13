@@ -52,7 +52,7 @@ npm install
 
 4. Set up environment variables
 
-   Create a new file named `.env` in the project's root and fill it out with required variables
+   Create a new file named `.env` in the project's root and fill it out with required variables (reference `.env.example` for available variables)
 
 ### Starting development server
 
