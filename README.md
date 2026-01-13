@@ -65,7 +65,7 @@ npm run dev
 2. Start inngest dev server
 
 ```bash
-npm inngest:dev
+npm run inngest:dev
 ```
 
 3. Open the server
