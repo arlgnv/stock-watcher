@@ -9,10 +9,6 @@ export default async function proxy(request: NextRequest) {
     headers: await headers(),
   });
 
-  if (request.nextUrl.pathname === '/' && !session) {
-    return NextResponse.redirect(new URL('/sign-in', request.url));
-  }
-
   if (
     (request.nextUrl.pathname === '/sign-in' ||
       request.nextUrl.pathname === '/sign-up') &&
@@ -25,5 +21,5 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/sign-in', '/sign-up'],
+  matcher: ['/sign-in', '/sign-up'],
 };

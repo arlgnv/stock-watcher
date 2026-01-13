@@ -1,12 +1,10 @@
-# 🚀 Signalist
+# Signalist
 
 Signalist is a real‑time stock tracking platform that delivers personalized alerts and detailed company insights.
 
-## ✨ Introduction
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/arlgnv/signalist?utm_source=oss&utm_medium=github&utm_campaign=arlgnv%2Fsignalist&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
-AI-powered modern stock market app built with Next.js, Shadcn, Better Auth, and Inngest! Track real-time prices, set personalized alerts, explore company insights, and manage watchlists. The admin dashboard allows managing stocks, publishing news, and monitoring user activity, while event-driven workflows power automated alerts, AI-driven daily digests, earnings notifications, and sentiment analysis—perfect for devs who want a dynamic, real-time financial platform.
-
-## ⚙️ Tech Stack
+## Tech stack
 
 - **[Next.js](https://nextjs.org)** is a powerful React framework for building full-stack web applications. It provides server-side rendering, static site generation, and API routes, allowing developers to create optimized and scalable apps quickly.
 - **[TypeScript](https://www.typescriptlang.org)** is a statically typed superset of JavaScript that improves code quality, tooling, and error detection. It is ideal for building large-scale applications and enhances maintainability.
@@ -19,62 +17,57 @@ AI-powered modern stock market app built with Next.js, Shadcn, Better Auth, and 
 - **[Nodemailer](https://nodemailer.com)** is a Node.js library for sending emails easily. It supports various transport methods such as SMTP, OAuth2, and third-party services, making it a reliable tool for handling transactional emails, notifications, and contact forms in applications.
 - **[Shadcn](https://ui.shadcn.com)** is an open-source library of fully customizable, accessible React components. It helps teams rapidly build consistent, visually appealing UIs while allowing full control over design and layout.
 
-## 🔋 Features
-
-👉 **Stock Dashboard**: Track real-time stock prices with interactive line and candlestick charts, including historical data, and filter stocks by industry, performance, or market cap.
-
-👉 **Powerful Search**: Quickly find the best stocks with an intelligent search system that helps you navigate through Signalist.
-
-👉 **Watchlist & Alerts**: Create a personalized watchlist, set alert thresholds for price changes or volume spikes, and receive instant email notifications to stay on top of the market.
-
-👉 **Company Insights**: Explore detailed financial data such as PE ratio, EPS, revenue, recent news, filings, analyst ratings, and sentiment scores for informed decision-making.
-
-👉 **Real-Time Workflows**: Powered by **Inngest**, automate event-driven processes like price updates, alert scheduling, automated reporting, and AI-driven insights.
-
-👉 **AI-Powered Alerts & Summaries**: Generate personalized market summaries, daily digests, and earnings report notifications, helping users track performance and make data-driven decisions.
-
-👉 **Customizable Notifications**: Fine-tune alerts and notifications based on user watchlists and preferences for a highly personalized experience.
-
-👉 **Analytics & Insights**: Gain insights into user behavior, stock trends, and engagement metrics, enabling smarter business and trading decisions.
-
-And many more, including code architecture and reusability.
-
-## 🤸 Quick Start
+## Development
 
 Follow these steps to set up the project locally on your machine.
 
-**Prerequisites**
-
-Make sure you have the following installed on your machine:
+### Prerequisites
 
 - [Git](https://git-scm.com)
 - [Node.js](https://nodejs.org/en)
-- [npm](https://www.npmjs.com)
 
-**Cloning the Repository**
+### Recommendations
+
+- Enable [custom TypeScript plugin](https://nextjs.org/docs/app/api-reference/config/typescript#ide-plugin) for Next.js
+
+### Setting up
+
+1. Clone repository
 
 ```bash
 git clone git@github.com:arlgnv/signalist.git
+```
+
+2. Navigate to cloned folder
+
+```bash
 cd signalist
 ```
 
-**Installation**
-
-Install the project dependencies using npm:
+3. Install dependencies
 
 ```bash
 npm install
 ```
 
-**Set Up Environment Variables**
+4. Set up environment variables
 
-Create a new file named `.env` in the root of your project and populate it with the variables
+   Create a new file named `.env` in the project's root and fill it out with required variables (reference `.env.example` for available variables)
 
-**Running the Project**
+### Starting development server
+
+1. Start the server
 
 ```bash
 npm run dev
+```
+
+2. Start inngest dev server
+
+```bash
 npm run inngest:dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.
+3. Open the server
+
+   Visit [http://localhost:3000](http://localhost:3000) in your browser to view the project

@@ -1,5 +1,3 @@
-// @ts-check
-
 import { defineConfig } from 'cspell';
 
 const config = defineConfig({
@@ -30,6 +28,7 @@ const config = defineConfig({
     'typegen',
     'env',
     'coderabbit',
+    'coderabbitai',
   ],
   ignorePaths: ['supabase/types.ts'],
 });
