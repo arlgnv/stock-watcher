@@ -1,10 +1,10 @@
-# 🚀 Signalist
+# Signalist
 
 Signalist is a real‑time stock tracking platform that delivers personalized alerts and detailed company insights.
 
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/arlgnv/signalist?utm_source=oss&utm_medium=github&utm_campaign=arlgnv%2Fsignalist&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
-## ⚙️ Tech Stack
+## Tech stack
 
 - **[Next.js](https://nextjs.org)** is a powerful React framework for building full-stack web applications. It provides server-side rendering, static site generation, and API routes, allowing developers to create optimized and scalable apps quickly.
 - **[TypeScript](https://www.typescriptlang.org)** is a statically typed superset of JavaScript that improves code quality, tooling, and error detection. It is ideal for building large-scale applications and enhances maintainability.
@@ -17,7 +17,7 @@ Signalist is a real‑time stock tracking platform that delivers personalized al
 - **[Nodemailer](https://nodemailer.com)** is a Node.js library for sending emails easily. It supports various transport methods such as SMTP, OAuth2, and third-party services, making it a reliable tool for handling transactional emails, notifications, and contact forms in applications.
 - **[Shadcn](https://ui.shadcn.com)** is an open-source library of fully customizable, accessible React components. It helps teams rapidly build consistent, visually appealing UIs while allowing full control over design and layout.
 
-## 🤸 Quick Start
+## Development
 
 Follow these steps to set up the project locally on your machine.
 
@@ -25,6 +25,10 @@ Follow these steps to set up the project locally on your machine.
 
 - [Git](https://git-scm.com)
 - [Node.js](https://nodejs.org/en)
+
+### Recommendations
+
+- Enable [custom TypeScript plugin](https://nextjs.org/docs/app/api-reference/config/typescript#ide-plugin) for Next.js
 
 ### Setting up
 
