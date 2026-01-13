@@ -1,5 +1,3 @@
-// @ts-check
-
 import { defineConfig } from 'cspell';
 
 const config = defineConfig({
