@@ -28,6 +28,7 @@ const config = defineConfig({
     'typegen',
     'env',
     'coderabbit',
+    'coderabbitai',
   ],
   ignorePaths: ['supabase/types.ts'],
 });
