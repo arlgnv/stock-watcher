@@ -9,7 +9,7 @@ async function Layout({ children }: LayoutProps<'/'>) {
   });
 
   return (
-    <main className="min-h-screen text-gray-400">
+    <main className="min-h-screen">
       <Header user={session?.user} />
       <div className="wrapper py-10">{children}</div>
     </main>
