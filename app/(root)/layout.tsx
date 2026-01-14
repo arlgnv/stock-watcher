@@ -1,18 +1,11 @@
-import { headers } from 'next/headers';
-
-import auth from '@/auth';
 import Header from '@/components/Header/Header';
 
-async function Layout({ children }: LayoutProps<'/'>) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
+function Layout({ children }: LayoutProps<'/'>) {
   return (
-    <main className="min-h-screen">
-      <Header user={session?.user} />
-      <div className="wrapper py-10">{children}</div>
-    </main>
+    <div className="min-h-screen bg-gray-900">
+      <Header />
+      <main className="mx-auto max-w-360 px-7.5 pt-10 pb-12.5">{children}</main>
+    </div>
   );
 }
 

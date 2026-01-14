@@ -30,6 +30,7 @@ const config = defineConfig({
     'coderabbit',
     'coderabbitai',
     'shadcn',
+    'oklch',
   ],
   ignorePaths: ['supabase/types.ts'],
 });
