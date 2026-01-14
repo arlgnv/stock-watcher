@@ -29,6 +29,7 @@ const config = defineConfig({
     'env',
     'coderabbit',
     'coderabbitai',
+    'shadcn',
   ],
   ignorePaths: ['supabase/types.ts'],
 });
