@@ -1,4 +1,4 @@
-import type { FetchPopularCompanyProfilesResponse } from '../Header/utilities/fetchPopularCompanyProfiles';
+import type { FetchPopularCompanyProfilesResponse } from '../../utilities/fetchPopularCompanyProfiles';
 
 export interface Props {
   fetchPopularCompanyProfilesResponse: FetchPopularCompanyProfilesResponse;

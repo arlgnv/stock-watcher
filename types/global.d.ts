@@ -76,15 +76,6 @@ declare global {
     news?: MarketNewsArticle[];
   }
 
-  interface SearchCommandProps {
-    open?: boolean;
-    setOpen?: (open: boolean) => void;
-    renderAs?: 'button' | 'text';
-    buttonLabel?: string;
-    buttonVariant?: 'primary' | 'secondary';
-    className?: string;
-  }
-
   interface AlertData {
     symbol: string;
     company: string;

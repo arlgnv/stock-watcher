@@ -3,9 +3,9 @@
 import { useDebouncedState } from '@tanstack/react-pacer/debouncer';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Loader2, TrendingUp } from 'lucide-react';
+import { Loader2, Search as SearchIcon, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import {
   CommandDialog,
@@ -22,8 +22,8 @@ import {
   convertSymbolLookupResultItemToStock,
 } from './utilities';
 
-function SearchCommand({ fetchPopularCompanyProfilesResponse }: Props) {
-  const [open, setOpen] = useState(false);
+function Search({ fetchPopularCompanyProfilesResponse }: Props) {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [instantQuery, setInstantQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useDebouncedState(instantQuery, {
     wait: convertSecondsToMilliseconds(1),
@@ -67,10 +67,8 @@ function SearchCommand({ fetchPopularCompanyProfilesResponse }: Props) {
 
   useEffect(() => {
     function handleWindowKeyDown(event: KeyboardEvent) {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
-        event.preventDefault();
-
-        setOpen((o) => !o);
+      if (event.key === '/') {
+        setModalIsOpen((m) => !m);
       }
     }
 
@@ -87,7 +85,7 @@ function SearchCommand({ fetchPopularCompanyProfilesResponse }: Props) {
   }
 
   function handleSelectStock() {
-    setOpen(false);
+    setModalIsOpen(false);
     setInstantQuery('');
     setDebouncedQuery('');
   }
@@ -95,18 +93,22 @@ function SearchCommand({ fetchPopularCompanyProfilesResponse }: Props) {
   return (
     <>
       <button
-        className="hover:text-yellow-500"
+        className="grid cursor-pointer grid-cols-[auto_1fr_auto] items-center gap-x-1 rounded-sm bg-input-dark-5/60 px-2.5 py-1.5 text-left text-muted-foreground-dark-5 hover:bg-input-dark-5/70"
         type="button"
         onClick={() => {
-          setOpen(true);
+          setModalIsOpen(true);
         }}
       >
-        Search
+        <SearchIcon size={16} />
+        <span className="text-xs">Search</span>
+        <span className="w-5 rounded-xs bg-input text-center text-sm text-muted-foreground">
+          /
+        </span>
       </button>
       <CommandDialog
         className="search-dialog"
-        open={open}
-        onOpenChange={setOpen}
+        open={modalIsOpen}
+        onOpenChange={setModalIsOpen}
       >
         <div className="search-field">
           <CommandInput
@@ -170,4 +172,4 @@ function SearchCommand({ fetchPopularCompanyProfilesResponse }: Props) {
   );
 }
 
-export default SearchCommand;
+export default Search;

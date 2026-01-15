@@ -2,9 +2,10 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 
 import auth from '@/auth';
+import Logo from '@/components/Logo';
+import UserDropdown from '@/components/UserDropdown/UserDropdown';
 
-import Logo from '../Logo';
-import UserDropdown from '../UserDropdown/UserDropdown';
+import { Search } from './components';
 import { fetchPopularCompanyProfiles } from './utilities';
 
 async function Header() {
@@ -14,16 +15,17 @@ async function Header() {
   const fetchPopularCompanyProfilesResponse =
     await fetchPopularCompanyProfiles();
 
-  console.log(fetchPopularCompanyProfilesResponse);
-
   return (
-    <header className="sticky top-0 z-1 bg-gray-800">
-      <div className="mx-auto grid max-w-360 grid-cols-[1fr_13rem_auto_auto] items-center gap-x-4 px-7.5 py-5">
-        <Link href="/">
+    <header className="sticky top-0 z-1 bg-background-light-5 text-foreground-dark-5">
+      <div className="mx-auto grid max-w-360 grid-cols-[1fr_13rem_auto] items-center gap-x-4 px-7.5 py-5">
+        <Link className="justify-self-start" href="/">
           <Logo />
         </Link>
-        <div>stocks search</div>
-        <div>app's settings</div>
+        <Search
+          fetchPopularCompanyProfilesResponse={
+            fetchPopularCompanyProfilesResponse
+          }
+        />
         {session?.user ? (
           <UserDropdown user={session.user} />
         ) : (
