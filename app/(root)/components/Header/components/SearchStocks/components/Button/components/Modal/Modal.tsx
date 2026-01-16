@@ -1,11 +1,19 @@
 import { useDebouncedState } from '@tanstack/react-pacer/debouncer';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { CommandDialog, CommandInput, CommandList, CommandEmpty } from 'cmdk';
 import { Loader2, TrendingUp } from 'lucide-react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import {
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandLoading,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+} from '@/components/ui/command';
 import type { SymbolLookup } from '@/types';
 import { convertSecondsToMilliseconds } from '@/utilities';
 
@@ -17,6 +25,7 @@ import {
 
 function Modal({ open, fetchPopularCompanyProfilesResponse, onClose }: Props) {
   const [instantQuery, setInstantQuery] = useState('');
+  const router = useRouter();
   const [debouncedQuery, setDebouncedQuery] = useDebouncedState(instantQuery, {
     wait: convertSecondsToMilliseconds(1),
   });
@@ -62,66 +71,69 @@ function Modal({ open, fetchPopularCompanyProfilesResponse, onClose }: Props) {
     setDebouncedQuery(value);
   }
 
-  function handleSelectStock() {
-    onClose();
-    setInstantQuery('');
-    setDebouncedQuery('');
+  function createStockSelectHandler(ticker: string) {
+    return () => {
+      onClose();
+      setInstantQuery('');
+      setDebouncedQuery('');
+      router.push(`/stocks/${ticker}`);
+    };
   }
 
   return (
-    <CommandDialog className="search-dialog" open={open} onOpenChange={onClose}>
-      <div className="search-field">
-        <CommandInput
-          className="search-input"
-          value={instantQuery}
-          placeholder="Search stocks..."
-          onValueChange={handleInputChange}
-        />
-      </div>
-      <CommandList className="search-list">
+    <CommandDialog
+      open={open}
+      title="Stocks search modal"
+      description="A modal for searching stocks and viewing popular stocks"
+      commandProps={{
+        shouldFilter: false,
+        loop: true,
+      }}
+      onOpenChange={onClose}
+    >
+      <CommandInput
+        value={instantQuery}
+        placeholder="Search stocks..."
+        onValueChange={handleInputChange}
+      />
+      <CommandList>
         {stocksAreBeingFetched ? (
-          <div className="px-3 py-2">
-            <Loader2 className="mx-auto animate-spin text-gray-500" />
-          </div>
+          <CommandLoading>
+            <Loader2 className="mx-auto animate-spin" />
+          </CommandLoading>
         ) : (
           <>
             {stocks &&
               (stocks.length ? (
-                <>
-                  <div className="search-count">
-                    {modeIsPopular ? 'Popular stocks' : 'Search results'}
-                    {` `}({stocks.length})
-                  </div>
-                  <ul>
-                    {stocks.map(({ ticker, company, exchange, industry }) => (
-                      <li className="search-item" key={ticker}>
-                        <Link
-                          className="search-item-link"
-                          href={`/stocks/${ticker}`}
-                          onClick={handleSelectStock}
-                        >
-                          <TrendingUp className="h-4 w-4 text-gray-500" />
-                          <div className="flex-1">
-                            <div className="search-item-name">{company}</div>
-                            <div className="text-sm text-gray-500">
-                              {`${ticker}${exchange ? ` • ${exchange}` : ''}${industry ? ` • ${industry}` : ''}`}
-                            </div>
-                          </div>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </>
+                <CommandGroup
+                  heading={`${modeIsPopular ? 'Popular stocks' : 'Search results'} (${String(stocks.length)})`}
+                  forceMount
+                >
+                  {stocks.map(({ ticker, company, exchange, industry }) => (
+                    <CommandItem
+                      key={ticker}
+                      className="grid grid-cols-[auto_1fr] grid-rows-2 gap-y-1"
+                      onSelect={createStockSelectHandler(ticker)}
+                    >
+                      <TrendingUp />
+                      <p>{company}</p>
+                      <p className="col-start-2 text-muted-foreground">
+                        {`${ticker}${exchange ? ` • ${exchange}` : ''}${industry ? ` • ${industry}` : ''}`}
+                      </p>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
               ) : (
-                <CommandEmpty className="px-3 py-2 text-center text-gray-500">
+                <CommandEmpty>
                   {modeIsPopular ? 'No popular stocks' : 'No stocks found'}
                 </CommandEmpty>
               ))}
             {fetchStocksFailed && (
-              <p className="px-3 py-2 text-destructive">
+              <p className="px-3 py-6 text-center text-destructive">
+                An error occurred while{' '}
                 {modeIsPopular
-                  ? 'An error occurred while fetching popular stocks'
-                  : 'An error occurred while searching for stocks'}
+                  ? 'fetching popular stocks'
+                  : 'searching for stocks'}
               </p>
             )}
           </>
