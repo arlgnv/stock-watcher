@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import auth from '@/auth';
 import Logo from '@/components/Logo';
+import { Button } from '@/components/ui/button';
 import UserDropdown from '@/components/UserDropdown/UserDropdown';
 
 import { SearchStocks } from './components';
@@ -16,18 +17,15 @@ async function Header() {
     <header className="sticky top-0 z-1 bg-card">
       <div className="mx-auto grid max-w-360 grid-cols-[1fr_13rem_auto] items-center gap-x-4 px-7.5 py-5">
         <Link className="justify-self-start" href="/">
-          <Logo />
+          <Logo color="var(--foreground)" />
         </Link>
         <SearchStocks />
         {session?.user ? (
           <UserDropdown user={session.user} />
         ) : (
-          <Link
-            className="rounded-md bg-linear-to-b from-yellow-400 to-yellow-500 px-3 py-1 text-sm font-medium text-gray-950 hover:from-yellow-500 hover:to-yellow-400"
-            href="/sign-in"
-          >
-            Sign In
-          </Link>
+          <Button asChild size="sm">
+            <Link href="/sign-in">Sign In</Link>
+          </Button>
         )}
       </div>
     </header>
