@@ -37,15 +37,9 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
 }
 
 :root {
-  --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
@@ -113,9 +107,13 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
-/* === CUSTOM COLOR THEME === */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+}
+
 @theme {
-  /* Extended Gray Scale */
   --color-gray-900: #050505;
   --color-gray-800: #141414;
   --color-gray-700: #212328;
@@ -123,7 +121,6 @@
   --color-gray-500: #9095a1;
   --color-gray-400: #ccdadc;
 
-  /* Vibrant Colors */
   --color-blue-600: #5862ff;
   --color-yellow-400: #fdd458;
   --color-yellow-500: #e8ba40;
@@ -135,18 +132,6 @@
 
 @utility home-wrapper {
   @apply flex-col items-center gap-4 text-gray-400 sm:items-start md:gap-10;
-}
-
-@utility header-wrapper {
-  @apply flex items-center justify-between px-6 py-4 text-gray-500;
-}
-
-@utility header {
-  @apply z-50 h-[70px] w-full bg-gray-800;
-}
-
-@utility wrapper {
-  @apply mx-auto max-w-screen-2xl px-4 md:px-6 lg:px-8;
 }
 
 @utility home-section {
@@ -216,33 +201,15 @@
 @utility search-btn {
   @apply flex w-fit cursor-pointer items-center gap-2 rounded bg-yellow-500 px-4 py-2 text-sm font-medium text-black hover:bg-yellow-500 md:text-base;
 }
-@utility search-dialog {
-  @apply fixed top-10 left-1/2 -translate-x-1/2 translate-y-10 border-gray-600 !bg-gray-800 lg:min-w-[800px];
-}
-@utility search-field {
-  @apply relative border-b border-gray-600 !bg-gray-800;
-}
-@utility search-list {
-  @apply max-h-[400px] !bg-gray-800;
-}
+
 @utility search-list-indicator {
   @apply px-5 py-2;
 }
-@utility search-input {
-  @apply h-14 border-0 !bg-gray-800 pr-10 text-base text-gray-400 placeholder:text-gray-500 focus:ring-0;
-}
-@utility search-count {
-  @apply border-b border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-gray-400;
-}
-@utility search-item {
-  @apply my-3 w-full rounded-none px-1 data-[selected=true]:bg-gray-600;
-}
+
 @utility search-item-link {
   @apply flex w-full cursor-pointer items-center gap-3 border-b border-gray-600 px-2 transition-colors last:border-b-0;
 }
-@utility search-item-name {
-  @apply text-base font-medium text-gray-400;
-}
+
 @utility nav-list {
   @apply flex flex-col gap-3 p-2 font-medium sm:flex-row sm:gap-10;
 }
@@ -368,15 +335,6 @@
 }
 @utility alert-delete-btn {
   @apply cursor-pointer rounded-full bg-transparent text-gray-400 transition-colors hover:bg-red-600/15;
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-gray-900 text-foreground;
-  }
 }
 
 /* Market News Component Styles */

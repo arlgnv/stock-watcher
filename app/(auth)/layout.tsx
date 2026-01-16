@@ -1,19 +1,7 @@
-import { headers } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 
-import auth from '@/auth';
-
-async function Layout({ children }: LayoutProps<'/'>) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (session) {
-    redirect('/');
-  }
-
+function Layout({ children }: LayoutProps<'/'>) {
   return (
     <main className="auth-layout">
       <section className="scrollbar-hide-default auth-left-section">

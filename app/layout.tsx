@@ -21,7 +21,10 @@ const metadata: Metadata = {
 function Layout({ children }: LayoutProps<'/'>) {
   return (
     <html
-      className={twJoin(GeistSans.variable, 'dark font-geist antialiased')}
+      className={twJoin(
+        GeistSans.variable,
+        'dark bg-background font-geist text-foreground antialiased',
+      )}
       lang="en"
     >
       <body>

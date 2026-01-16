@@ -15,11 +15,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import NavItems from '../NavItems/NavItems';
 import { Button } from '../ui/button';
 import type { Props } from './types';
 
-function UserDropdown({ user, fetchPopularCompanyProfilesResponse }: Props) {
+function UserDropdown({ user }: Props) {
   const router = useRouter();
 
   function handleDeleteMeButtonClick() {
@@ -81,14 +80,6 @@ function UserDropdown({ user, fetchPopularCompanyProfilesResponse }: Props) {
             </div>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator className="bg-gray-600" />
-        <nav className="sm:hidden">
-          <NavItems
-            fetchPopularCompanyProfilesResponse={
-              fetchPopularCompanyProfilesResponse
-            }
-          />
-        </nav>
         <DropdownMenuSeparator className="block bg-gray-600 sm:hidden" />
         <DropdownMenuItem
           className="text-md cursor-pointer font-medium text-gray-100 transition-colors focus:bg-transparent focus:text-yellow-500"
