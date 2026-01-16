@@ -3,6 +3,8 @@
 import { Search as SearchIcon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
+import { Kbd } from '@/components/ui/kbd';
+
 import { Modal } from './components';
 import type { Props } from './types';
 
@@ -12,6 +14,7 @@ function Button({ fetchPopularCompanyProfilesResponse }: Props) {
   useEffect(() => {
     function handleWindowKeyDown(event: KeyboardEvent) {
       if (event.key === '/') {
+        event.preventDefault();
         setModalIsOpen((m) => !m);
       }
     }
@@ -34,7 +37,7 @@ function Button({ fetchPopularCompanyProfilesResponse }: Props) {
       >
         <SearchIcon size={16} />
         <span className="text-xs">Search</span>
-        <span className="w-5 rounded-sm bg-input text-center text-sm">/</span>
+        <Kbd className="bg-input">/</Kbd>
       </button>
       <Modal
         open={modalIsOpen}
