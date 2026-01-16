@@ -19,20 +19,7 @@ const POPULAR_STOCKS_SYMBOLS = [
   'CRM',
 ];
 
-interface FetchPopularCompanyProfilesSuccess {
-  status: 'success';
-  data: CompanyProfile[];
-}
-
-interface FetchPopularCompanyProfilesFailure {
-  status: 'error';
-}
-
-export type FetchPopularCompanyProfilesResponse =
-  | FetchPopularCompanyProfilesSuccess
-  | FetchPopularCompanyProfilesFailure;
-
-async function fetchPopularCompanyProfiles(): Promise<FetchPopularCompanyProfilesResponse> {
+async function fetchPopularCompanyProfiles() {
   const responses = (
     await Promise.allSettled(
       POPULAR_STOCKS_SYMBOLS.map((symbol) =>
@@ -65,8 +52,8 @@ async function fetchPopularCompanyProfiles(): Promise<FetchPopularCompanyProfile
     .map((result) => result.value);
 
   return popularCompaniesProfiles.length
-    ? { status: 'success', data: popularCompaniesProfiles }
-    : { status: 'error' };
+    ? ({ status: 'success', data: popularCompaniesProfiles } as const)
+    : ({ status: 'error' } as const);
 }
 
 export default fetchPopularCompanyProfiles;
